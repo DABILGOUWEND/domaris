@@ -1,18 +1,21 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { getAuth, setPersistence, signInWithEmailAndPassword, browserSessionPersistence, browserLocalPersistence } from "firebase/auth";
 import { doc, Firestore, getDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { BehaviorSubject, from, Observable, of, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { isPlatformBrowser } from '@angular/common';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   //injections
   db = inject(Firestore);
-    _auth = inject(Auth);
-
+  _auth = inject(Auth);
+  platformId = inject(PLATFORM_ID)
+  isBrowser: boolean;
+  router = inject(Router);
   //signals
   token = signal('');
   userLoggedIn = signal(false);
@@ -24,7 +27,7 @@ export class AuthService {
   affichage = signal<string | null | undefined>('')
 
   constructor() {
-
+    this.isBrowser = isPlatformBrowser(this.platformId)
   }
 
   login(email: string, password: string): Observable<any> {
@@ -41,8 +44,6 @@ export class AuthService {
           const errorMessage = error.message;
         })
     }))
-
-
   }
   getUserLoggedIn(): Observable<boolean> {
     return of(this.userLoggedIn());
@@ -51,6 +52,8 @@ export class AuthService {
   logout(): void {
     this._auth.signOut().then(() => {
       this.userLoggedIn.set(false);
+      this.userSignal.set(undefined);
+      this.current_projet_id.set(undefined);
     })
       .catch((error) => {
         console.error("Error signing out: ", error);
@@ -72,7 +75,6 @@ export class AuthService {
       tap(
         (resp: any) => {
           let data = resp.data();
-          console.log('data', data);
           this.userSignal.update(
             (user: any) =>
             (
@@ -97,11 +99,18 @@ export class AuthService {
 
   }
   getallUsersByUid(uid: string): Observable<any> {
-    console.log('uid', uid);
     const docRef = doc(this.db, "myusers", uid);
-    console.log('docRef', docRef);
     const docSnap = getDoc(docRef);
     return from(docSnap)
   }
-
+  autoLogin() {
+    if (this.isBrowser) {
+      let data = localStorage.getItem('user');
+      if (data) {
+        const dataparse = JSON.parse(data);
+        this.userSignal.set(dataparse);
+        this.current_projet_id.set(this.userSignal()?.current_projet_id);
+      }
+    }
+  }
 }
