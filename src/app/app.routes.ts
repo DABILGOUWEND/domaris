@@ -10,13 +10,13 @@ export const routes: Routes = [
     path: "", redirectTo: "/layout", pathMatch: "full"
   },
   {
-    path: "layout", component: LayoutComponent,
+    path: "layout", component: LayoutComponent, canActivate: [authGuard],
     children: [
       {
         path: "", redirectTo: "/layout/tbord", pathMatch: "full"
       },
       {
-        path: "tbord", component: DashboardHomeComponent,canActivate: [authGuard]
+        path: "tbord", component: DashboardHomeComponent
       }
       ,
       {

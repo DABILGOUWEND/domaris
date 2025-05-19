@@ -17,16 +17,17 @@ export class AppComponent {
     this._auth.onAuthStateChanged(
       (userCredential) => {
         if (userCredential) {
-          this._auth_service.handleCreateUser(userCredential);
+         
         }
       }
     )
 
     effect(() => {
-      console.log(this._auth_service.userSignal())
+      console.log(this._auth_service.userSignal());
+      console.log(this._auth_service.userLoggedIn());
     })
   }
   ngOnInit() {
-    this._auth_service.autoLogin();
+   this._auth_service.autoLogin();
   }
 }

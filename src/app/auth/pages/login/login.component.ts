@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ImportedModule } from '../../../shared/modules/imported/imported.module';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,8 +13,10 @@ import { ImportedModule } from '../../../shared/modules/imported/imported.module
 export class LoginComponent {
   loginForm: FormGroup;
   errorMessage: string = '';
+  message = signal('vous êtes déconnecté');
+  private fb = inject(FormBuilder);
   constructor(
-    private fb: FormBuilder,
+    private router: Router,
     private authService: AuthService
 
   ) {
@@ -25,12 +28,10 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      this.authService.login(email, password).subscribe(() =>
-        console.log(this.authService.userLoggedIn()));
+      this.authService.login(email, password).subscribe();
     }
   }
-  logout()
-  {
+  logout() {
     this.authService.logout()
   }
 }

@@ -3,8 +3,7 @@ import { Auth } from '@angular/fire/auth';
 import { getAuth, setPersistence, signInWithEmailAndPassword, browserSessionPersistence, browserLocalPersistence } from "firebase/auth";
 import { doc, Firestore, getDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { BehaviorSubject, from, Observable, of, tap } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import {  from, Observable, of, tap } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 @Injectable({
   providedIn: 'root'
@@ -37,7 +36,8 @@ export class AuthService {
           this.userLoggedIn.set(true);
           const user = userCredential.user;
           this.affichage.set(user.email);
-          this.handleCreateUser(user);
+          this.handleCreateUser(user).subscribe();
+          this.router.navigate(['/layout']);
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -54,12 +54,14 @@ export class AuthService {
       this.userLoggedIn.set(false);
       this.userSignal.set(undefined);
       this.current_projet_id.set(undefined);
+      localStorage.removeItem('user');
+      this.router.navigate(['/login']);
     })
       .catch((error) => {
         console.error("Error signing out: ", error);
       });
   }
-  handleCreateUser(users: any) {
+  handleCreateUser(users: any):Observable<any> {
     let new_user: any = {
       uid: users.uid,
       email: users.email,
@@ -70,8 +72,7 @@ export class AuthService {
       current_projet_id: '',
       username: ''
     }
-    this.userSignal.set(new_user);
-    this.getallUsersByUid(users.uid).pipe(
+    return this.getallUsersByUid(users.uid).pipe(
       tap(
         (resp: any) => {
           let data = resp.data();
@@ -79,8 +80,8 @@ export class AuthService {
             (user: any) =>
             (
               {
-                'uid': user.uid,
-                'email': user.email,
+                'uid': new_user.uid,
+                'email': new_user.email,
                 'token': this.token(),
                 'role': data.role,
                 'username': data.username,
@@ -92,10 +93,9 @@ export class AuthService {
           )
           localStorage.setItem('user', JSON.stringify(this.userSignal()));
           this.current_projet_id.set(data.projet_id[0]);
-
         }
       )
-    ).subscribe()
+    )
 
   }
   getallUsersByUid(uid: string): Observable<any> {
@@ -109,6 +109,7 @@ export class AuthService {
       if (data) {
         const dataparse = JSON.parse(data);
         this.userSignal.set(dataparse);
+        this.userLoggedIn.set(true);
         this.current_projet_id.set(this.userSignal()?.current_projet_id);
       }
     }
