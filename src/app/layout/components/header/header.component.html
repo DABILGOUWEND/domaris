@@ -1,10 +1,19 @@
 <header class="header">
-  <div class="logo">Domaris</div>
+  <div class="logo">
+    <a routerLink="/">
+      <mat-icon style="vertical-align: middle; margin-right: 8px;">home</mat-icon>
+    </a>
+    Domaris
+  </div>
   <nav class="nav-links">
-    <a routerLink="/dashboard">Dashboard</a>
-    <a routerLink="/contrats">Contrats</a>
-    <a routerLink="/prestations">Prestations</a>
-    <a routerLink="/login">connexion</a>
-    <a  (click)="logout()"  class="btn" >Déconnexion</a>
+    <a routerLink="/dashboard" class="btn" *ngIf="hasRole('admin')">Tableau de bord</a>
+    <a routerLink="/dashboard" class="btn" *ngIf="hasRole('admin')">Projets</a>
+    <a routerLink="/contrats" class="btn" *ngIf="hasRole('admin') || hasRole('user1')">Contrats</a>
+    <a routerLink="/contrats" class="btn" *ngIf="hasRole('admin') || hasRole('user1')">Budget</a>
+    <a routerLink="/prestations" class="btn" *ngIf="hasRole('admin') || hasRole('user1')">Prestations</a>
+    <a routerLink="/prestations" class="btn" *ngIf="hasRole('admin') || hasRole('user1')">Documents</a>
+    <a routerLink="/login" class="btn" *ngIf="!auth_service.userLoggedIn()">connexion</a>
+    <a (click)="logout()" class="btn_deconnecter" *ngIf="auth_service.userLoggedIn()">Déconnexion</a>
   </nav>
+
 </header>

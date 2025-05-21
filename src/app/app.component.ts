@@ -14,18 +14,6 @@ export class AppComponent {
   _auth = inject(Auth);
   _auth_service = inject(AuthService);
   constructor() {
-    this._auth.onAuthStateChanged(
-      (userCredential) => {
-        if (userCredential) {
-         
-        }
-      }
-    )
-
-    effect(() => {
-      console.log(this._auth_service.userSignal());
-      console.log(this._auth_service.userLoggedIn());
-    })
   }
   ngOnInit() {
    this._auth_service.autoLogin();

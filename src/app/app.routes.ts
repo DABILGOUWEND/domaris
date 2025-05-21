@@ -3,6 +3,7 @@ import { LayoutComponent } from './layout/layout/layout.component';
 import { DashboardHomeComponent } from './dashboard/pages/dashboard-home/dashboard-home.component';
 import { LoginComponent } from './auth/pages/login/login.component';
 import { authGuard } from './core/guards/auth.guard';
+import { AccueilComponent } from './components/accueil/accueil.component';
 
 export const routes: Routes = [
 
@@ -10,17 +11,18 @@ export const routes: Routes = [
     path: "", redirectTo: "/layout", pathMatch: "full"
   },
   {
-    path: "layout", component: LayoutComponent, canActivate: [authGuard],
+    path: "layout", component: LayoutComponent,
     children: [
       {
-        path: "", redirectTo: "/layout/tbord", pathMatch: "full"
+        path: "", redirectTo: "/layout/accueil", pathMatch: "full"
       },
       {
-        path: "tbord", component: DashboardHomeComponent
+        path: "accueil", component: AccueilComponent
       }
       ,
+  
       {
-        path: "tbord", component: DashboardHomeComponent
+        path: "tbord", component: DashboardHomeComponent, canActivate: [authGuard]
       }
     ]
   },

@@ -14,6 +14,7 @@ export class LoginComponent {
   loginForm: FormGroup;
   errorMessage: string = '';
   message = signal('vous êtes déconnecté');
+  isLoading = signal(false);
   private fb = inject(FormBuilder);
   constructor(
     private router: Router,
@@ -27,8 +28,29 @@ export class LoginComponent {
   }
   onSubmit() {
     if (this.loginForm.valid) {
+      this.isLoading.set(true);
+      this.message.set('connexion en cours ...');
       const { email, password } = this.loginForm.value;
-      this.authService.login(email, password).subscribe();
+      this.authService.login(email, password).subscribe({
+        next: (res) => {
+          setInterval(() => {
+            this.isLoading.set(false);
+            this.message.set('vous êtes connecté');
+          }, 5000);
+        },
+        error: (err) => {
+          this.isLoading.set(false);
+          this.errorMessage = err.message;
+          this.message.set('vous êtes déconnecté');
+           this.isLoading.set(false);
+        },
+        complete: () => {
+
+        }
+
+      }
+
+      );
     }
   }
   logout() {

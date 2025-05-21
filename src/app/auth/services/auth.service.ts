@@ -3,7 +3,7 @@ import { Auth } from '@angular/fire/auth';
 import { getAuth, setPersistence, signInWithEmailAndPassword, browserSessionPersistence, browserLocalPersistence } from "firebase/auth";
 import { doc, Firestore, getDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import {  from, Observable, of, tap } from 'rxjs';
+import { from, Observable, of, tap } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,7 @@ export class AuthService {
   //signals
   token = signal('');
   userLoggedIn = signal(false);
+  isloagouting = signal(false);
   loadings = signal(false);
   userSignal = signal<any | undefined>(undefined);
   current_projet_id = signal<string | undefined>("1");
@@ -33,11 +34,17 @@ export class AuthService {
     return from(this._auth.setPersistence(browserLocalPersistence).then(() => {
       signInWithEmailAndPassword(this._auth, email, password)
         .then((userCredential) => {
-          this.userLoggedIn.set(true);
           const user = userCredential.user;
-          this.affichage.set(user.email);
-          this.handleCreateUser(user).subscribe();
-          this.router.navigate(['/layout']);
+
+          this.handleCreateUser(user).subscribe({
+            next: () => {
+              this.userLoggedIn.set(true);
+
+              this.affichage.set(user.email);
+              this.router.navigate(['/layout']);
+            }
+
+          });
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -49,19 +56,23 @@ export class AuthService {
     return of(this.userLoggedIn());
   }
 
-  logout(): void {
+  logout() {
     this._auth.signOut().then(() => {
-      this.userLoggedIn.set(false);
-      this.userSignal.set(undefined);
-      this.current_projet_id.set(undefined);
-      localStorage.removeItem('user');
-      this.router.navigate(['/login']);
+      setTimeout(() => {
+        this.isloagouting.set(false);
+        this.userLoggedIn.set(false);
+        this.userSignal.set(undefined);
+        this.current_projet_id.set(undefined);
+        localStorage.removeItem('user');
+        this.router.navigate(['/login']);
+      }, 3000);
+
     })
       .catch((error) => {
         console.error("Error signing out: ", error);
       });
   }
-  handleCreateUser(users: any):Observable<any> {
+  handleCreateUser(users: any): Observable<any> {
     let new_user: any = {
       uid: users.uid,
       email: users.email,
@@ -113,5 +124,15 @@ export class AuthService {
         this.current_projet_id.set(this.userSignal()?.current_projet_id);
       }
     }
+  }
+   hasRole(role: string): boolean {
+    // Replace with your actual role logic
+    if(this.userSignal()) 
+    {return this.userSignal().role.includes(role);}
+    else {
+
+      return false;
+    }
+    
   }
 }
