@@ -717,3 +717,12 @@ export interface tab_beneficiairesStore {
     selectedId: string,
     path_string: string
 }
+export interface Phase {
+  id: string;
+  nom: string;
+  description: string;
+  dateDebut: any;
+  dateFin: any;
+  statut: string;
+  responsableId: string;
+}

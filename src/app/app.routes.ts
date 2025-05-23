@@ -4,11 +4,12 @@ import { DashboardHomeComponent } from './dashboard/pages/dashboard-home/dashboa
 import { LoginComponent } from './auth/pages/login/login.component';
 import { authGuard } from './core/guards/auth.guard';
 import { AccueilComponent } from './components/accueil/accueil.component';
+import { EssaiComponent } from './components/essai/essai.component';
 
 export const routes: Routes = [
 
   {
-    path: "", redirectTo: "/layout", pathMatch: "full"
+    path: "", redirectTo: "/essai", pathMatch: "full"
   },
   {
     path: "layout", component: LayoutComponent,
@@ -26,7 +27,8 @@ export const routes: Routes = [
       }
     ]
   },
-  { path: "login", component: LoginComponent }
+  { path: "login", component: LoginComponent },
+  { path: "essai", component: EssaiComponent }
 ]
 
 
