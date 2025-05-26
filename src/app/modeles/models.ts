@@ -495,13 +495,7 @@ export interface tab_DecompteStore {
     selected_num: number,
     path_string: string
 }
-export interface taches {
-    'id': string,
-    'designation': string,
-    'uniteid': string,
-    'type': string,
-    'classe': string
-}
+
 export interface tab_tachesStore {
     taches_data: taches[],
     selected_type: string,
@@ -738,12 +732,10 @@ export interface Programme {
   updatedAt?: Date | any;
 
   // Sous-collections (optionnelles si chargées dynamiquement)
-  phases?: Phase[];
-  depenses?: Depense[];
-  documents?: DocumentProgramme[];
+  phases?: phases[];
 }
 
-export interface Phase {
+export interface phases {
   id?: string;
   nom: string;
   description?: string;
@@ -751,12 +743,12 @@ export interface Phase {
   dateFin: Date | any;
   statut: 'En attente' | 'En cours' | 'Terminée';
   responsableId?: string;
-
-  // Sous-collection dans phase
-  taches?: Tache[];
+  taches?: taches[];
+  budgets?: budgets[];
+  depenses?: depenses[];
 }
 
-export interface Tache {
+export interface taches {
   id?: string;
   titre: string;
   description?: string;
@@ -765,13 +757,13 @@ export interface Tache {
   responsableId?: string;
 }
 
-export interface Depense {
+export interface depenses {
   id?: string;
-  montant: number;
-  categorie: string;
-  date: Date | any;
-  description?: string;
-  documentLien?: string;
+  montant_prevu: number,
+  montant_paye: number,
+  intitule: string,
+  date: Date | any,
+  url_documents?: string
 }
 
 export interface DocumentProgramme {
@@ -783,7 +775,6 @@ export interface DocumentProgramme {
 }
 export interface tab_programmeStore {
   programmes_data: Programme[];
-  phases_data: any[]; 
   message: string;
   selectedId: string;
   selectedIds: string[];
@@ -791,3 +782,13 @@ export interface tab_programmeStore {
   isLoading?: boolean;
   error?: string | null;
 }
+export interface budgets{
+    id?: string,
+    intitule:string,
+    montant_htva: number,
+    date: Date | any,
+    description?: string,
+    url_document?: string[],
+}
+
+
