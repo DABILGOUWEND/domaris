@@ -717,12 +717,77 @@ export interface tab_beneficiairesStore {
     selectedId: string,
     path_string: string
 }
-export interface Phase {
-  id: string;
+export interface Programme {
+  id?: string;
   nom: string;
-  description: string;
-  dateDebut: any;
-  dateFin: any;
-  statut: string;
-  responsableId: string;
+  description?: string;
+  type?: 'Résidentiel' | 'Commercial' | 'Mixte' | string;
+  statut: 'Planifié' | 'En cours' | 'Terminé' | 'Suspendu';
+  dateDebut: Date | any;
+  dateFin: Date | any;
+  budgetPrevu: number;
+  localisation?: {
+    adresse?: string;
+    ville?: string;
+    pays?: string;
+    latitude?: number;
+    longitude?: number;
+  };
+  responsableId?: string;
+  createdAt?: Date | any;
+  updatedAt?: Date | any;
+
+  // Sous-collections (optionnelles si chargées dynamiquement)
+  phases?: Phase[];
+  depenses?: Depense[];
+  documents?: DocumentProgramme[];
+}
+
+export interface Phase {
+  id?: string;
+  nom: string;
+  description?: string;
+  dateDebut: Date | any;
+  dateFin: Date | any;
+  statut: 'En attente' | 'En cours' | 'Terminée';
+  responsableId?: string;
+
+  // Sous-collection dans phase
+  taches?: Tache[];
+}
+
+export interface Tache {
+  id?: string;
+  titre: string;
+  description?: string;
+  statut: 'À faire' | 'En cours' | 'Terminée';
+  dateEcheance: Date | any;
+  responsableId?: string;
+}
+
+export interface Depense {
+  id?: string;
+  montant: number;
+  categorie: string;
+  date: Date | any;
+  description?: string;
+  documentLien?: string;
+}
+
+export interface DocumentProgramme {
+  id?: string;
+  nom: string;
+  type: string; // ex: "pdf", "image"
+  url: string;
+  phaseId?: string;
+}
+export interface tab_programmeStore {
+  programmes_data: Programme[];
+  phases_data: any[]; 
+  message: string;
+  selectedId: string;
+  selectedIds: string[];
+  path_string: string;
+  isLoading?: boolean;
+  error?: string | null;
 }

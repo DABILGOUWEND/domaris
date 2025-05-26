@@ -7,6 +7,7 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getFunctions, provideFunctions } from '@angular/fire/functions';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
@@ -23,5 +24,7 @@ export const appConfig: ApplicationConfig = {
   provideAuth(() => getAuth()),
   provideFirestore(() => getFirestore()),
   provideFunctions(() => getFunctions()),
-  provideStorage(() => getStorage())]
+  provideStorage(() => getStorage()),
+   provideHttpClient() // <-- AJOUTE CETTE LIGNE
+]
 };

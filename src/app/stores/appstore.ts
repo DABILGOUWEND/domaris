@@ -12,8 +12,31 @@ import { PassThrough } from "node:stream";
 import { error } from "node:console";
 
 import e from "express";
-import { gasoilStore, tab_ProjetStore, tab_DevisStore, tab_LigneDevisStore, ApprogoStore, Tab_EnginsStore, Tab_classeEnginsStore, Tab_personnelStore, tab_SoustraitantStore, tab_PannesStore, tab_ressourcesStore, tab_famillesStore, tab_categoriesStore, tab_compositesStore, tab_contratStore, tab_pointageStore, tab_travauxStore, tab_naturetvxStore, tab_dateStore, tab_userStore, tab_satatutStore, tab_constatStore, tab_AttachementStore, tab_DecompteStore, tab_tachesStore, tab_unitesStore, tab_tachesEnginsStore, tab_EntrepriseStore, tab_tachesProjetStore, tab_pointage_travauxStore, Tab_classeArticesStore, tab_commandesStore, tab_sorties_articlesStore, tab_entrees_articlesStore, tab_fournisseursStore, tab_sitesStore, comptes, tab_beneficiairesStore, tab_personnel, Projet, Engins, classe_engins, Gasoil, appro_gasoil, Pannes, Contrats, pointage, nature_travaux, travaux, Devis, Ligne_devis, Constats, ModelAttachement, ModelDecompte, pointage_travaux, datesPointages, sous_traitant, tab_categories, tab_familles, fournisseurs, tab_ressources } from "../modeles/models";
+import {
+  gasoilStore, tab_ProjetStore,
+  tab_DevisStore,
+  tab_LigneDevisStore,
+  ApprogoStore,
+  Tab_EnginsStore,
+  Tab_classeEnginsStore,
+  Tab_personnelStore,
+  tab_SoustraitantStore,
+  tab_PannesStore, tab_ressourcesStore, tab_famillesStore,
+  tab_categoriesStore, tab_compositesStore, tab_contratStore,
+  tab_pointageStore, tab_travauxStore, tab_naturetvxStore,
+  tab_dateStore, tab_userStore, tab_satatutStore, tab_constatStore,
+  tab_AttachementStore, tab_DecompteStore, tab_tachesStore,
+  tab_unitesStore, tab_tachesEnginsStore, tab_EntrepriseStore,
+  tab_tachesProjetStore, tab_pointage_travauxStore, Tab_classeArticesStore,
+  tab_commandesStore, tab_sorties_articlesStore, tab_entrees_articlesStore,
+  tab_fournisseursStore, tab_sitesStore, comptes, tab_beneficiairesStore,
+  tab_personnel, Projet, Engins, classe_engins, Gasoil, appro_gasoil,
+  Pannes, Contrats, pointage, nature_travaux, travaux, Devis, Ligne_devis,
+  Constats, ModelAttachement, ModelDecompte, pointage_travaux, datesPointages,
+  sous_traitant, tab_categories, tab_familles, fournisseurs, tab_ressources, tab_programmeStore
+} from "../modeles/models";
 import { TaskService } from "../services/task.service";
+import { ProgrammesService } from "../services/programmes.service";
 const initialGasoilState: gasoilStore = {
   conso_data: [],
   err: null,
@@ -317,6 +340,16 @@ const initialBeneficaireState: tab_beneficiairesStore =
   selectedId: '',
   path_string: ''
 }
+const initialProgrammeState: tab_programmeStore = {
+  programmes_data: [],
+  phases_data: [],
+  message: '',
+  selectedId: '',
+  selectedIds: [],
+  path_string: '',
+  isLoading: false,
+  error: null
+};
 /*************************** */
 export const UserStore = signalStore(
   { providedIn: 'root' },
@@ -402,6 +435,55 @@ export const UserStore = signalStore(
     }
   ))
 )
+export const ProgrammeStore = signalStore(
+  { providedIn: 'root' },
+  withState(initialProgrammeState),
+  withComputed((store) => ({
+    total: computed(() => store.programmes_data().length),
+    allProgrammes: computed(() => store.programmes_data()),
+    fn_isLoading: computed(() => store.isLoading),
+    fn_error: computed(() => store.error),
+    fn_selectedId: computed(() => store.selectedId),
+    fn_selectedIds: computed(() => store.selectedIds)
+    ,
+    selectedProgrammePhases: computed(() => {
+      return store.phases_data();
+    })
+  }),
+
+  ),
+  withMethods((store, _service = inject(ProgrammesService)) => ({
+    loadAllData: rxMethod<void>(
+  pipe(
+    switchMap(() => _service.getProgrammes()),
+    switchMap((programmes: any[]) =>
+      forkJoin(
+        programmes.map(programme =>
+          _service.getPhases(programme.id).pipe(
+            switchMap((phases: any[]) =>
+              forkJoin(
+                phases.map(phase =>
+                  forkJoin({
+                    budgets: _service.getBudgets(phase.id, programme.id),
+                    depenses: _service.getDepenses(phase.id, programme.id),
+                    taches: _service.getTaches(phase.id, programme.id)
+                  }).pipe(
+                    map(data => ({ ...phase, ...data }))
+                  )
+                )
+              ).pipe(
+                map(phasesWithData => ({ ...programme, phases: phasesWithData }))
+              )
+            )
+          )
+        )
+      )
+    ),map(data=>console.log(data))
+    
+  )
+)
+  }))
+);
 
 function convertDate(strdate: string): Date {
   const [day1, month1, year1] = strdate.split("/")
