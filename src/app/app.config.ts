@@ -8,6 +8,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getFunctions, provideFunctions } from '@angular/fire/functions';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { provideHttpClient } from '@angular/common/http';
+import { getDatabase, provideDatabase } from '@angular/fire/database';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
@@ -25,6 +26,6 @@ export const appConfig: ApplicationConfig = {
   provideFirestore(() => getFirestore()),
   provideFunctions(() => getFunctions()),
   provideStorage(() => getStorage()),
-   provideHttpClient() // <-- AJOUTE CETTE LIGNE
+   provideHttpClient(), provideFirebaseApp(() => initializeApp({ projectId: "mon-projet-35c49", appId: "1:126234609649:web:b81a517b7cc9223ebe2650", databaseURL: "https://mon-projet-35c49-default-rtdb.firebaseio.com", storageBucket: "mon-projet-35c49.firebasestorage.app", apiKey: "AIzaSyARqtsXKUOhLbUmClNevu77-pSuWnixhy8", authDomain: "mon-projet-35c49.firebaseapp.com", messagingSenderId: "126234609649" })), provideAuth(() => getAuth()), provideFirestore(() => getFirestore()), provideDatabase(() => getDatabase()), provideStorage(() => getStorage()) // <-- AJOUTE CETTE LIGNE
 ]
 };
