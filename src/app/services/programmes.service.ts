@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { collection, collectionData, Firestore } from '@angular/fire/firestore';
-import { forkJoin, map, Observable, switchMap } from 'rxjs';
+import { forkJoin, map, Observable, switchMap, take } from 'rxjs';
 
 
 @Injectable({
@@ -26,6 +26,7 @@ firestore: Firestore = inject(Firestore);
   }
 
   getDepenses(phaseId: string, programmeId: string) {
+
     const ref = collection(this.firestore, `programmes/${programmeId}/phases/${phaseId}/depenses`);
     return collectionData(ref, { idField: 'id' });
   }
@@ -34,32 +35,34 @@ firestore: Firestore = inject(Firestore);
     const ref = collection(this.firestore, `programmes/${programmeId}/phases/${phaseId}/taches`);
     return collectionData(ref, { idField: 'id' });
   }
-getCollection() {
-  return this.getProgrammes().pipe(
-    switchMap(programmes =>
-      forkJoin(
-        programmes.map(programme =>
+  getCollectionAlternative(): Observable<any[]> {
+    return this.getProgrammes().pipe(
+      switchMap(programmes => {
+        // For each programme, fetch its phases
+        const programmesWithPhases$ = programmes.map(programme =>
           this.getPhases(programme.id).pipe(
-            switchMap(phases =>
-              forkJoin(
-                phases.map(phase =>
-                  forkJoin({
-                    budgets: this.getBudgets(phase.id, programme.id),
-                    depenses: this.getDepenses(phase.id, programme.id),
-                    taches: this.getTaches(phase.id, programme.id)
-                  }).pipe(
-                    map(data => ({ ...phase, ...data }))
-                  )
+            take(1), // Take 1 emission of phases
+            switchMap(phases => {
+              // For each phase, fetch its budgets, depenses, and taches
+              const phasesWithSubCollections$ = phases.map(phase =>
+                forkJoin({
+                  budgets: this.getBudgets(phase.id, programme.id).pipe(take(1)), // Take 1 emission
+                  depenses: this.getDepenses(phase.id, programme.id).pipe(take(1)), // Take 1 emission
+                  taches: this.getTaches(phase.id, programme.id).pipe(take(1)) // Take 1 emission
+                }).pipe(
+                  map(subCollections => ({ ...phase, ...subCollections })) // Merge phase with subcollection data
                 )
-              ).pipe(
-                map(phasesWithData => ({ ...programme, phases: phasesWithData }))
-              )
-            )
+              );
+              // Wait for all phases with subcollections to be fetched for this programme
+              return forkJoin(phasesWithSubCollections$).pipe(
+                map(phasesWithData => ({ ...programme, phases: phasesWithData })) // Merge programme with its phases data
+              );
+            })
           )
-        )
-      )
-    )
-  );
-}
-
+        );
+        // Wait for all programmes with their phases (and subcollections) to be fetched
+        return forkJoin(programmesWithPhases$);
+      })
+    );
+  }
 }

@@ -3,6 +3,7 @@ import { Auth } from '@angular/fire/auth';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from './auth/services/auth.service';
 import { ProgrammesService } from './services/programmes.service';
+import { forkJoin, Observable, of, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +20,8 @@ export class AppComponent {
   }
   ngOnInit() {
    this._auth_service.autoLogin();
-   this._programme_service.getProgrammes();
-
+   this._programme_service.getCollectionAlternative().subscribe(
+    data => console.log('getCollectionAlternative result:', data)
+  );
   }
 }
