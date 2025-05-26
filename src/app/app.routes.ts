@@ -6,6 +6,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { AccueilComponent } from './components/accueil/accueil.component';
 import { EssaiComponent } from './components/essai/essai.component';
 
+
 export const routes: Routes = [
 
   {
@@ -28,7 +29,7 @@ export const routes: Routes = [
     ]
   },
   { path: "login", component: LoginComponent },
-  { path: "essai", component: EssaiComponent }
+  { path: "essai", component: EssaiComponent}
 ]
 
 

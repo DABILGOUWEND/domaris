@@ -19,6 +19,7 @@ export class AppComponent {
   }
   ngOnInit() {
    this._auth_service.autoLogin();
+   this._programme_service.getProgrammes();
 
   }
 }
