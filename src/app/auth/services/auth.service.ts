@@ -1,7 +1,7 @@
 import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
-import { Auth } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { getAuth, setPersistence, signInWithEmailAndPassword, browserSessionPersistence, browserLocalPersistence } from "firebase/auth";
-import { doc, Firestore, getDoc } from '@angular/fire/firestore';
+import { doc, Firestore, getDoc, setDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { from, Observable, of, tap } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
@@ -72,6 +72,33 @@ export class AuthService {
         console.error("Error signing out: ", error);
       });
   }
+  register(email: string, password: string, username: string ,role:string): Observable<any> {
+  return from(
+    createUserWithEmailAndPassword(this._auth, email, password)
+      .then(async (userCredential) => {
+        const user = userCredential.user;
+        // Création du document utilisateur dans Firestore
+        const userDoc = doc(this.db, "myusers", user.uid);
+        await setDoc(userDoc, {
+          uid: user.uid,
+          email: user.email,
+          username: username,
+          role: role,
+          entreprise_id: '',
+          projet_id: [''],
+          current_projet_id: '',
+        });
+        // Met à jour les signaux locaux
+        this.userLoggedIn.set(true);
+        this.affichage.set(user.email);
+        this.router.navigate(['/layout']);
+        return user;
+      })
+      .catch((error) => {
+        throw error;
+      })
+  );
+}
   handleCreateUser(users: any): Observable<any> {
     let new_user: any = {
       uid: users.uid,

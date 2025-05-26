@@ -12,12 +12,8 @@ import { concat, forkJoin, Observable, of, switchMap, tap } from 'rxjs';
 export class EssaiComponent implements OnInit {
 _programme_service = inject(ProgrammesService);
   ngOnInit() {
-    this.cliquer().subscribe( console.log);
+    
   }
-  cliquer():Observable<any> {
-    return  this._programme_service.getProgrammes().pipe(
-   
-    )
-  }
+
   
 }

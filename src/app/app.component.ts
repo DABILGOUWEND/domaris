@@ -3,6 +3,8 @@ import { Auth } from '@angular/fire/auth';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from './auth/services/auth.service';
 import { ProgrammesService } from './services/programmes.service';
+import { forkJoin, Observable, of, switchMap, tap } from 'rxjs';
+import { ProgrammeStore } from './stores/appstore';
 
 @Component({
   selector: 'app-root',
@@ -15,10 +17,14 @@ export class AppComponent {
   _auth = inject(Auth);
   _auth_service = inject(AuthService);
   _programme_service = inject(ProgrammesService);
+  _store=inject(ProgrammeStore)
   constructor() {
+    effect(()=>{
+      console.log(this._store.allProgrammes())
+    })
   }
   ngOnInit() {
    this._auth_service.autoLogin();
-
+   this._store.loadAllData()
   }
 }

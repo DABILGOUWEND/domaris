@@ -1,6 +1,6 @@
 import { computed, inject, signal } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { Observable, concat, forkJoin, map, of, pipe, switchMap, tap } from "rxjs";
+import { Observable, concat, forkJoin, map, of, pipe, switchMap, take, tap } from "rxjs";
 
 import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
@@ -342,7 +342,6 @@ const initialBeneficaireState: tab_beneficiairesStore =
 }
 const initialProgrammeState: tab_programmeStore = {
   programmes_data: [],
-  phases_data: [],
   message: '',
   selectedId: '',
   selectedIds: [],
@@ -445,43 +444,44 @@ export const ProgrammeStore = signalStore(
     fn_error: computed(() => store.error),
     fn_selectedId: computed(() => store.selectedId),
     fn_selectedIds: computed(() => store.selectedIds)
-    ,
-    selectedProgrammePhases: computed(() => {
-      return store.phases_data();
-    })
   }),
 
   ),
   withMethods((store, _service = inject(ProgrammesService)) => ({
     loadAllData: rxMethod<void>(
-  pipe(
-    switchMap(() => _service.getProgrammes()),
-    switchMap((programmes: any[]) =>
-      forkJoin(
-        programmes.map(programme =>
-          _service.getPhases(programme.id).pipe(
-            switchMap((phases: any[]) =>
-              forkJoin(
-                phases.map(phase =>
+      pipe(
+        switchMap(() => _service.getProgrammes()),
+        switchMap(programmes => {
+          // For each programme, fetch its phases
+          const programmesWithPhases$ = programmes.map(programme =>
+            _service.getPhases(programme.id).pipe(
+              take(1), // Take 1 emission of phases
+              switchMap(phases => {
+                // For each phase, fetch its budgets, depenses, and taches
+                const phasesWithSubCollections$ = phases.map(phase =>
                   forkJoin({
-                    budgets: _service.getBudgets(phase.id, programme.id),
-                    depenses: _service.getDepenses(phase.id, programme.id),
-                    taches: _service.getTaches(phase.id, programme.id)
+                    budgets: _service.getBudgets(phase.id, programme.id).pipe(take(1)), // Take 1 emission
+                    depenses: _service.getDepenses(phase.id, programme.id).pipe(take(1)), // Take 1 emission
+                    taches: _service.getTaches(phase.id, programme.id).pipe(take(1)) // Take 1 emission
                   }).pipe(
-                    map(data => ({ ...phase, ...data }))
+                    map(subCollections => ({ ...phase, ...subCollections })) // Merge phase with subcollection data
                   )
-                )
-              ).pipe(
-                map(phasesWithData => ({ ...programme, phases: phasesWithData }))
-              )
+                );
+                // Wait for all phases with subcollections to be fetched for this programme
+                return forkJoin(phasesWithSubCollections$).pipe(
+                  map(phasesWithData => ({ ...programme, phases: phasesWithData })) // Merge programme with its phases data
+                );
+              })
             )
-          )
-        )
+          );
+          // Wait for all programmes with their phases (and subcollections) to be fetched
+          return forkJoin(programmesWithPhases$);
+        })
+        ,map(resp=> {
+          patchState(store, { programmes_data: resp })
+        })
       )
-    ),map(data=>console.log(data))
-    
-  )
-)
+    )
   }))
 );
 
