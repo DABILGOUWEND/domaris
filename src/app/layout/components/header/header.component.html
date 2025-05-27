@@ -1,3 +1,4 @@
+<!-- À placer dans app.component.html ou ton layout principal -->
 <header class="header">
   <div class="logo">
     <a routerLink="/">
@@ -6,14 +7,16 @@
     Domaris
   </div>
   <nav class="nav-links">
-    <a routerLink="/dashboard" class="btn" *ngIf="hasRole('admin')">Tableau de bord</a>
     <a routerLink="/dashboard" class="btn" *ngIf="hasRole('admin')">Projets</a>
     <a routerLink="/contrats" class="btn" *ngIf="hasRole('admin') || hasRole('user1')">Contrats</a>
     <a routerLink="/contrats" class="btn" *ngIf="hasRole('admin') || hasRole('user1')">Budget</a>
     <a routerLink="/prestations" class="btn" *ngIf="hasRole('admin') || hasRole('user1')">Prestations</a>
     <a routerLink="/prestations" class="btn" *ngIf="hasRole('admin') || hasRole('user1')">Documents</a>
-    <a routerLink="/login" class="btn" *ngIf="!auth_service.userLoggedIn()">connexion</a>
+    <a routerLink="/layout/creation_comptes" class="btn" *ngIf="hasRole('admin')">Admin</a>
+    <a routerLink="/login" class="btn" *ngIf="!auth_service.userLoggedIn()">Connexion</a>
     <a (click)="logout()" class="btn_deconnecter" *ngIf="auth_service.userLoggedIn()">Déconnexion</a>
+    <span *ngIf="auth_service.userLoggedIn()" class="username">
+      {{ auth_service.userSignal()?.username }}
+    </span>
   </nav>
-
 </header>

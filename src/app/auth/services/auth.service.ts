@@ -1,15 +1,20 @@
 import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { Auth, authState, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { getAuth, setPersistence, signInWithEmailAndPassword, browserSessionPersistence, browserLocalPersistence } from "firebase/auth";
 import { doc, Firestore, getDoc, setDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
-import { from, Observable, of, tap } from 'rxjs';
+import { from, map, Observable, of, switchMap, tap } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+const apiKey = environment.firebaseConfig.apiKey;
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   //injections
+  _http = inject(HttpClient);
+
   db = inject(Firestore);
   _auth = inject(Auth);
   platformId = inject(PLATFORM_ID)
@@ -72,33 +77,30 @@ export class AuthService {
         console.error("Error signing out: ", error);
       });
   }
-  register(email: string, password: string, username: string ,role:string): Observable<any> {
-  return from(
-    createUserWithEmailAndPassword(this._auth, email, password)
-      .then(async (userCredential) => {
-        const user = userCredential.user;
-        // Création du document utilisateur dans Firestore
-        const userDoc = doc(this.db, "myusers", user.uid);
-        await setDoc(userDoc, {
-          uid: user.uid,
-          email: user.email,
-          username: username,
-          role: role,
-          entreprise_id: '',
-          projet_id: [''],
-          current_projet_id: '',
-        });
-        // Met à jour les signaux locaux
-        this.userLoggedIn.set(true);
-        this.affichage.set(user.email);
-        this.router.navigate(['/layout']);
-        return user;
-      })
-      .catch((error) => {
-        throw error;
-      })
-  );
-}
+  register(email: string, password: string, role: string, nom: string, entreprise_id: string, projet_id: string[]): Observable<any> {
+    return this._http.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + apiKey,
+      {
+        email: email,
+        password: password
+      }
+    ).pipe(tap((resp: any) => {
+      let userId = resp.localId;
+      let data = {
+        id: userId,
+        email: resp.email,
+        username: nom,
+        role: role,
+        entreprise_id: entreprise_id,
+        projet_id: projet_id
+      }
+      this.addUser(data).subscribe()
+    }))
+  };
+  addUser(data: any): Observable<any> {
+    const docRef = setDoc(doc(this.db, 'myusers/' + data.id), data)
+    return from(docRef)
+  }
+
   handleCreateUser(users: any): Observable<any> {
     let new_user: any = {
       uid: users.uid,
@@ -152,14 +154,28 @@ export class AuthService {
       }
     }
   }
-   hasRole(role: string): boolean {
+  hasRole(role: string): boolean {
     // Replace with your actual role logic
-    if(this.userSignal()) 
-    {return this.userSignal().role.includes(role);}
+    if (this.userSignal()) { return this.userSignal().role.includes(role); }
     else {
 
       return false;
     }
-    
+
   }
+getCurrentUserRole(): Observable<string> {
+  return authState(this._auth).pipe(
+    switchMap(user => {
+      if (!user) return of('guest');
+      // Utilise Firestore pour récupérer le rôle de l'utilisateur
+      const docRef = doc(this.db, "myusers", user.uid);
+      return from(getDoc(docRef)).pipe(
+        map((snap: any) => {
+          const data = snap.data();
+          return data?.role || 'guest';
+        })
+      );
+    })
+  );
+}
 }

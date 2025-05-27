@@ -33,7 +33,8 @@ import {
   tab_personnel, Projet, Engins, classe_engins, Gasoil, appro_gasoil,
   Pannes, Contrats, pointage, nature_travaux, travaux, Devis, Ligne_devis,
   Constats, ModelAttachement, ModelDecompte, pointage_travaux, datesPointages,
-  sous_traitant, tab_categories, tab_familles, fournisseurs, tab_ressources, tab_programmeStore
+  sous_traitant, tab_categories, tab_familles, fournisseurs, tab_ressources, tab_programmeStore,
+  Entreprise
 } from "../modeles/models";
 import { TaskService } from "../services/task.service";
 import { ProgrammesService } from "../services/programmes.service";
@@ -477,14 +478,65 @@ export const ProgrammeStore = signalStore(
           // Wait for all programmes with their phases (and subcollections) to be fetched
           return forkJoin(programmesWithPhases$);
         })
-        ,map(resp=> {
+        , map(resp => {
           patchState(store, { programmes_data: resp })
         })
       )
     )
   }))
+)
+export const EntrepriseStore = signalStore(
+  { providedIn: 'root' },
+  withState(initialEntrepriseState),
+  withComputed((store) => ({
+    total: computed(() => store.liste_entreprise().length),
+    allEntreprises: computed(() => store.liste_entreprise()),
+    fn_selectedId: computed(() => store.selectedId()),
+    selectedEntreprise: computed(() =>
+      store.liste_entreprise().find(e => e.id === store.selectedId())
+    )
+  })),
+  withMethods((store, _task_service = inject(TaskService), snackbar = inject(MatSnackBar)) => ({
+    loadAllData: rxMethod<void>(
+      pipe(
+        switchMap(() => _task_service.getallModels("entreprises")),
+        tap((entreprises: Entreprise[]) => {
+          patchState(store, { liste_entreprise: entreprises });
+        })
+      )
+    ),
+    addEntreprise: rxMethod<Entreprise>(
+      pipe(
+        switchMap((entreprise) => _task_service.addModel("entreprises", entreprise)),
+        tap(() => {
+          patchState(store, { message: 'Entreprise ajoutée !' });
+          Showsnackerbaralert('Entreprise ajoutée avec succès', 'pass', snackbar);
+        })
+      )
+    ),
+    updateEntreprise: rxMethod<Entreprise>(
+      pipe(
+        switchMap((entreprise) => _task_service.updateModel("entreprises", entreprise)),
+        tap(() => {
+          patchState(store, { message: 'Entreprise modifiée !' });
+          Showsnackerbaralert('Entreprise modifiée avec succès', 'pass', snackbar);
+        })
+      )
+    ),
+    deleteEntreprise: rxMethod<string>(
+      pipe(
+        switchMap((id) => _task_service.deleteModel("entreprises", id)),
+        tap(() => {
+          patchState(store, { message: 'Entreprise supprimée !' });
+          Showsnackerbaralert('Entreprise supprimée', 'pass', snackbar);
+        })
+      )
+    ),
+    selectEntreprise(id: string) {
+      patchState(store, { selectedId: id });
+    }
+  }))
 );
-
 function convertDate(strdate: string): Date {
   const [day1, month1, year1] = strdate.split("/")
   const date1 = new Date(+year1, +month1 - 1, +day1)

@@ -16,15 +16,7 @@ export class AppComponent {
   title = signal('domaris-app');
   _auth = inject(Auth);
   _auth_service = inject(AuthService);
-  _programme_service = inject(ProgrammesService);
-  _store=inject(ProgrammeStore)
-  constructor() {
-    effect(()=>{
-      console.log(this._store.allProgrammes())
-    })
-  }
   ngOnInit() {
    this._auth_service.autoLogin();
-   this._store.loadAllData()
   }
 }

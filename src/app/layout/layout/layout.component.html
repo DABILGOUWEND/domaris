@@ -1,13 +1,8 @@
 
 <app-header></app-header>
 
-@if (!auth_service.isloagouting()) {
-
 <router-outlet></router-outlet>
-}
-@else {
-    <mat-spinner diameter="50"> </mat-spinner>
-}
+
 <app-footer></app-footer>
 
 
