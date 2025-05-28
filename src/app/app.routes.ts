@@ -40,7 +40,7 @@ export const routes: Routes = [
     path: "admin", component: AdminComponent, canActivate: [authGuard], data: { role: 'admin' },
     children: [
       { path: "", redirectTo: "/admin/dashboard", pathMatch: "full" },
-      { path: "dashboard", component: AdminDashboardComponent },
+      { path: "admin_dashboard", component: AdminDashboardComponent },
     ]
   }
   ,

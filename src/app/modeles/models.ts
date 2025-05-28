@@ -730,9 +730,12 @@ export interface Programme {
   responsableId?: string;
   createdAt?: Date | any;
   updatedAt?: Date | any;
-
   // Sous-collections (optionnelles si chargées dynamiquement)
   phases?: phases[];
+  code?: string; // Code unique pour le programme
+  documents?: DocumentProgramme[];
+  // Autres champs spécifiques au programme
+
 }
 
 export interface phases {

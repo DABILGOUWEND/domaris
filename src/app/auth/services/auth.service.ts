@@ -46,7 +46,6 @@ export class AuthService {
               this.userLoggedIn.set(true);
 
               this.affichage.set(user.email);
-              this.router.navigate(['/layout']);
             }
 
           });
