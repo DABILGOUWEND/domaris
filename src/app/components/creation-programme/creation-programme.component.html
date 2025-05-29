@@ -76,8 +76,6 @@
         </div>
         <button mat-raised-button color="primary" type="submit" [disabled]="programmeForm().invalid || isLoading">
           Créer le programme
-          <mat-progress-spinner *ngIf="isLoading" diameter="22" mode="indeterminate" color="accent"
-            style="margin-left: 10px; vertical-align: middle;"></mat-progress-spinner>
         </button>
         <div *ngIf="errorMessage" class="error-message mat-caption">{{ errorMessage }}</div>
         <div *ngIf="successMessage" class="success-message mat-caption">{{ successMessage }}</div>
@@ -87,22 +85,6 @@
         </div>
       </form>
     </div>
-  </mat-step>
-  <mat-step [stepControl]="phasesForm" [editable]="true">
-    <form [formGroup]="phasesForm" (ngSubmit)="onSubmit()" class="programme-form double-col">
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </form>
-  </mat-step>
-  <mat-step [stepControl]="budgetsForm" [editable]="true">
-    <form [formGroup]="budgetsForm" (ngSubmit)="onSubmit()" class="programme-form double-col">
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
-      </div>
-    </form>
   </mat-step>
 </mat-stepper>
 <button mat-flat-button color="warning" (click)="close()"> quitter</button>

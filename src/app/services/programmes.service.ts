@@ -1,13 +1,13 @@
 import { inject, Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, Firestore } from '@angular/fire/firestore';
-import { forkJoin, map, Observable, switchMap, take } from 'rxjs';
+import { addDoc, collection, collectionData, doc, Firestore, setDoc } from '@angular/fire/firestore';
+import { forkJoin, from, map, Observable, switchMap, take } from 'rxjs';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProgrammesService {
-firestore: Firestore = inject(Firestore);
+  firestore: Firestore = inject(Firestore);
 
 
   getProgrammes(): Observable<any[]> {
@@ -66,8 +66,20 @@ firestore: Firestore = inject(Firestore);
     );
 
   }
-   addProgramme(programme: any) {
+  addProgramme(programme: any) {
     const ref = collection(this.firestore, 'programmes');
-    return addDoc(ref, programme);
+    return from(addDoc(ref, programme).then(response => response.id));
+  }
+  add_sousCollection(programmeId: string, ss_collectionName: string) {
+    ;
+    const ref = collection(this.firestore, `programmes/${programmeId}/${ss_collectionName}`);
+    return from(addDoc(ref, {}).then(response => response.id));
+  }
+
+  updateProgramme(data: any): Observable<any> {
+    let id = data.id
+    const docRef = doc(this.firestore, `programmes/${id}`);
+    const promise = setDoc(docRef, data)
+    return from(promise)
   }
 }

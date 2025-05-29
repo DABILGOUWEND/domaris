@@ -351,7 +351,7 @@ const initialProgrammeState: tab_programmeStore = {
   path_string: '',
   isLoading: false,
   error: null,
-  programmes_ids:[]
+  programmes_ids: []
 };
 /*************************** */
 export const UserStore = signalStore(
@@ -470,9 +470,8 @@ export const ProgrammeStore = signalStore(
     setSelectedId(id: string) {
       patchState(store, { selectedId: id });
     },
-    setProgrammeIs(ids:string[])
-    {
-      patchState(store, {selectedIds:ids})
+    setProgrammeIs(ids: string[]) {
+      patchState(store, { selectedIds: ids })
     }
     ,
     loadAllData: rxMethod<void>(
@@ -511,7 +510,13 @@ export const ProgrammeStore = signalStore(
     ),
     addProgramme: rxMethod<any>(
       pipe(
-        switchMap((programme) => _service.addProgramme(programme)),
+        switchMap((programme) => _service.addProgramme(programme).pipe(switchMap(id =>
+          forkJoin([
+            _service.add_sousCollection(id, "phases"),
+            _service.add_sousCollection(id, "budgets"),
+            _service.add_sousCollection(id, "documents")
+          ])
+        ))),
         tap({
           next: () => {
             Showsnackerbaralert('Programme créé avec succès !', 'pass', snackbar);
@@ -521,7 +526,20 @@ export const ProgrammeStore = signalStore(
           }
         })
       )
-    )
+    ),
+    updateProgramme: rxMethod<any>(
+      pipe(
+        switchMap((programme) => _service.updateProgramme(programme)),
+        tap({
+          next: () => {
+            Showsnackerbaralert('Programme modifié avec succès !', 'pass', snackbar);
+          },
+          error: () => {
+            Showsnackerbaralert('Erreur lors de la modification du programme.', 'fail', snackbar);
+          }
+        })
+      )
+    ),
   }))
 )
 export const EntrepriseStore = signalStore(

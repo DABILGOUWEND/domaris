@@ -19,9 +19,9 @@ import { UtilitairesService } from '../../services/utilitaires.service';
 export class AdminComponent implements OnInit {
   //injections
   _programme_store = inject(ProgrammeStore);
-  _auth_service=inject(AuthService);
-  _utilitaires=inject(UtilitairesService)
-//signals
+  _auth_service = inject(AuthService);
+  _utilitaires = inject(UtilitairesService)
+  //signals
   selectedProgrammme = signal<Programme | undefined>(undefined);
   is_updated = signal(false);
   is_opened = signal(false)
@@ -30,21 +30,27 @@ export class AdminComponent implements OnInit {
   displayedColumns = [
     'code',
     'nom',
-     'type', 
-     'statut', 
-     'dateDebut', 
-     'dateFin', 
-     'budgetPrevu',  
-      'actions'];
+    'type',
+    'statut',
+    'dateDebut',
+    'dateFin',
+    'budgetPrevu',
+    'actions'];
   donnees_phases = computed(() => {
     return new MatTableDataSource<any>(this._programme_store.getPhases());
   })
- donnees_programmes = computed(() => {
-    return new MatTableDataSource<any>(this._programme_store.selectedProgrammes().map(resp=>
-({...resp,
-  dateDebut:resp.dateDebut,
-  dateFin:resp.dateFin})
-    ));
+  donnees_programmes = computed(() => {
+    return new MatTableDataSource<any>(this._programme_store.allProgrammes().map(resp =>
+    ({
+      ...resp,
+      dateDebut: resp.dateDebut,
+      dateFin: resp.dateFin
+    })
+    ).sort((a, b) => {
+      return a.nom.localeCompare(b.nom) ;
+    }
+    )
+    );
   })
   //others data
   mformgroup: FormGroup
@@ -65,30 +71,26 @@ export class AdminComponent implements OnInit {
       responsableId: ['', Validators.required],
       code: ['', Validators.required]
     });
-    effect(()=>{
+    effect(() => {
       //console.log(this._programme_store.programmes_data() )
-     })
+    })
   }
-  ngOnInit(){
+  ngOnInit() {
     this._programme_store.loadAllData()
-    if(this._auth_service.userSignal()){
+    if (this._auth_service.userSignal()) {
       this._programme_store.setProgrammeIs(this._auth_service.userSignal().projet_id)
     }
   }
 
-
-  
   close_drawer() {
     this.is_opened.set(false)
   }
   select_programme(row: any) {
-    let dateDebut=this._utilitaires.convertDate(row.dateDebut)
-    let dateFin=this._utilitaires.convertDate(row.dateFin)
-    console.log(dateDebut, dateFin)
     this.selectedProgrammme.set(row);
-    this.mformgroup.patchValue({...row,
+    this.mformgroup.patchValue({
+      ...row,
       dateDebut: this._utilitaires.convertDate(row.dateDebut),
-      dateFin:this._utilitaires.convertDate(row.dateFin),
+      dateFin: this._utilitaires.convertDate(row.dateFin),
     });
     this.is_opened.set(true);
   }

@@ -35,8 +35,6 @@ export class CreationProgrammeComponent {
     return this.donneesProgramme()!=undefined? this.donneesProgramme()?.phases:[]
   })
 
-
-
   types = ['Résidentiel', 'Commercial', 'Mixte'];
   statuts = ['Planifié', 'En cours', 'Terminé', 'Suspendu'];
   pays = my_countries;
@@ -76,11 +74,31 @@ export class CreationProgrammeComponent {
     this.errorMessage = '';
     this.successMessage = '';
     const formData = this.programmeForm().value;
-    console.log(formData.value)
-    //this._programme_store.addProgramme(formData)
+    if(this.isUpdated()){
+      
+      let date=new Date();
+      this._programme_store.updateProgramme({
+        ...formData,
+        id: this.donneesProgramme()?.id,
+        dateDebut:formData.dateDebut.toLocaleDateString(),
+        dateFin:formData.dateFin.toLocaleDateString(),
+        updatedAt: date
+      })
+    }else{
+      let date=new Date();
+      this._programme_store.addProgramme({
+        ...formData,
+        dateDebut:formData.dateDebut.toLocaleDateString(),
+        dateFin:formData.dateFin.toLocaleDateString(),
+        createdAt:date,
+        updatedAt: date
+      })
+    }
   }
   close(){
     this.close_event.emit()
+  }
+  save(){
   }
 }
 
