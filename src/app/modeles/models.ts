@@ -712,7 +712,7 @@ export interface tab_beneficiairesStore {
     path_string: string
 }
 export interface Programme {
-  id?: string;
+  id: string;
   nom: string;
   description?: string;
   type?: 'Résidentiel' | 'Commercial' | 'Mixte' | string;
@@ -772,6 +772,7 @@ export interface tab_programmeStore {
   message: string;
   selectedId: string;
   selectedIds: string[];
+  programmes_ids:string[];
   path_string: string;
   isLoading?: boolean;
   error?: string | null;

@@ -126,7 +126,7 @@ export class AuthService {
                 'username': data.username,
                 'entreprise_id': data.entreprise_id,
                 'projet_id': data.projet_id,
-                'current_projet_id': data.projet_id[0]
+                'current_projet_id': data.projet_id[1]
               }
             )
           )

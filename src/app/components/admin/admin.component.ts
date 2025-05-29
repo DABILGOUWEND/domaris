@@ -1,13 +1,14 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { ImportedModule } from '../../shared/modules/imported/imported.module';
 import { RouterOutlet } from '@angular/router';
 import { CreationCompteComponent } from '../creation-compte/creation-compte.component';
 import { CreationProgrammeComponent } from '../creation-programme/creation-programme.component';
 import { Programme } from '../../modeles/models';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatRow, MatTableDataSource } from '@angular/material/table';
 import { ProgrammeStore } from '../../stores/appstore';
 import { AuthService } from '../../auth/services/auth.service';
+import { UtilitairesService } from '../../services/utilitaires.service';
 
 @Component({
   selector: 'app-admin',
@@ -15,11 +16,12 @@ import { AuthService } from '../../auth/services/auth.service';
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss'
 })
-export class AdminComponent {
+export class AdminComponent implements OnInit {
   //injections
   _programme_store = inject(ProgrammeStore);
   _auth_service=inject(AuthService);
-
+  _utilitaires=inject(UtilitairesService)
+//signals
   selectedProgrammme = signal<Programme | undefined>(undefined);
   is_updated = signal(false);
   is_opened = signal(false)
@@ -38,7 +40,11 @@ export class AdminComponent {
     return new MatTableDataSource<any>(this._programme_store.getPhases());
   })
  donnees_programmes = computed(() => {
-    return new MatTableDataSource<any>(this._programme_store.programmes_data());
+    return new MatTableDataSource<any>(this._programme_store.selectedProgrammes().map(resp=>
+({...resp,
+  dateDebut:resp.dateDebut,
+  dateFin:resp.dateFin})
+    ));
   })
   //others data
   mformgroup: FormGroup
@@ -59,35 +65,39 @@ export class AdminComponent {
       responsableId: ['', Validators.required],
       code: ['', Validators.required]
     });
+    effect(()=>{
+      //console.log(this._programme_store.programmes_data() )
+     })
   }
-
-
-  ngOnInit() {
+  ngOnInit(){
     this._programme_store.loadAllData()
-    this._programme_store.setSelectedId(this._auth_service.userSignal().current_projet_id)
+    if(this._auth_service.userSignal()){
+      this._programme_store.setProgrammeIs(this._auth_service.userSignal().projet_id)
+    }
+  }
 
-    this.mformgroup.patchValue({
-      nom: 'hello world',
-    })
-  }
-  Modifprogramme(row: any) {
-    this.selectedProgrammme.set(row)
-    this.is_updated.set(true)
-    this.mformgroup.patchValue(row)
-  }
-  AddProgramme() {
-    this.is_updated.set(false);
-    this.selectedProgrammme.set(undefined);
-  }
+
+  
   close_drawer() {
     this.is_opened.set(false)
   }
   select_programme(row: any) {
-    this.selectedProgrammme.set(row())
-    this.is_opened.set(true)
-
+    let dateDebut=this._utilitaires.convertDate(row.dateDebut)
+    let dateFin=this._utilitaires.convertDate(row.dateFin)
+    console.log(dateDebut, dateFin)
+    this.selectedProgrammme.set(row);
+    this.mformgroup.patchValue({...row,
+      dateDebut: this._utilitaires.convertDate(row.dateDebut),
+      dateFin:this._utilitaires.convertDate(row.dateFin),
+    });
+    this.is_opened.set(true);
   }
   delete_programme(row: any) {
-
+  }
+  add_programme() {
+    this.is_updated.set(false);
+    this.selectedProgrammme.set(undefined);
+    this.mformgroup.reset();
+    this.is_opened.set(true);
   }
 }

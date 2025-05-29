@@ -350,7 +350,8 @@ const initialProgrammeState: tab_programmeStore = {
   selectedIds: [],
   path_string: '',
   isLoading: false,
-  error: null
+  error: null,
+  programmes_ids:[]
 };
 /*************************** */
 export const UserStore = signalStore(
@@ -443,9 +444,9 @@ export const ProgrammeStore = signalStore(
   withComputed((store) => ({
     total: computed(() => store.programmes_data().length),
     allProgrammes: computed(() => store.programmes_data()),
-    selectedProgramme: computed(() => {
-      let data = store.programmes_data().find(p => p.id === store.selectedId())
-      return data ? data : undefined;
+    selectedProgrammes: computed(() => {
+      let data = store.programmes_data().filter(p => store.selectedIds().includes(p.id))
+      return data;
     }
 
     ),
@@ -463,12 +464,15 @@ export const ProgrammeStore = signalStore(
     fn_error: computed(() => store.error),
     fn_selectedId: computed(() => store.selectedId),
     fn_selectedIds: computed(() => store.selectedIds)
-  }),
-
+  })
   ),
   withMethods((store, _service = inject(ProgrammesService), snackbar = inject(MatSnackBar)) => ({
     setSelectedId(id: string) {
       patchState(store, { selectedId: id });
+    },
+    setProgrammeIs(ids:string[])
+    {
+      patchState(store, {selectedIds:ids})
     }
     ,
     loadAllData: rxMethod<void>(
@@ -479,7 +483,6 @@ export const ProgrammeStore = signalStore(
           const programmesWithPhases$ = programmes.map(programme =>
             _service.getPhases(programme.id).pipe(
               take(1), // Take 1 emission of phases
-
               switchMap(phases => {
                 // For each phase, fetch its budgets, depenses, and taches
                 const phasesWithSubCollections$ = phases.map(phase =>
@@ -501,7 +504,7 @@ export const ProgrammeStore = signalStore(
           // Wait for all programmes with their phases (and subcollections) to be fetched
           return forkJoin(programmesWithPhases$);
         })
-        , map(resp => {
+        , tap(resp => {
           patchState(store, { programmes_data: resp })
         })
       )
