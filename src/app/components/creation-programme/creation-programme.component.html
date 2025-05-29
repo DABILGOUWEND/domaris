@@ -1,0 +1,107 @@
+<mat-stepper linear #stepper>
+  <mat-step [stepControl]="programmeForm()" [editable]="true">
+    <div class="programme-container">
+      <h2>Créer un programme</h2>
+      <form [formGroup]="programmeForm()" (ngSubmit)="onSubmit()" class="programme-form double-col">
+        <div class="row">
+          <mat-form-field appearance="outline" class="form-group">
+            <mat-label>Nom du programme</mat-label>
+            <input matInput formControlName="nom" placeholder="Nom du programme" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="form-group">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description" placeholder="Description"></textarea>
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field appearance="outline" class="form-group">
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="type">
+              <mat-option *ngFor="let t of types" [value]="t">{{ t }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="form-group">
+            <mat-label>Statut</mat-label>
+            <mat-select formControlName="statut">
+              <mat-option *ngFor="let s of statuts" [value]="s">{{ s }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field appearance="outline" class="form-group">
+            <mat-label>Date de début</mat-label>
+            <input matInput [matDatepicker]="pickerDebut" formControlName="dateDebut" placeholder="Date de début" />
+            <mat-datepicker-toggle matSuffix [for]="pickerDebut"></mat-datepicker-toggle>
+            <mat-datepicker #pickerDebut></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="form-group">
+            <mat-label>Date de fin</mat-label>
+            <input matInput [matDatepicker]="pickerFin" formControlName="dateFin" placeholder="Date de fin" />
+            <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFin></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field appearance="outline" class="form-group">
+            <mat-label>Budget prévu</mat-label>
+            <input matInput type="number" formControlName="budgetPrevu" placeholder="Budget prévu" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="form-group">
+            <mat-label>Pays</mat-label>
+            <mat-select formControlName="pays">
+              <mat-option value="" disabled>Choisir un pays</mat-option>
+              <mat-option *ngFor="let r of pays" [value]="r">{{ r }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field appearance="outline" class="form-group">
+            <mat-label>Ville</mat-label>
+            <input matInput formControlName="ville" placeholder="Ville" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="form-group">
+            <mat-label>Quartier</mat-label>
+            <input matInput formControlName="quartier" placeholder="Quartier" />
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field appearance="outline" class="form-group">
+            <mat-label>Responsable</mat-label>
+            <input matInput formControlName="responsableId" placeholder="ID du responsable" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="form-group">
+            <mat-label>Code du programme</mat-label>
+            <input matInput formControlName="code" placeholder="Code unique" />
+          </mat-form-field>
+        </div>
+        <button mat-raised-button color="primary" type="submit" [disabled]="programmeForm().invalid || isLoading">
+          Créer le programme
+          <mat-progress-spinner *ngIf="isLoading" diameter="22" mode="indeterminate" color="accent"
+            style="margin-left: 10px; vertical-align: middle;"></mat-progress-spinner>
+        </button>
+        <div *ngIf="errorMessage" class="error-message mat-caption">{{ errorMessage }}</div>
+        <div *ngIf="successMessage" class="success-message mat-caption">{{ successMessage }}</div>
+
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </div>
+  </mat-step>
+  <mat-step [stepControl]="phasesForm" [editable]="true">
+    <form [formGroup]="phasesForm" (ngSubmit)="onSubmit()" class="programme-form double-col">
+     <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="budgetsForm" [editable]="true">
+    <form [formGroup]="budgetsForm" (ngSubmit)="onSubmit()" class="programme-form double-col">
+     <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+</mat-stepper>

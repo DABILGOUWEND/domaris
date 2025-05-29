@@ -720,22 +720,16 @@ export interface Programme {
   dateDebut: Date | any;
   dateFin: Date | any;
   budgetPrevu: number;
-  localisation?: {
-    adresse?: string;
-    ville?: string;
-    pays?: string;
-    latitude?: number;
-    longitude?: number;
-  };
+  pays?: string;         // Pays du programme
+  ville?: string;
+  quartier?: string;
   responsableId?: string;
   createdAt?: Date | any;
   updatedAt?: Date | any;
+  phases?: phases[]; // Sous-collections (optionnelles si chargées dynamiquement)
+  documents?: DocumentProgramme[]; // Documents associés (optionnels)
+  budgets?: budgets[]; // Sous-collections (optionnelles si chargées dynamiquement)
   // Sous-collections (optionnelles si chargées dynamiquement)
-  phases?: phases[];
-  code?: string; // Code unique pour le programme
-  documents?: DocumentProgramme[];
-  // Autres champs spécifiques au programme
-
 }
 
 export interface phases {
@@ -746,9 +740,6 @@ export interface phases {
   dateFin: Date | any;
   statut: 'En attente' | 'En cours' | 'Terminée';
   responsableId?: string;
-  taches?: taches[];
-  budgets?: budgets[];
-  depenses?: depenses[];
 }
 
 export interface taches {

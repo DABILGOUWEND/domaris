@@ -38,6 +38,7 @@ import {
 } from "../modeles/models";
 import { TaskService } from "../services/task.service";
 import { ProgrammesService } from "../services/programmes.service";
+import { get } from "node:http";
 const initialGasoilState: gasoilStore = {
   conso_data: [],
   err: null,
@@ -441,6 +442,16 @@ export const ProgrammeStore = signalStore(
   withComputed((store) => ({
     total: computed(() => store.programmes_data().length),
     allProgrammes: computed(() => store.programmes_data()),
+    getPhases: computed(() => {
+      let id = store.selectedId();
+      let phases=store.programmes_data().find(p => p.id === id)?.phases || [];
+      return phases;
+    }),
+    getBudgets: computed(() => {
+      let id = store.selectedId();
+      let budgets = store.programmes_data().find(p => p.id === id)?.budgets || [];
+      return budgets;
+    }),
     fn_isLoading: computed(() => store.isLoading),
     fn_error: computed(() => store.error),
     fn_selectedId: computed(() => store.selectedId),
@@ -448,7 +459,7 @@ export const ProgrammeStore = signalStore(
   }),
 
   ),
-  withMethods((store, _service = inject(ProgrammesService)) => ({
+  withMethods((store, _service = inject(ProgrammesService), snackbar = inject(MatSnackBar)) => ({
     loadAllData: rxMethod<void>(
       pipe(
         switchMap(() => _service.getProgrammes()),
@@ -457,6 +468,7 @@ export const ProgrammeStore = signalStore(
           const programmesWithPhases$ = programmes.map(programme =>
             _service.getPhases(programme.id).pipe(
               take(1), // Take 1 emission of phases
+       
               switchMap(phases => {
                 // For each phase, fetch its budgets, depenses, and taches
                 const phasesWithSubCollections$ = phases.map(phase =>
@@ -480,6 +492,19 @@ export const ProgrammeStore = signalStore(
         })
         , map(resp => {
           patchState(store, { programmes_data: resp })
+        })
+      )
+    ),
+       addProgramme: rxMethod<any>(
+      pipe(
+        switchMap((programme) => _service.addProgramme( programme)),
+        tap({
+          next: () => {
+            Showsnackerbaralert('Programme créé avec succès !', 'pass', snackbar);
+          },
+          error: () => {
+            Showsnackerbaralert('Erreur lors de la création du programme.', 'fail', snackbar);
+          }
         })
       )
     )

@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { collection, collectionData, Firestore } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, Firestore } from '@angular/fire/firestore';
 import { forkJoin, map, Observable, switchMap, take } from 'rxjs';
 
 
@@ -64,5 +64,10 @@ firestore: Firestore = inject(Firestore);
         return forkJoin(programmesWithPhases$);
       })
     );
+
+  }
+   addProgramme(programme: any) {
+    const ref = collection(this.firestore, 'programmes');
+    return addDoc(ref, programme);
   }
 }

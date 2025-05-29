@@ -6296,3 +6296,70 @@ button[type="submit"] {
   color: #2563eb;
   font-weight: bold;
 }
+.programme-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 2.5rem 2rem;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+
+.programme-container h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #1976d2;
+  font-weight: 700;
+}
+
+.programme-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.form-group {
+  width: 100%;
+}
+
+button[mat-raised-button] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  margin-top: 1.5rem;
+}
+
+.error-message {
+  color: #d32f2f;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.success-message {
+  color: #388e3c;
+  margin-top: 1rem;
+  text-align: center;
+}
+.double-col .row {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.double-col .form-group {
+  flex: 1 1 0;
+}
+@media (max-width: 800px) {
+  .double-col .row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+.btn-valider {
+  min-width: 180px;
+  max-width: 220px;
+  margin: 24px auto 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

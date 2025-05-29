@@ -14,12 +14,13 @@ import { MoePhaseComponent } from './components/moe-phase/moe-phase.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { MoedashboardComponent } from './components/moedashboard/moedashboard.component';
 import { ModashboardComponent } from './components/modashboard/modashboard.component';
+import { CreationProgrammeComponent } from './components/creation-programme/creation-programme.component';
 
 
 export const routes: Routes = [
 
   {
-    path: "", redirectTo: "/layout", pathMatch: "full"
+    path: "", redirectTo: "/admin", pathMatch: "full"
   },
   {
     path: "layout", component: LayoutComponent,
@@ -37,11 +38,7 @@ export const routes: Routes = [
     path: 'unauthorized', component: UnauthorizedComponent
   },
   {
-    path: "admin", component: AdminComponent, canActivate: [authGuard], data: { role: 'admin' },
-    children: [
-      { path: "", redirectTo: "/admin/dashboard", pathMatch: "full" },
-      { path: "admin_dashboard", component: AdminDashboardComponent },
-    ]
+    path: "admin", component: AdminComponent
   }
   ,
   {
@@ -58,6 +55,9 @@ export const routes: Routes = [
       { path: "mo_dashboard", component: MoProgrammesComponent },
     ]
   },
+  {
+    path: "creation_programmes", component: CreationProgrammeComponent, canActivate: [authGuard], data: { role: 'admin' }
+  }
 
 ]
 
