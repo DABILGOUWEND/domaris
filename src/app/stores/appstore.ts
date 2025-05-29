@@ -39,6 +39,7 @@ import {
 import { TaskService } from "../services/task.service";
 import { ProgrammesService } from "../services/programmes.service";
 import { get } from "node:http";
+import { set } from "@angular/fire/database";
 const initialGasoilState: gasoilStore = {
   conso_data: [],
   err: null,
@@ -442,9 +443,15 @@ export const ProgrammeStore = signalStore(
   withComputed((store) => ({
     total: computed(() => store.programmes_data().length),
     allProgrammes: computed(() => store.programmes_data()),
+    selectedProgramme: computed(() => {
+      let data = store.programmes_data().find(p => p.id === store.selectedId())
+      return data ? data : undefined;
+    }
+
+    ),
     getPhases: computed(() => {
       let id = store.selectedId();
-      let phases=store.programmes_data().find(p => p.id === id)?.phases || [];
+      let phases = store.programmes_data().find(p => p.id === id)?.phases || [];
       return phases;
     }),
     getBudgets: computed(() => {
@@ -460,6 +467,10 @@ export const ProgrammeStore = signalStore(
 
   ),
   withMethods((store, _service = inject(ProgrammesService), snackbar = inject(MatSnackBar)) => ({
+    setSelectedId(id: string) {
+      patchState(store, { selectedId: id });
+    }
+    ,
     loadAllData: rxMethod<void>(
       pipe(
         switchMap(() => _service.getProgrammes()),
@@ -468,7 +479,7 @@ export const ProgrammeStore = signalStore(
           const programmesWithPhases$ = programmes.map(programme =>
             _service.getPhases(programme.id).pipe(
               take(1), // Take 1 emission of phases
-       
+
               switchMap(phases => {
                 // For each phase, fetch its budgets, depenses, and taches
                 const phasesWithSubCollections$ = phases.map(phase =>
@@ -495,9 +506,9 @@ export const ProgrammeStore = signalStore(
         })
       )
     ),
-       addProgramme: rxMethod<any>(
+    addProgramme: rxMethod<any>(
       pipe(
-        switchMap((programme) => _service.addProgramme( programme)),
+        switchMap((programme) => _service.addProgramme(programme)),
         tap({
           next: () => {
             Showsnackerbaralert('Programme créé avec succès !', 'pass', snackbar);

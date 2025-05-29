@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { ProgrammeStore } from '../../stores/appstore';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -26,11 +26,16 @@ export class CreationProgrammeComponent {
 
   //inputs
   isUpdated=input.required()
-  donneesProgramme = input<Programme>()
+  donneesProgramme = input<Programme>();
+  is_opened=input();
+  //output 
+  close_event=output()
   //computed signals
   Phases=computed(()=>{
     return this.donneesProgramme()!=undefined? this.donneesProgramme()?.phases:[]
   })
+
+
 
   types = ['Résidentiel', 'Commercial', 'Mixte'];
   statuts = ['Planifié', 'En cours', 'Terminé', 'Suspendu'];
@@ -73,6 +78,9 @@ export class CreationProgrammeComponent {
     const formData = this.programmeForm().value;
     console.log(formData.value)
     //this._programme_store.addProgramme(formData)
+  }
+  close(){
+    this.close_event.emit()
   }
 }
 

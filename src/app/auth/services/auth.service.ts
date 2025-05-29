@@ -131,7 +131,7 @@ export class AuthService {
             )
           )
           localStorage.setItem('user', JSON.stringify(this.userSignal()));
-          this.current_projet_id.set(data.projet_id[0]);
+          this.current_projet_id.set(data.projet_id[1]);
         }
       )
     )

@@ -90,7 +90,7 @@
   </mat-step>
   <mat-step [stepControl]="phasesForm" [editable]="true">
     <form [formGroup]="phasesForm" (ngSubmit)="onSubmit()" class="programme-form double-col">
-     <div>
+      <div>
         <button mat-button matStepperPrevious>Back</button>
         <button mat-button matStepperNext>Next</button>
       </div>
@@ -98,10 +98,11 @@
   </mat-step>
   <mat-step [stepControl]="budgetsForm" [editable]="true">
     <form [formGroup]="budgetsForm" (ngSubmit)="onSubmit()" class="programme-form double-col">
-     <div>
+      <div>
         <button mat-button matStepperPrevious>Back</button>
         <button mat-button matStepperNext>Next</button>
       </div>
     </form>
   </mat-step>
 </mat-stepper>
+<button mat-flat-button color="warning" (click)="close()"> quitter</button>
