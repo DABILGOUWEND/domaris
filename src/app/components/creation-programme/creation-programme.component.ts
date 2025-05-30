@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ImportedModule } from '../../shared/modules/imported/imported.module';
 import { countries } from "../../modeles/pays"
 import { Programme } from '../../modeles/models';
+import { update } from '@angular/fire/database';
 // Assuming you have a file with country data
 const my_countries = countries; // Extracting country names
 @Component({
@@ -26,7 +27,7 @@ export class CreationProgrammeComponent {
 
   //inputs
   isUpdated=input.required()
-  donneesProgramme = input<Programme>();
+  donneesProgramme = input<any>();
   is_opened=input();
   //output 
   close_event=output()
@@ -75,13 +76,13 @@ export class CreationProgrammeComponent {
     this.successMessage = '';
     const formData = this.programmeForm().value;
     if(this.isUpdated()){
-      
       let date=new Date();
       this._programme_store.updateProgramme({
         ...formData,
         id: this.donneesProgramme()?.id,
         dateDebut:formData.dateDebut.toLocaleDateString(),
         dateFin:formData.dateFin.toLocaleDateString(),
+        createdAt: this.donneesProgramme()?.createdAt,
         updatedAt: date
       })
     }else{
@@ -94,6 +95,7 @@ export class CreationProgrammeComponent {
         updatedAt: date
       })
     }
+    this.close_event.emit()
   }
   close(){
     this.close_event.emit()

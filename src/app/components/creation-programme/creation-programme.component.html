@@ -1,7 +1,7 @@
 <mat-stepper linear #stepper>
   <mat-step [stepControl]="programmeForm()" [editable]="true">
     <div class="programme-container">
-      <h2>Créer un programme</h2>
+      <h2>{{ isUpdated() ?"Modifier programme":"Créer nouveau programme"}}</h2>
       <form [formGroup]="programmeForm()" (ngSubmit)="onSubmit()" class="programme-form double-col">
         <div class="row">
           <mat-form-field appearance="outline" class="form-group">
@@ -74,8 +74,8 @@
             <input matInput formControlName="code" placeholder="Code unique" />
           </mat-form-field>
         </div>
-        <button mat-raised-button color="primary" type="submit" [disabled]="programmeForm().invalid || isLoading">
-          Créer le programme
+        <button mat-raised-button color="primary" type="submit" [disabled]="programmeForm().invalid ">
+          {{isUpdated() ? 'Modifier' : 'Enregistrer'}} 
         </button>
         <div *ngIf="errorMessage" class="error-message mat-caption">{{ errorMessage }}</div>
         <div *ngIf="successMessage" class="success-message mat-caption">{{ successMessage }}</div>
@@ -87,4 +87,6 @@
     </div>
   </mat-step>
 </mat-stepper>
+ <div class="row" [ngStyle]="{'justify-content': 'center'}">
 <button mat-flat-button color="warning" (click)="close()"> quitter</button>
+ </div>

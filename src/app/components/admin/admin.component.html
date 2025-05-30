@@ -4,6 +4,11 @@
       [is_opened]="is_opened()" [programmeForm]="mformgroup" (close_event)="close_drawer()" />
   </mat-drawer>
   <mat-drawer-content>
+    <div class="row" style="display: flex; justify-content: flex-end;padding: 10px ;">
+  <button mat-flat-button (click)="add_programme()">
+    Nouveau programme
+  </button>
+</div>
     <table mat-table [dataSource]="donnees_programmes()" class="mat-elevation-z8">
       <ng-container matColumnDef="code">
         <th mat-header-cell *matHeaderCellDef> CODE </th>
@@ -26,12 +31,12 @@
 
       <ng-container matColumnDef="dateDebut">
         <th mat-header-cell *matHeaderCellDef> Date de début </th>
-        <td mat-cell *matCellDef="let programme"> {{ programme.dateDebut  }} </td>
+        <td mat-cell *matCellDef="let programme"> {{ programme.dateDebut }} </td>
       </ng-container>
 
       <ng-container matColumnDef="dateFin">
         <th mat-header-cell *matHeaderCellDef> Date de fin </th>
-        <td mat-cell *matCellDef="let programme"> {{ programme.dateFin  }} </td>
+        <td mat-cell *matCellDef="let programme"> {{ programme.dateFin }} </td>
       </ng-container>
 
       <ng-container matColumnDef="budgetPrevu">
@@ -39,7 +44,7 @@
         <td mat-cell *matCellDef="let programme"> {{ programme.budgetPrevu | currency:'EUR':'symbol':'1.0-0' }} </td>
       </ng-container>
 
-    
+
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Actions </th>
         <td mat-cell *matCellDef="let programme">
@@ -56,8 +61,5 @@
 
 
     </table>
-    <button mat-raised-button (click)="is_opened.set(!is_opened())">
-      Nouveau programme
-    </button>
   </mat-drawer-content>
 </mat-drawer-container>

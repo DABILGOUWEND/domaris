@@ -726,10 +726,6 @@ export interface Programme {
   responsableId?: string;
   createdAt?: Date | any;
   updatedAt?: Date | any;
-  phases?: phases[]; // Sous-collections (optionnelles si chargées dynamiquement)
-  documents?: DocumentProgramme[]; // Documents associés (optionnels)
-  budgets?: budgets[]; // Sous-collections (optionnelles si chargées dynamiquement)
-  // Sous-collections (optionnelles si chargées dynamiquement)
 }
 
 export interface phases {
@@ -768,7 +764,7 @@ export interface DocumentProgramme {
   phaseId?: string;
 }
 export interface tab_programmeStore {
-  programmes_data: Programme[];
+  programmes_data: any[];
   message: string;
   selectedId: string;
   selectedIds: string[];
@@ -776,6 +772,7 @@ export interface tab_programmeStore {
   path_string: string;
   isLoading?: boolean;
   error?: string | null;
+  data:any[]; // Pour stocker les données des sous-collections
 }
 export interface budgets{
     id?: string,

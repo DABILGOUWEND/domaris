@@ -1,6 +1,6 @@
 import { computed, inject, signal } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { Observable, concat, forkJoin, map, of, pipe, switchMap, take, tap } from "rxjs";
+import { Observable, concat, concatMap, forkJoin, map, of, pipe, switchMap, take, tap } from "rxjs";
 
 import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
@@ -351,7 +351,8 @@ const initialProgrammeState: tab_programmeStore = {
   path_string: '',
   isLoading: false,
   error: null,
-  programmes_ids: []
+  programmes_ids: [],
+  data: [],
 };
 /*************************** */
 export const UserStore = signalStore(
@@ -452,12 +453,18 @@ export const ProgrammeStore = signalStore(
     ),
     getPhases: computed(() => {
       let id = store.selectedId();
-      let phases = store.programmes_data().find(p => p.id === id)?.phases || [];
+      let phases = store.programmes_data().find(p => p.id === id)?.data.phases || [];
       return phases;
     }),
     getBudgets: computed(() => {
       let id = store.selectedId();
-      let budgets = store.programmes_data().find(p => p.id === id)?.budgets || [];
+      let budgets = store.programmes_data().find(p => p.id === id)?.data.budgets || [];
+      return budgets;
+    })
+    ,
+    getDocuments: computed(() => {
+      let id = store.selectedId();
+      let budgets = store.programmes_data().find(p => p.id === id)?.data.documents || [];
       return budgets;
     }),
     fn_isLoading: computed(() => store.isLoading),
@@ -474,40 +481,35 @@ export const ProgrammeStore = signalStore(
       patchState(store, { selectedIds: ids })
     }
     ,
-    loadAllData: rxMethod<void>(
-      pipe(
-        switchMap(() => _service.getProgrammes()),
-        switchMap(programmes => {
-          // For each programme, fetch its phases
-          const programmesWithPhases$ = programmes.map(programme =>
-            _service.getPhases(programme.id).pipe(
-              take(1), // Take 1 emission of phases
-              switchMap(phases => {
-                // For each phase, fetch its budgets, depenses, and taches
-                const phasesWithSubCollections$ = phases.map(phase =>
-                  forkJoin({
-                    budgets: _service.getBudgets(phase.id, programme.id).pipe(take(1)), // Take 1 emission
-                    depenses: _service.getDepenses(phase.id, programme.id).pipe(take(1)), // Take 1 emission
-                    taches: _service.getTaches(phase.id, programme.id).pipe(take(1)) // Take 1 emission
-                  }).pipe(
-                    map(subCollections => ({ ...phase, ...subCollections })) // Merge phase with subcollection data
-                  )
-                );
-                // Wait for all phases with subcollections to be fetched for this programme
-                return forkJoin(phasesWithSubCollections$).pipe(
-                  map(phasesWithData => ({ ...programme, phases: phasesWithData })) // Merge programme with its phases data
-                );
-              })
-            )
-          );
-          // Wait for all programmes with their phases (and subcollections) to be fetched
-          return forkJoin(programmesWithPhases$);
-        })
-        , tap(resp => {
-          patchState(store, { programmes_data: resp })
-        })
-      )
-    ),
+   loadAllData: rxMethod<void>(
+  pipe(
+    switchMap(() => _service.getProgrammes()),
+    concatMap(programmes => {
+      // Pour chaque programme, on récupère ses sous-collections et on fusionne les données
+      const programmesWithData$ = programmes.map(programme =>
+        forkJoin({
+           phases: _service.getPhases(programme.id).pipe(take(1)),
+          budgets: _service.getBudgets(programme.id).pipe(take(1)),
+          documents: _service.getDocuments(programme.id).pipe(take(1))
+        }).pipe( // On prend la première valeur émise
+          map(subs => ({
+            ...programme,
+            data: {
+              phases: subs.phases,
+              budgets: subs.budgets,
+              documents: subs.documents
+            }
+          }))
+        )
+      );
+      return forkJoin(programmesWithData$);
+    }),
+    tap(resp => {
+      console.log('Programmes avec données:', resp);
+      patchState(store, { programmes_data: resp });
+    })
+  )
+),
     addProgramme: rxMethod<any>(
       pipe(
         switchMap((programme) => _service.addProgramme(programme).pipe(switchMap(id =>

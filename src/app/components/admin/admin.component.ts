@@ -22,7 +22,7 @@ export class AdminComponent implements OnInit {
   _auth_service = inject(AuthService);
   _utilitaires = inject(UtilitairesService)
   //signals
-  selectedProgrammme = signal<Programme | undefined>(undefined);
+  selectedProgrammme = signal<any | undefined>(undefined);
   is_updated = signal(false);
   is_opened = signal(false)
 
@@ -93,13 +93,14 @@ export class AdminComponent implements OnInit {
       dateFin: this._utilitaires.convertDate(row.dateFin),
     });
     this.is_opened.set(true);
+    this.is_updated.set(true);
   }
   delete_programme(row: any) {
   }
   add_programme() {
+    this.mformgroup.reset();
     this.is_updated.set(false);
     this.selectedProgrammme.set(undefined);
-    this.mformgroup.reset();
     this.is_opened.set(true);
   }
 }
