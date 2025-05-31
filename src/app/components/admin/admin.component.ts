@@ -47,13 +47,16 @@ export class AdminComponent implements OnInit {
       dateFin: resp.dateFin
     })
     ).sort((a, b) => {
-      return a.nom.localeCompare(b.nom) ;
+      return a.nom.localeCompare(b.nom);
     }
     )
     );
   })
+  
   //others data
   mformgroup: FormGroup
+  phasesformgroup: FormGroup
+
   constructor(
     private fb: FormBuilder
   ) {
@@ -71,15 +74,24 @@ export class AdminComponent implements OnInit {
       responsableId: ['', Validators.required],
       code: ['', Validators.required]
     });
+    this.phasesformgroup = this.fb.group({
+      nom: ['', Validators.required],
+      description: [''],
+      type: ['', Validators.required],
+      dateDebut: ['', Validators.required],
+      dateFin: ['', Validators.required],
+      responsableId: ['', Validators.required]
+    });
     effect(() => {
-      //console.log(this._programme_store.programmes_data() )
+      console.log(this._programme_store.getPhases())
     })
   }
   ngOnInit() {
     this._programme_store.loadAllData()
     if (this._auth_service.userSignal()) {
-      this._programme_store.setProgrammeIs(this._auth_service.userSignal().projet_id)
+      this._programme_store.setProgrammeIs(this._auth_service.userSignal().projet_id);
     }
+
   }
 
   close_drawer() {
@@ -94,6 +106,7 @@ export class AdminComponent implements OnInit {
     });
     this.is_opened.set(true);
     this.is_updated.set(true);
+    this._programme_store.setProgrammeIs(row.id);
   }
   delete_programme(row: any) {
   }

@@ -32,7 +32,6 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatStepperModule} from '@angular/material/stepper';
-
 const MATERIAL_COMPONENTS = [
   CommonModule,
   MatTabsModule,

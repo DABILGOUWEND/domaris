@@ -485,6 +485,7 @@ export const ProgrammeStore = signalStore(
   pipe(
     switchMap(() => _service.getProgrammes()),
     concatMap(programmes => {
+      console.log('Programmes récupérés:', programmes);
       // Pour chaque programme, on récupère ses sous-collections et on fusionne les données
       const programmesWithData$ = programmes.map(programme =>
         forkJoin({
