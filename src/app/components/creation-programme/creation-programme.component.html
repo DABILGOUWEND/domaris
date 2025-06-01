@@ -75,76 +75,267 @@
             <input matInput formControlName="code" placeholder="Code unique" />
           </mat-form-field>
         </div>
-        <button mat-raised-button color="primary" type="submit" [disabled]="programmeForm().invalid">
-          {{ isUpdated() ? 'Modifier' : 'Enregistrer' }}
-        </button>
+
         <div *ngIf="errorMessage" class="error-message mat-caption">{{ errorMessage }}</div>
         <div *ngIf="successMessage" class="success-message mat-caption">{{ successMessage }}</div>
       </form>
-      <div>
-        <button mat-button matStepperNext [disabled]="programmeForm().invalid">Suivant</button>
+      <div [ngStyle]="{'display': 'flex', 'justify-content':'center', 'margin-bottom': '10px','width': '100%'}">
+        <button mat-flat-button matStepperNext [disabled]="programmeForm().invalid" (click)="editMode=null"
+          [ngStyle]="{'width': '150px'}">
+          Suivant</button>
       </div>
+    </div>
+    <div class="row">
+      <button mat-flat-button color="warning" (click)="close()" [disabled]="programmeForm().invalid">Quitter</button>
     </div>
   </mat-step>
 
   <!-- Étape 2 : Phases (arbre imbriqué) -->
   <mat-step [editable]="true">
-    <div class="programme-container">
-      <h2>Phases du programme</h2>
-      <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-        <mat-nested-tree-node *matTreeNodeDef="let node">
-          <div class="mat-tree-node" matTreeNodePadding>
-            <button mat-icon-button matTreeNodeToggle *ngIf="hasChild(0, node)"
-              [attr.aria-label]="'expand ' + node.nom">
-              <mat-icon>
-                {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
-              </mat-icon>
+    <div class="phases-container">
+      <div class="entete">
+        <h2>Phases du programme</h2>
+      </div>
+      <div class="sous_entete">
+        <button mat-fab color="primary" (click)="addChild(null)">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+      <div class="corps">
+        <!-- Formulaire d'ajout de phase à la racine SOUS l'arbre, deux champs à la première ligne, le reste sur une ligne -->
+        <div class="entete_saisie" *ngIf="editNode === null && editMode === 'add'">
+          <!-- Première ligne : Nom et Description -->
+          <div style="display: flex; gap: 8px;">
+            <mat-form-field appearance="outline" style="flex:1;">
+              <mat-label>Nom</mat-label>
+              <input matInput #rootNom placeholder="Nom de la phase">
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="flex:1;">
+              <mat-label>Description</mat-label>
+              <input matInput #rootDescription placeholder="Description">
+            </mat-form-field>
+          </div>
+          <!-- Deuxième ligne : Date début, Date fin, Statut, Responsable, Boutons -->
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <mat-form-field appearance="outline">
+              <mat-label>Date début</mat-label>
+              <input matInput [matDatepicker]="rootPickerDebut" #rootDateDebut>
+              <mat-datepicker-toggle matSuffix [for]="rootPickerDebut"></mat-datepicker-toggle>
+              <mat-datepicker #rootPickerDebut></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Date fin</mat-label>
+              <input matInput [matDatepicker]="rootPickerFin" #rootDateFin>
+              <mat-datepicker-toggle matSuffix [for]="rootPickerFin"></mat-datepicker-toggle>
+              <mat-datepicker #rootPickerFin></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Statut</mat-label>
+              <mat-select #rootStatut>
+                <mat-option *ngFor="let s of statuts" [value]="s">{{ s }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Responsable</mat-label>
+              <mat-select #rootResponsableId>
+                <mat-option value="">Aucun</mat-option>
+                <mat-option *ngFor="let r of responsables" [value]="r.id">{{ r.nom }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <button mat-flat-button color="primary"
+              (click)="confirmAddChild(null, rootNom.value, rootDescription.value, rootDateDebut.value, rootDateFin.value, rootStatut.value, rootResponsableId.value)">
+              enregistrer
             </button>
-            <ng-container *ngIf="editNode === node && editMode === 'edit'; else displayNom">
-              <input #editInput matInput [value]="node.nom" style="width: 200px; margin-right: 8px;">
-              <button mat-icon-button color="primary" (click)="confirmEdit(node, editInput.value)">
-                <mat-icon>check</mat-icon>
-              </button>
-              <button mat-icon-button color="warn" (click)="cancelEdit()">
-                <mat-icon>close</mat-icon>
-              </button>
-            </ng-container>
-            <ng-template #displayNom>
-              <span>{{ node.nom }}</span>
-            </ng-template>
-            <button mat-icon-button color="primary" (click)="addChild(node)">
-              <mat-icon>add</mat-icon>
-            </button>
-            <button mat-icon-button color="accent" (click)="startEdit(node)">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" (click)="deleteNode(node)">
-              <mat-icon>delete</mat-icon>
+            <button mat-flat-button [ngStyle]="{'background-color':'red'}" (click)="cancelEdit()">
+              annuler
             </button>
           </div>
-          <!-- Champ d'ajout sous le nœud sélectionné pour l'ajout -->
-          <div *ngIf="editNode === node && editMode === 'add'"
-            style="margin-left: 40px; display: flex; align-items: center;">
-            <input #childInput matInput placeholder="Nom de la sous-phase" style="width: 200px; margin-right: 8px;">
-            <button mat-icon-button color="primary" (click)="confirmAddChild(node, childInput.value)">
-              <mat-icon>check</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" (click)="cancelEdit()">
-              <mat-icon>close</mat-icon>
-            </button>
-          </div>
-          <div *ngIf="treeControl.isExpanded(node)">
-            <ng-container matTreeNodeOutlet></ng-container>
-          </div>
-        </mat-nested-tree-node>
-      </mat-tree>
-      <div>
-        <button mat-button matStepperPrevious>Précédent</button>
-        <button mat-raised-button color="primary" (click)="onSubmit()">Terminer</button>
+        </div>
+        <div class="reste_corps">
+          <!-- L'arbre des phases -->
+          <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" [ngStyle]="{'height.%':'100'}">
+            <mat-nested-tree-node *matTreeNodeDef="let node">
+              <div class="mat-tree-node" matTreeNodePadding>
+                <button mat-icon-button matTreeNodeToggle *ngIf="hasChild(0, node)"
+                  [attr.aria-label]="'expand ' + node.nom">
+                  <mat-icon>
+                    {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+                  </mat-icon>
+                </button>
+                <!-- Edition inline -->
+                <ng-container *ngIf="editNode === node && editMode === 'edit'; else displayNom">
+                  <div>
+                    <mat-form-field appearance="outline" style="width: 140px; margin-right: 8px;">
+                      <mat-label>Nom</mat-label>
+                      <input matInput #editNom [value]="node.nom">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" style="width: 140px; margin-right: 8px;">
+                      <mat-label>Description</mat-label>
+                      <input matInput #editDescription [value]="node.description">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" style="width: 140px; margin-right: 8px;">
+                      <mat-label>Date début</mat-label>
+                      <input matInput [matDatepicker]="editPickerDebut" #editDateDebut [value]="node.dateDebut">
+                      <mat-datepicker-toggle matSuffix [for]="editPickerDebut"></mat-datepicker-toggle>
+                      <mat-datepicker #editPickerDebut></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" style="width: 140px; margin-right: 8px;">
+                      <mat-label>Date fin</mat-label>
+                      <input matInput [matDatepicker]="editPickerFin" #editDateFin [value]="node.dateFin">
+                      <mat-datepicker-toggle matSuffix [for]="editPickerFin"></mat-datepicker-toggle>
+                      <mat-datepicker #editPickerFin></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" style="width: 140px; margin-right: 8px;">
+                      <mat-label>Statut</mat-label>
+                      <mat-select #editStatut [value]="node.statut">
+                        <mat-option *ngFor="let s of statuts" [value]="s">{{ s }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" style="width: 140px; margin-right: 8px;">
+                      <mat-label>Responsable</mat-label>
+                      <mat-select #editResponsableId [value]="node.responsableId">
+                        <mat-option value="">Aucun</mat-option>
+                        <mat-option *ngFor="let r of responsables" [value]="r.id">{{ r.nom }}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <!-- Tableau des documents de la phase -->
+                  <div *ngIf="node.documents?.length" style="margin: 12px 0 12px 40px;">
+                    <table mat-table [dataSource]="node.documents" class="mat-elevation-z1" style="width: 100%;">
+                      <!-- Titre -->
+                      <ng-container matColumnDef="titre">
+                        <th mat-header-cell *matHeaderCellDef>Titre</th>
+                        <td mat-cell *matCellDef="let doc">{{ doc.titre }}</td>
+                      </ng-container>
+                      <!-- Type -->
+                      <ng-container matColumnDef="type">
+                        <th mat-header-cell *matHeaderCellDef>Type</th>
+                        <td mat-cell *matCellDef="let doc">{{ doc.type }}</td>
+                      </ng-container>
+                      <!-- Date de création -->
+                      <ng-container matColumnDef="createdAt">
+                        <th mat-header-cell *matHeaderCellDef>Créé le</th>
+                        <td mat-cell *matCellDef="let doc">{{ doc.createdAt|date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+                      </ng-container>
+                      <!-- Date de modification -->
+                      <ng-container matColumnDef="updatedAt">
+                        <th mat-header-cell *matHeaderCellDef>Modifié le</th>
+                        <td mat-cell *matCellDef="let doc">{{ doc.updatedAt|date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+                      </ng-container>
+                      <!-- Télécharger -->
+                      <ng-container matColumnDef="download">
+                        <th mat-header-cell *matHeaderCellDef>Télécharger</th>
+                        <td mat-cell *matCellDef="let doc">
+                          <a [href]="doc.url" target="_blank">
+                            <button mat-icon-button color="primary">
+                              <mat-icon>download</mat-icon>
+                            </button>
+                          </a>
+                        </td>
+                      </ng-container>
+                      <tr mat-header-row *matHeaderRowDef="['titre', 'type', 'createdAt', 'updatedAt', 'download']">
+                      </tr>
+                      <tr mat-row
+                        *matRowDef="let row; columns: ['titre', 'type', 'createdAt', 'updatedAt', 'download'];">
+                      </tr>
+                    </table>
+                  </div>
+                  <button mat-icon-button color="primary"
+                    (click)="confirmEdit(node, editNom.value, editDescription.value, editDateDebut.value, editDateFin.value, editStatut.value, editResponsableId.value)">
+                    <mat-icon>check</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="cancelEdit()">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </ng-container>
+
+                <!-- Ajout sous le nœud -->
+                <div *ngIf="editNode === node && editMode === 'add'"
+                  style="margin-left: 40px; display: flex; align-items: center;">
+                  <mat-form-field appearance="outline" style="width: 140px; margin-right: 8px;">
+                    <mat-label>Nom</mat-label>
+                    <input matInput #childNom placeholder="Nom de la sous-phase">
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" style="width: 140px; margin-right: 8px;">
+                    <mat-label>Description</mat-label>
+                    <input matInput #childDescription placeholder="Description">
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" style="width: 140px; margin-right: 8px;">
+                    <mat-label>Date début</mat-label>
+                    <input matInput [matDatepicker]="childPickerDebut" #childDateDebut>
+                    <mat-datepicker-toggle matSuffix [for]="childPickerDebut"></mat-datepicker-toggle>
+                    <mat-datepicker #childPickerDebut></mat-datepicker>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" style="width: 140px; margin-right: 8px;">
+                    <mat-label>Date fin</mat-label>
+                    <input matInput [matDatepicker]="childPickerFin" #childDateFin>
+                    <mat-datepicker-toggle matSuffix [for]="childPickerFin"></mat-datepicker-toggle>
+                    <mat-datepicker #childPickerFin></mat-datepicker>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" style="width: 140px; margin-right: 8px;">
+                    <mat-label>Statut</mat-label>
+                    <mat-select #childStatut>
+                      <mat-option *ngFor="let s of statuts" [value]="s">{{ s }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" style="width: 140px; margin-right: 8px;">
+                    <mat-label>Responsable</mat-label>
+                    <mat-select #childResponsableId>
+                      <mat-option value="">Aucun</mat-option>
+                      <mat-option *ngFor="let r of responsables" [value]="r.id">{{ r.nom }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <button mat-icon-button color="primary"
+                    (click)="confirmAddChild(node, childNom.value, childDescription.value, childDateDebut.value, childDateFin.value, childStatut.value, childResponsableId.value)">
+                    <mat-icon>check</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="cancelEdit()">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+
+
+                <ng-template #displayNom>
+                  <span>{{ node.nom }}</span>
+                </ng-template>
+                <button mat-icon-button color="primary" (click)="addChild(node)">
+                  <mat-icon>add</mat-icon>
+                </button>
+                <button mat-icon-button color="accent" (click)="startEdit(node)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="deleteNode(node)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+              <div *ngIf="treeControl.isExpanded(node)">
+                <ng-container matTreeNodeOutlet></ng-container>
+              </div>
+            </mat-nested-tree-node>
+          </mat-tree>
+
+        </div>
+      </div>
+      <div class="actions">
+        <div class="action1">
+          <button mat-flat-button matStepperPrevious style="width: 200px;">
+            <mat-icon>arrow_back</mat-icon>
+            Précédent
+          </button>
+        </div>
+        <div class="action3">
+          <button mat-flat-button color="primary" (click)="onSubmit()"
+            [disabled]="!programmeForm().valid">Terminer</button>
+        </div>
       </div>
     </div>
+    <div class="row">
+      <button mat-flat-button color="warning" (click)="close()" [disabled]="programmeForm().invalid">Quitter</button>
+    </div>
   </mat-step>
+
 </mat-stepper>
-<div class="row" [ngStyle]="{'justify-content': 'center'}">
-  <button mat-flat-button color="warning" (click)="close()">Quitter</button>
-</div>

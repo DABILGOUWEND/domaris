@@ -737,7 +737,7 @@ export interface phases {
   dateFin: Date | any;
   statut: 'En attente' | 'En cours' | 'Terminée';
   responsableId: string;
-
+  documents:documents[]; // URLs des documents associés à la phase
   children: phases[]
 }
 
@@ -765,6 +765,13 @@ export interface DocumentProgramme {
   type: string; // ex: "pdf", "image"
   url: string;
   phaseId?: string;
+}
+export interface documents {
+  titre: string;
+  type: string; // ex: "pdf", "image"
+  url: string;
+  createdAt?: Date | any;
+  updatedAt?: Date | any;
 }
 export interface tab_programmeStore {
   programmes_data: any[];

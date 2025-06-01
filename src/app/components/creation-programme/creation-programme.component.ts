@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
+import { Component, computed, effect, forwardRef, inject, input, output, signal, ViewChild } from '@angular/core';
 import { ProgrammeStore } from '../../stores/appstore';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -9,6 +9,8 @@ import { MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule, MatTreeNestedDa
 import { FlatTreeControl, NestedTreeControl } from '@angular/cdk/tree';
 import { child } from '@angular/fire/database';
 import { phases } from '../../modeles/models';
+import { StorageService } from '../../services/storage.service';
+import { MatStepper } from '@angular/material/stepper';
 // Assuming you have a file with country data
 const my_countries = countries; // Extracting country names
 @Component({
@@ -18,9 +20,9 @@ const my_countries = countries; // Extracting country names
   styleUrl: './creation-programme.component.scss'
 })
 export class CreationProgrammeComponent {
-// injections
+  // injections
   _programme_store = inject(ProgrammeStore);
-
+ @ViewChild('stepper') stepper!: MatStepper;
   // signals inputs
   isUpdated = input.required<boolean>();
   donneesProgramme = input<any>();
@@ -34,7 +36,21 @@ export class CreationProgrammeComponent {
 
   // computed signals
   Phases = computed(() => {
-    return this.donneesProgramme() != undefined ? this.donneesProgramme()?.phases : [];
+    return this.donneesProgramme() != undefined ? this.donneesProgramme()?.phases.map(
+      (phase: phases) => {
+        let documents = phase.documents;
+        let modif_doc=documents.map((doc: any) => {
+          return { ...doc,
+            createdAt: doc.createdAt.toDate() ,
+             updatedAt: doc.updatedAt.toDate() }
+        })
+
+        return {
+        ...phase, documents: modif_doc
+      }
+      
+      }
+    ) : [];
   });
 
   // others data
@@ -49,12 +65,22 @@ export class CreationProgrammeComponent {
   successMessage = '';
   treeControl = new NestedTreeControl<any>(node => node.children);
   dataSource = new MatTreeNestedDataSource<any>();
+
   editNode: any = null;
   editMode: 'add' | 'edit' | null = null;
+  fileUrl: string | null = null;
+  lastFilePath: string | null = null;
+  responsables = [
+    { id: '1', nom: 'Responsable 1' },
+
+    { id: '2', nom: 'Responsable 2' },
+    { id: '3', nom: 'Responsable 3' },
+    { id: '4', nom: 'Responsable 4' }
+  ];
 
   constructor(
-    private fb: FormBuilder,
-    private snackBar: MatSnackBar
+    private storageService: StorageService,
+    private fb: FormBuilder
   ) {
     this.phasesForm = this.fb.group({
       nom: ['', Validators.required],
@@ -86,13 +112,6 @@ export class CreationProgrammeComponent {
     this.editMode = 'add';
   }
 
-  confirmAddChild(node: any, inputValue: string) {
-    if (!node.children) node.children = [];
-    node.children.push({ nom: inputValue, children: [] });
-    this.dataSource.data = [...this.dataSource.data];
-    this.editNode = null;
-    this.editMode = null;
-  }
 
   // Edition d'une phase
   startEdit(node: any) {
@@ -100,12 +119,7 @@ export class CreationProgrammeComponent {
     this.editMode = 'edit';
   }
 
-  confirmEdit(node: any, inputValue: string) {
-    node.nom = inputValue;
-    this.dataSource.data = [...this.dataSource.data];
-    this.editNode = null;
-    this.editMode = null;
-  }
+
 
   cancelEdit() {
     this.editNode = null;
@@ -128,7 +142,53 @@ export class CreationProgrammeComponent {
     removeNode(this.dataSource.data);
     this.dataSource.data = [...this.dataSource.data];
   }
+  confirmEdit(
+    node: any,
+    nom: string,
+    description: string,
+    dateDebut: string,
+    dateFin: string,
+    statut: string,
+    responsableId: string
+  ) {
+    node.nom = nom;
+    node.description = description;
+    node.dateDebut = dateDebut;
+    node.dateFin = dateFin;
+    node.statut = statut;
+    node.responsableId = responsableId;
+    this.dataSource.data = [...this.dataSource.data];
+    this.editNode = null;
+    this.editMode = null;
+  }
 
+  confirmAddChild(
+    node: any,
+    nom: string,
+    description: string,
+    dateDebut: string,
+    dateFin: string,
+    statut: string,
+    responsableId: string
+  ) {
+    const newPhase = {
+      nom,
+      description,
+      dateDebut,
+      dateFin,
+      statut,
+      responsableId,
+      children: []
+    };
+    if (node) {
+      if (!node.children) node.children = [];
+      node.children.push(newPhase);
+    } else {
+      this.dataSource.data = [...this.dataSource.data, newPhase];
+    }
+    this.editNode = null;
+    this.editMode = null;
+  }
   ngOnInit() {
     this._programme_store.loadAllData();
   }
@@ -141,6 +201,7 @@ export class CreationProgrammeComponent {
     this.isLoading = true;
     this.errorMessage = '';
     this.successMessage = '';
+    let phases = this.dataSource.data;
     const formData = this.programmeForm().value;
     if (this.isUpdated()) {
       let date = new Date();
@@ -151,7 +212,7 @@ export class CreationProgrammeComponent {
         dateFin: formData.dateFin.toLocaleDateString(),
         createdAt: this.donneesProgramme()?.createdAt,
         updatedAt: date,
-        phases: this.donneesProgramme()?.phases || [],
+        phases: phases || [],
       });
     } else {
       let date = new Date();
@@ -161,9 +222,7 @@ export class CreationProgrammeComponent {
         dateFin: formData.dateFin.toLocaleDateString(),
         createdAt: date,
         updatedAt: date,
-        phases: [
-          // ...exemple de phases par défaut...
-        ],
+        phases: phases || []
       });
     }
     this.close_event.emit();
@@ -175,6 +234,37 @@ export class CreationProgrammeComponent {
 
   save() {
     // Optionnel : logique de sauvegarde supplémentaire
+  }
+
+  async onUpload(event: any, node: any) {
+    const file: File = event.target.files[0];
+    if (file && node) {
+      const url = await this.storageService.uploadFile('uploads/' + file.name, file);
+      const now = new Date();
+      const document = {
+        titre: file.name,
+        url: url,
+        type: file.type,
+        createdAt: now,
+        updatedAt: now
+      };
+      if (!node.documents) node.documents = [];
+      node.documents.push(document);
+      this.dataSource.data = [...this.dataSource.data]; // Rafraîchir la vue
+    }
+  }
+
+  async onGetUrl() {
+    const url = await this.storageService.getFileUrl('uploads/nom-du-fichier');
+    console.log('URL du fichier:', url);
+  }
+
+  async onDelete() {
+    await this.storageService.deleteFile('uploads/nom-du-fichier');
+    console.log('Fichier supprimé');
+  }
+  isLastStep(): boolean {
+    return this.stepper && this.stepper.selectedIndex === this.stepper.steps.length - 1;
   }
 }
 

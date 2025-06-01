@@ -5929,16 +5929,18 @@ th {
   }
 
 }
+
 .login mat-card {
   border-radius: 10px;
- 
+
   width: 100%;
   max-width: 400px;
 }
+
 .login mat-card-header {
   padding: 0;
   width: 100%;
-  display: flex ;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
@@ -5947,31 +5949,37 @@ th {
   font-size: 1.5rem;
   font-weight: bold;
 }
+
 .login mat-card-content {
   padding: 20px;
 
 }
-.login mat-form-field{
+
+.login mat-form-field {
   width: 80%;
   margin-bottom: 1rem;
   font-size: 1.2rem;
 }
+
 .login mat-card-content .message {
   margin: 5px;
   padding: 0px;
 }
+
 .spinner {
   display: flex;
   justify-content: center;
   align-items: center;
-  mat-spinner{
+
+  mat-spinner {
     margin: 0;
   }
 }
+
 .dashboard {
-  max-width: 1400px;      // Augmente la largeur maximale
-  margin: 2rem auto;      // Centre le dashboard
-  padding: 2rem 2rem;     // Réduit les marges internes latérales
+  max-width: 1400px; // Augmente la largeur maximale
+  margin: 2rem auto; // Centre le dashboard
+  padding: 2rem 2rem; // Réduit les marges internes latérales
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   min-height: 100vh;
 }
@@ -5994,22 +6002,25 @@ th {
 .dashboard-kpis mat-card {
   background: white;
   border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(63,81,181,0.08);
+  box-shadow: 0 2px 8px rgba(63, 81, 181, 0.08);
   padding: 1.5rem 0.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   transition: transform 0.2s;
 }
+
 .dashboard-kpis mat-card:hover {
   transform: translateY(-5px) scale(1.03);
-  box-shadow: 0 4px 16px rgba(63,81,181,0.15);
+  box-shadow: 0 4px 16px rgba(63, 81, 181, 0.15);
 }
+
 .dashboard-kpis h2 {
   font-size: 2rem;
   color: #3f51b5;
   margin: 0;
 }
+
 .dashboard-kpis p {
   font-size: 1.1rem;
   color: #666;
@@ -6042,20 +6053,23 @@ th {
   min-height: 80vh;
   background: #f5f7fa;
 }
+
 .home-hero {
-  max-width: 500px;   // augmente la largeur (ex : 700px ou plus)
-  margin: 0 auto;     // centre la section
+  max-width: 500px; // augmente la largeur (ex : 700px ou plus)
+  margin: 0 auto; // centre la section
   background: #fff;
   padding: 3rem 3rem; // augmente le padding si besoin
   border-radius: 14px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   text-align: center;
 }
+
 .home-hero h1 {
   margin-bottom: 1.2rem;
   font-size: 2.2rem;
   font-weight: 700;
 }
+
 .home-hero p {
   margin-bottom: 2rem;
   color: #555;
@@ -6092,7 +6106,7 @@ a.btn_deconnecter {
 }
 
 a.btn:hover {
-  background-color:gray;
+  background-color: gray;
   color: #fff;
   text-decoration: none;
 }
@@ -6103,7 +6117,7 @@ a.btn:hover {
   padding: 2rem 2.5rem;
   background: #fff;
   border-radius: 14px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
 }
 
 h2 {
@@ -6207,10 +6221,12 @@ button[type="submit"] {
     gap: 0.7rem;
     padding: 0 1rem;
   }
+
   .footer-copy {
     margin-left: 0;
   }
 }
+
 //header styles
 .header {
   display: flex;
@@ -6218,7 +6234,7 @@ button[type="submit"] {
   justify-content: space-between;
   padding: 0 24px;
   height: 64px;
-   background: linear-gradient(90deg, #1976d2 0%, #2196f3 100%);
+  background: linear-gradient(90deg, #1976d2 0%, #2196f3 100%);
   color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -6260,12 +6276,15 @@ button[type="submit"] {
     padding: 12px;
     text-align: center;
   }
+
   .nav-links {
     flex-direction: column;
     gap: 0.5rem;
     margin-top: 10px;
   }
-  .nav-links a, .username {
+
+  .nav-links a,
+  .username {
     margin-left: 0;
   }
 }
@@ -6296,13 +6315,13 @@ button[type="submit"] {
   color: #2563eb;
   font-weight: bold;
 }
+
 .programme-container {
-  max-width: 600px;
+  width: 80%;
   margin: 40px auto;
-  padding: 2.5rem 2rem;
-  background: #fff;
+  padding: 1.5rem 1rem;
   border-radius: 14px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
 }
 
 .programme-container h2 {
@@ -6341,20 +6360,24 @@ button[mat-raised-button] {
   margin-top: 1rem;
   text-align: center;
 }
+
 .double-col .row {
   display: flex;
   gap: 1.5rem;
   margin-bottom: 0.5rem;
 }
+
 .double-col .form-group {
   flex: 1 1 0;
 }
+
 @media (max-width: 800px) {
   .double-col .row {
     flex-direction: column;
     gap: 0.5rem;
   }
 }
+
 .btn-valider {
   min-width: 180px;
   max-width: 220px;
@@ -6363,11 +6386,12 @@ button[mat-raised-button] {
   align-items: center;
   justify-content: center;
 }
+
 .admin-table-drawer-container {
   min-height: 1000px;
 
   mat-drawer {
-    width: 50%;
+    width: 80%;
 
     .table-update {
       .table-update__header {
@@ -6673,4 +6697,96 @@ button[mat-raised-button] {
       align-content: center;
     }
   }
+}
+
+.phases-container {
+  display: grid;
+  grid-template-rows: 0.1fr 0.1fr 5fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "entete entete"
+    "sous_entete sous_entete"
+    "corps corps"
+    "actions actions";
+  gap: 0.5rem;
+}
+
+.entete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-area: entete;
+  padding: 0px;
+  border: 1px solid;
+}
+
+.sous_entete {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  grid-area: sous_entete;
+  border: 1px solid;
+}
+
+.corps {
+  display: grid;
+  grid-template-areas:
+    "entete_saisie" "reste_corps";
+  grid-area: corps;
+  grid-template-rows: 1fr 3fr;
+}
+.entete_saisie{
+  grid-area: "entete_saisie";
+  padding: 20px;
+  border: 2px solid ;
+}
+.reste_corps{
+  padding: 20px;
+  grid-area: "reste_corps";
+  border: 2px solid ;
+}
+
+.actions {
+  grid-area: actions;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "entete_saisie entete_saisie"
+    "action1 action1"
+    "action3 action3";
+  grid-template-rows: auto 1fr 1fr;
+  gap: 10px;
+  display: grid;
+}
+
+.action1 {
+  grid-area: action1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.action2 {
+  grid-area: action2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.action3 {
+  grid-area: action3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.affichage_noeud {
+  display: grid;
+  grid-template-rows: 1fr 2fr 1fr;
+  gap: 10px;
+  /* Espace entre les éléments */
+  margin-top: 20px;
+  margin-bottom: 20px;
 }

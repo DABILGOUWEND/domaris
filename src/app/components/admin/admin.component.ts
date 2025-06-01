@@ -83,7 +83,6 @@ export class AdminComponent implements OnInit {
       responsableId: ['', Validators.required]
     });
     effect(() => {
-      console.log(this._programme_store.getPhases())
     })
   }
   ngOnInit() {
