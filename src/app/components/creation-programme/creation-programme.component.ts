@@ -58,8 +58,10 @@ export class CreationProgrammeComponent {
   statuts = ['Planifié', 'En cours', 'Terminé', 'Suspendu'];
   pays = my_countries;
   phasesForm: FormGroup;
+  phaseForm: FormGroup;
   budgetsForm: FormGroup;
   depensesForm: FormGroup;
+  noeud_racine:FormGroup;
   isLoading = false;
   errorMessage = '';
   successMessage = '';
@@ -77,11 +79,18 @@ export class CreationProgrammeComponent {
     { id: '3', nom: 'Responsable 3' },
     { id: '4', nom: 'Responsable 4' }
   ];
-
   constructor(
     private storageService: StorageService,
     private fb: FormBuilder
   ) {
+    this.phaseForm = this.fb.group({
+      nom: ['', Validators.required],
+      description: ['', Validators.required],
+      dateDebut: ['', Validators.required],
+      dateFin: ['', Validators.required],
+      statut: ['', Validators.required],
+      responsableId: ['', Validators.required],
+    });
     this.phasesForm = this.fb.group({
       nom: ['', Validators.required],
       description: ['', Validators.required],
@@ -97,6 +106,15 @@ export class CreationProgrammeComponent {
       description: ['', Validators.required],
       url_document: ['', Validators.required],
     });
+    this.noeud_racine = this.fb.group({
+      nom: ['', Validators.required],
+      description: ['', Validators.required],
+      dateDebut: ['', Validators.required],
+      dateFin: ['', Validators.required],
+      statut: ['', Validators.required],
+      responsableId: ['', Validators.required],
+    })
+
     effect(() => {
       const phases = this.Phases() || [];
       this.dataSource.data = phases;
@@ -107,20 +125,25 @@ export class CreationProgrammeComponent {
   hasChild = (_: number, node: any) => !!node.children && node.children.length > 0;
 
   // Ajout d'une sous-phase
-  addChild(node: any) {
-    this.editNode = node;
-    this.editMode = 'add';
-  }
-
+addChild(node: any) {
+  this.editNode = node;
+  this.editMode = 'add';
+  this.phaseForm.reset();
+}
 
   // Edition d'une phase
-  startEdit(node: any) {
-    this.editNode = node;
-    this.editMode = 'edit';
-  }
-
-
-
+startEdit(node: any) {
+  this.editNode = node;
+  this.editMode = 'edit';
+  this.phaseForm.patchValue({
+    nom: node.nom,
+    description: node.description,
+    dateDebut: node.dateDebut,
+    dateFin: node.dateFin,
+    statut: node.statut,
+    responsableId: node.responsableId
+  });
+}
   cancelEdit() {
     this.editNode = null;
     this.editMode = null;
@@ -227,6 +250,27 @@ export class CreationProgrammeComponent {
     }
     this.close_event.emit();
   }
+
+onPhaseFormSubmit(parentNode: any, mode: 'add' | 'edit') {
+  if (this.phaseForm.valid) {
+    const values = this.phaseForm.value;
+    if (mode === 'edit') {
+      Object.assign(this.editNode, values);
+    } else {
+      const newPhase = { ...values, documents: [], children: [] };
+      if (parentNode) {
+        if (!parentNode.children) parentNode.children = [];
+        parentNode.children.push(newPhase);
+      } else {
+        this.dataSource.data = [...this.dataSource.data, newPhase];
+      }
+    }
+    this.dataSource.data = [...this.dataSource.data];
+    this.editNode = null;
+    this.editMode = null;
+  }
+}
+
 
   close() {
     this.close_event.emit();
