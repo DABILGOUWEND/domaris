@@ -11,6 +11,7 @@ import { child } from '@angular/fire/database';
 import { phases } from '../../modeles/models';
 import { StorageService } from '../../services/storage.service';
 import { MatStepper } from '@angular/material/stepper';
+import { UtilitairesService } from '../../services/utilitaires.service';
 // Assuming you have a file with country data
 const my_countries = countries; // Extracting country names
 @Component({
@@ -22,7 +23,8 @@ const my_countries = countries; // Extracting country names
 export class CreationProgrammeComponent {
   // injections
   _programme_store = inject(ProgrammeStore);
- @ViewChild('stepper') stepper!: MatStepper;
+  _utilitaires = inject(UtilitairesService)
+  @ViewChild('stepper') stepper!: MatStepper;
   // signals inputs
   isUpdated = input.required<boolean>();
   donneesProgramme = input<any>();
@@ -39,16 +41,20 @@ export class CreationProgrammeComponent {
     return this.donneesProgramme() != undefined ? this.donneesProgramme()?.phases.map(
       (phase: phases) => {
         let documents = phase.documents;
-        let modif_doc=documents.map((doc: any) => {
-          return { ...doc,
-            createdAt: doc.createdAt.toDate() ,
-             updatedAt: doc.updatedAt.toDate() }
+        let modif_doc = documents.map((doc: any) => {
+          return {
+            ...doc,
+            createdAt: doc.createdAt.toDate(),
+            updatedAt: doc.updatedAt.toDate()
+          }
         })
-
+        let date_debut = phase.dateDebut
+        let date_fin = phase.dateFin
         return {
-        ...phase, documents: modif_doc
-      }
-      
+          ...phase,
+          documents: modif_doc
+        }
+
       }
     ) : [];
   });
@@ -61,7 +67,7 @@ export class CreationProgrammeComponent {
   phaseForm: FormGroup;
   budgetsForm: FormGroup;
   depensesForm: FormGroup;
-  noeud_racine:FormGroup;
+  noeud_racine: FormGroup;
   isLoading = false;
   errorMessage = '';
   successMessage = '';
@@ -86,8 +92,8 @@ export class CreationProgrammeComponent {
     this.phaseForm = this.fb.group({
       nom: ['', Validators.required],
       description: ['', Validators.required],
-      dateDebut: ['', Validators.required],
-      dateFin: ['', Validators.required],
+      dateDebut: [new Date(), Validators.required],
+      dateFin: [new Date(), Validators.required],
       statut: ['', Validators.required],
       responsableId: ['', Validators.required],
     });
@@ -125,25 +131,26 @@ export class CreationProgrammeComponent {
   hasChild = (_: number, node: any) => !!node.children && node.children.length > 0;
 
   // Ajout d'une sous-phase
-addChild(node: any) {
-  this.editNode = node;
-  this.editMode = 'add';
-  this.phaseForm.reset();
-}
+  addChild(node: any) {
+    this.editNode = node;
+    this.editMode = 'add';
+    this.phaseForm.reset();
+  }
 
   // Edition d'une phase
-startEdit(node: any) {
-  this.editNode = node;
-  this.editMode = 'edit';
-  this.phaseForm.patchValue({
-    nom: node.nom,
-    description: node.description,
-    dateDebut: node.dateDebut,
-    dateFin: node.dateFin,
-    statut: node.statut,
-    responsableId: node.responsableId
-  });
-}
+  startEdit(node: any) {
+    this.editNode = node;
+    this.editMode = 'edit';
+    console.log(this._utilitaires.convertDate(node.dateDebut) )
+    this.phaseForm.patchValue({
+      nom: node.nom,
+      description: node.description,
+      dateDebut: this._utilitaires.convertDate(node.dateDebut)  ,
+      dateFin: node.dateFin,
+      statut: node.statut,
+      responsableId: node.responsableId
+    });
+  }
   cancelEdit() {
     this.editNode = null;
     this.editMode = null;
@@ -251,25 +258,25 @@ startEdit(node: any) {
     this.close_event.emit();
   }
 
-onPhaseFormSubmit(parentNode: any, mode: 'add' | 'edit') {
-  if (this.phaseForm.valid) {
-    const values = this.phaseForm.value;
-    if (mode === 'edit') {
-      Object.assign(this.editNode, values);
-    } else {
-      const newPhase = { ...values, documents: [], children: [] };
-      if (parentNode) {
-        if (!parentNode.children) parentNode.children = [];
-        parentNode.children.push(newPhase);
+  onPhaseFormSubmit(parentNode: any, mode: 'add' | 'edit') {
+    if (this.phaseForm.valid) {
+      const values = this.phaseForm.value;
+      if (mode === 'edit') {
+        Object.assign(this.editNode, values);
       } else {
-        this.dataSource.data = [...this.dataSource.data, newPhase];
+        const newPhase = { ...values, documents: [], children: [] };
+        if (parentNode) {
+          if (!parentNode.children) parentNode.children = [];
+          parentNode.children.push(newPhase);
+        } else {
+          this.dataSource.data = [...this.dataSource.data, newPhase];
+        }
       }
+      this.dataSource.data = [...this.dataSource.data];
+      this.editNode = null;
+      this.editMode = null;
     }
-    this.dataSource.data = [...this.dataSource.data];
-    this.editNode = null;
-    this.editMode = null;
   }
-}
 
 
   close() {
