@@ -40,7 +40,6 @@ export class AuthService {
       signInWithEmailAndPassword(this._auth, email, password)
         .then((userCredential) => {
           const user = userCredential.user;
-
           this.handleCreateUser(user).subscribe({
             next: () => {
               this.userLoggedIn.set(true);
@@ -96,7 +95,7 @@ export class AuthService {
     }))
   };
   addUser(data: any): Observable<any> {
-    const docRef = setDoc(doc(this.db, 'myusers/' + data.id), data)
+    const docRef = setDoc(doc(this.db, 'domaris_users/' + data.id), data)
     return from(docRef)
   }
 
@@ -138,7 +137,7 @@ export class AuthService {
 
   }
   getallUsersByUid(uid: string): Observable<any> {
-    const docRef = doc(this.db, "myusers", uid);
+    const docRef = doc(this.db, "domaris_users", uid);
     const docSnap = getDoc(docRef);
     return from(docSnap)
   }
@@ -167,7 +166,7 @@ getCurrentUserRole(): Observable<string> {
     switchMap(user => {
       if (!user) return of('guest');
       // Utilise Firestore pour récupérer le rôle de l'utilisateur
-      const docRef = doc(this.db, "myusers", user.uid);
+      const docRef = doc(this.db, "domaris_users", user.uid);
       return from(getDoc(docRef)).pipe(
         map((snap: any) => {
           const data = snap.data();

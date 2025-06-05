@@ -1,4 +1,4 @@
-import { Component, computed, effect, forwardRef, inject, input, output, signal, ViewChild } from '@angular/core';
+import { Component, computed, effect, forwardRef, inject, input, linkedSignal, output, signal, ViewChild } from '@angular/core';
 import { ProgrammeStore } from '../../stores/appstore';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -32,6 +32,7 @@ export class CreationProgrammeComponent {
   donnees_phases = input<any>();
   programmeForm = input.required<FormGroup>();
   phasesFormGroup = input.required<FormGroup>();
+  users= input.required<any[]>();
 
   // output
   close_event = output();
@@ -48,8 +49,6 @@ export class CreationProgrammeComponent {
             updatedAt: doc.updatedAt.toDate()
           }
         })
-        let date_debut = phase.dateDebut
-        let date_fin = phase.dateFin
         return {
           ...phase,
           documents: modif_doc
@@ -78,13 +77,15 @@ export class CreationProgrammeComponent {
   editMode: 'add' | 'edit' | null = null;
   fileUrl: string | null = null;
   lastFilePath: string | null = null;
-  responsables = [
-    { id: '1', nom: 'Responsable 1' },
+  responsables = computed(() => {
+    return this.users().map(user => {
+      return {
+        id: user.id,
+        name: `${user.prenom} ${user.nom}`
+      };
+    });
 
-    { id: '2', nom: 'Responsable 2' },
-    { id: '3', nom: 'Responsable 3' },
-    { id: '4', nom: 'Responsable 4' }
-  ];
+  })
   constructor(
     private storageService: StorageService,
     private fb: FormBuilder
@@ -141,12 +142,11 @@ export class CreationProgrammeComponent {
   startEdit(node: any) {
     this.editNode = node;
     this.editMode = 'edit';
-    console.log(this._utilitaires.convertDate(node.dateDebut) )
     this.phaseForm.patchValue({
       nom: node.nom,
       description: node.description,
       dateDebut: this._utilitaires.convertDate(node.dateDebut)  ,
-      dateFin: node.dateFin,
+      dateFin: this._utilitaires.convertDate(node.dateFin),
       statut: node.statut,
       responsableId: node.responsableId
     });

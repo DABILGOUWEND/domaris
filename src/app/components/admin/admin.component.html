@@ -3,6 +3,7 @@
     <app-creation-programme [donneesProgramme]="selectedProgrammme()" [isUpdated]="is_updated()"
       [donnees_phases]="donnees_phases()" [is_opened]="is_opened()" [programmeForm]="mformgroup" 
       [phasesFormGroup]="phasesformgroup"
+      [users]="_users_store.users()" 
       (close_event)="close_drawer()" />
   </mat-drawer>
   <mat-drawer-content>

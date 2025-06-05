@@ -381,7 +381,7 @@ export const UserStore = signalStore(
       },
 
       loadUsers: rxMethod<void>(pipe(switchMap(() => {
-        return _task_service.getallModels("myusers").pipe(
+        return _task_service.getallModels("domaris_users").pipe(
           tap((data) => {
             patchState(store, { users_data: data })
           })

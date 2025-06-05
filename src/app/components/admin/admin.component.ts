@@ -6,7 +6,7 @@ import { CreationProgrammeComponent } from '../creation-programme/creation-progr
 import { Programme } from '../../modeles/models';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatRow, MatTableDataSource } from '@angular/material/table';
-import { ProgrammeStore } from '../../stores/appstore';
+import { ProgrammeStore, UserStore } from '../../stores/appstore';
 import { AuthService } from '../../auth/services/auth.service';
 import { UtilitairesService } from '../../services/utilitaires.service';
 
@@ -20,7 +20,10 @@ export class AdminComponent implements OnInit {
   //injections
   _programme_store = inject(ProgrammeStore);
   _auth_service = inject(AuthService);
-  _utilitaires = inject(UtilitairesService)
+  _utilitaires = inject(UtilitairesService);
+  _users_store = inject(UserStore);
+
+  
   //signals
   selectedProgrammme = signal<any | undefined>(undefined);
   is_updated = signal(false);
@@ -86,6 +89,7 @@ export class AdminComponent implements OnInit {
     })
   }
   ngOnInit() {
+    this._users_store.loadUsers();
     this._programme_store.loadAllData()
     if (this._auth_service.userSignal()) {
       this._programme_store.setProgrammeIs(this._auth_service.userSignal().projet_id);

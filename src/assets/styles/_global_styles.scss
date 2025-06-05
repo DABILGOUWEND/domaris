@@ -6368,7 +6368,7 @@ button[mat-raised-button] {
   min-height: 1000px;
 
   mat-drawer {
-    width: 80%;
+    width: 60%!important;
 
     .table-update {
       .table-update__header {
@@ -6678,7 +6678,7 @@ button[mat-raised-button] {
 
 .phases-container {
   display: grid;
-  grid-template-rows: 0.1fr 0.1fr 5fr 1fr;
+  grid-template-rows: 0.1fr 0.1fr 2fr 1fr;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
     "entete entete"
@@ -6686,6 +6686,7 @@ button[mat-raised-button] {
     "corps corps"
     "actions actions";
   gap: 0.5rem;
+  width: 100%;
 }
 
 .entete {
@@ -6710,7 +6711,7 @@ button[mat-raised-button] {
   grid-template-areas:
     "entete_saisie" "reste_corps";
   grid-area: corps;
-  grid-template-rows: 1fr 3fr;
+  grid-template-rows: 1fr 2fr;
 }
 
 .entete_saisie {
@@ -6813,6 +6814,7 @@ button[mat-raised-button] {
           box-sizing: border-box;
   padding: 0 0.75rem;
   min-height: 1px;
+  width: 100%;
   mat-form-field {
     width: 100%!important;
    
@@ -7238,7 +7240,10 @@ button[mat-raised-button] {
   }
 }
 
-@media only screen and (min-width: 993px) {
+@media only screen and (max-width: 600px) {
+  mat-drawer{
+    width: 100%;
+  }
   .row .col.l1 {
     width: 8.3333333333%;
     margin-left: auto;
