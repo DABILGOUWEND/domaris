@@ -32,7 +32,7 @@ export class CreationProgrammeComponent {
   donnees_phases = input<any>();
   programmeForm = input.required<FormGroup>();
   phasesFormGroup = input.required<FormGroup>();
-  users= input.required<any[]>();
+  users = input.required<any[]>();
 
   // output
   close_event = output();
@@ -68,13 +68,13 @@ export class CreationProgrammeComponent {
   depensesForm: FormGroup;
   noeud_racine: FormGroup;
   isLoading = false;
-  errorMessage = '';
+  errorMessage = 'Veuillez remplir tous les champs obligatoires';
   successMessage = '';
   treeControl = new NestedTreeControl<any>(node => node.children);
   dataSource = new MatTreeNestedDataSource<any>();
 
   editNode: any = null;
-  editMode: 'add' | 'edit' | null = null;
+  editMode: 'add' | 'edit' | 'addR' | null = null;
   fileUrl: string | null = null;
   lastFilePath: string | null = null;
   responsables = computed(() => {
@@ -92,7 +92,7 @@ export class CreationProgrammeComponent {
   ) {
     this.phaseForm = this.fb.group({
       nom: ['', Validators.required],
-      description: ['', Validators.required],
+      description: [''],
       dateDebut: [new Date(), Validators.required],
       dateFin: [new Date(), Validators.required],
       statut: ['', Validators.required],
@@ -100,7 +100,7 @@ export class CreationProgrammeComponent {
     });
     this.phasesForm = this.fb.group({
       nom: ['', Validators.required],
-      description: ['', Validators.required],
+      description: [''],
       dateDebut: ['', Validators.required],
       dateFin: ['', Validators.required],
       statut: ['', Validators.required],
@@ -115,7 +115,7 @@ export class CreationProgrammeComponent {
     });
     this.noeud_racine = this.fb.group({
       nom: ['', Validators.required],
-      description: ['', Validators.required],
+      description: [''],
       dateDebut: ['', Validators.required],
       dateFin: ['', Validators.required],
       statut: ['', Validators.required],
@@ -137,7 +137,11 @@ export class CreationProgrammeComponent {
     this.editMode = 'add';
     this.phaseForm.reset();
   }
-
+  addChildR() {
+    this.editNode = null;
+    this.editMode = 'addR';
+    this.noeud_racine.reset();
+  }
   // Edition d'une phase
   startEdit(node: any) {
     this.editNode = node;
@@ -145,7 +149,7 @@ export class CreationProgrammeComponent {
     this.phaseForm.patchValue({
       nom: node.nom,
       description: node.description,
-      dateDebut: this._utilitaires.convertDate(node.dateDebut)  ,
+      dateDebut: this._utilitaires.convertDate(node.dateDebut),
       dateFin: this._utilitaires.convertDate(node.dateFin),
       statut: node.statut,
       responsableId: node.responsableId
@@ -181,6 +185,7 @@ export class CreationProgrammeComponent {
     statut: string,
     responsableId: string
   ) {
+    console.log(node)
     node.nom = nom;
     node.description = description;
     node.dateDebut = dateDebut;
@@ -193,29 +198,25 @@ export class CreationProgrammeComponent {
   }
 
   confirmAddChild(
-    node: any,
-    nom: string,
-    description: string,
-    dateDebut: string,
-    dateFin: string,
-    statut: string,
-    responsableId: string
   ) {
-    const newPhase = {
-      nom,
-      description,
-      dateDebut,
-      dateFin,
-      statut,
-      responsableId,
-      children: []
-    };
-    if (node) {
-      if (!node.children) node.children = [];
-      node.children.push(newPhase);
-    } else {
-      this.dataSource.data = [...this.dataSource.data, newPhase];
+    if (this.noeud_racine.invalid) {
+      this.errorMessage = 'Veuillez remplir tous les champs obligatoires.';
+      return;
     }
+    let values = this.noeud_racine.value;
+    const newPhase = {
+      nom: values.nom,
+      description: values.description,
+      dateDebut: values.dateDebut.toLocaleDateString(),
+      dateFin: values.dateFin.toLocaleDateString(),
+      statut: values.statut,
+      responsableId: values.responsableId,
+      children: [],
+      documents: []
+    };
+
+    this.dataSource.data = [...this.dataSource.data, newPhase];
+
     this.editNode = null;
     this.editMode = null;
   }
@@ -264,7 +265,10 @@ export class CreationProgrammeComponent {
       if (mode === 'edit') {
         Object.assign(this.editNode, values);
       } else {
-        const newPhase = { ...values, documents: [], children: [] };
+        const newPhase = { ...values,
+          dateDebut:values.dateDebut.tolocaleDateString(),
+          dateFin:values.dateFin.tolocaleDateString(),
+          documents: [], children: [] };
         if (parentNode) {
           if (!parentNode.children) parentNode.children = [];
           parentNode.children.push(newPhase);
