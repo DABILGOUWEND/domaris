@@ -262,6 +262,7 @@ export class CreationProgrammeComponent {
   onPhaseFormSubmit(parentNode: any, mode: 'add' | 'edit') {
     if (this.phaseForm.valid) {
       const values = this.phaseForm.value;
+      console.log('Phase Form Values:', values);
       if (mode === 'edit') {
         Object.assign(this.editNode, values);
       } else {

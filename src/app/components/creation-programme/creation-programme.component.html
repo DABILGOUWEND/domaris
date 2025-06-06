@@ -248,7 +248,7 @@
     </div>
     <div class="row">
       <div class="col s6">
-        <button mat-flat-button color="primary" type="submit">
+        <button mat-flat-button color="primary" type="submit" [disabled]="phaseForm.invalid" >
           valider
         </button>
       </div>
