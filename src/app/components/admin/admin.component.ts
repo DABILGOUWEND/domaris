@@ -23,7 +23,7 @@ export class AdminComponent implements OnInit {
   _utilitaires = inject(UtilitairesService);
   _users_store = inject(UserStore);
 
-  
+
   //signals
   selectedProgrammme = signal<any | undefined>(undefined);
   is_updated = signal(false);
@@ -39,9 +39,7 @@ export class AdminComponent implements OnInit {
     'dateFin',
     'budgetPrevu',
     'actions'];
-  donnees_phases = computed(() => {
-    return new MatTableDataSource<any>(this._programme_store.getPhases());
-  })
+
   donnees_programmes = computed(() => {
     return new MatTableDataSource<any>(this._programme_store.allProgrammes().map(resp =>
     ({
@@ -55,7 +53,7 @@ export class AdminComponent implements OnInit {
     )
     );
   })
-  
+
   //others data
   mformgroup: FormGroup
   phasesformgroup: FormGroup
@@ -96,7 +94,6 @@ export class AdminComponent implements OnInit {
     }
 
   }
-
   close_drawer() {
     this.is_opened.set(false)
   }
@@ -111,12 +108,19 @@ export class AdminComponent implements OnInit {
     this.is_updated.set(true);
     this._programme_store.setProgrammeIs(row.id);
   }
-  delete_programme(row: any) {
+  delete_programme(id: string) {
+    if(confirm("Voulez-vous vraiment supprimer ce programme ?")) 
+    this._programme_store.removeProgramme(id)
   }
   add_programme() {
     this.mformgroup.reset();
     this.is_updated.set(false);
     this.selectedProgrammme.set(undefined);
     this.is_opened.set(true);
+  }
+  save_data(data: any) {
+    let mydata = { ...this.selectedProgrammme(), phases: data }
+    console.log(mydata);
+    this._programme_store.updateProgramme(mydata)
   }
 }

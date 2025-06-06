@@ -782,7 +782,7 @@ export interface tab_programmeStore {
   path_string: string;
   isLoading?: boolean;
   error?: string | null;
-  data: any[]; // Pour stocker les données des sous-collections
+ 
 }
 export interface budgets {
   id?: string,

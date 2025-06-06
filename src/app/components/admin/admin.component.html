@@ -1,10 +1,8 @@
 <mat-drawer-container class="admin-table-drawer-container">
   <mat-drawer mode="over" position="end" [opened]="is_opened()" disableClose="true">
     <app-creation-programme [donneesProgramme]="selectedProgrammme()" [isUpdated]="is_updated()"
-      [donnees_phases]="donnees_phases()" [is_opened]="is_opened()" [programmeForm]="mformgroup" 
-      [phasesFormGroup]="phasesformgroup"
-      [users]="_users_store.users()" 
-      (close_event)="close_drawer()" />
+      [is_opened]="is_opened()" [programmeForm]="mformgroup" [phasesFormGroup]="phasesformgroup"
+      [users]="_users_store.users()" (close_event)="close_drawer()" (save_event)="save_data($event)" />
   </mat-drawer>
   <mat-drawer-content>
     <div class="row" style="display: flex; justify-content: flex-end;padding: 10px ;">

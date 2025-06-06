@@ -6780,7 +6780,7 @@ button[mat-raised-button] {
   border-bottom: 1px solid #ccc;
 }
 
-.titres {
+.titres1 {
   display: flex;
   align-items: center;
   grid-area: titres;
@@ -6788,7 +6788,13 @@ button[mat-raised-button] {
   font-size: 20px;
   font-weight: bold;
 }
-
+.titres2 {
+  display: flex;
+  align-items: center;
+  grid-area: titres;
+  justify-content: left;
+  font-size: 18px;
+}
 .n_action {
   display: grid;
   grid-area: n_action;

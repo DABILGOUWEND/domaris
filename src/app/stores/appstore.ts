@@ -39,7 +39,7 @@ import {
 import { TaskService } from "../services/task.service";
 import { ProgrammesService } from "../services/programmes.service";
 import { get } from "node:http";
-import { set } from "@angular/fire/database";
+import { remove, set } from "@angular/fire/database";
 const initialGasoilState: gasoilStore = {
   conso_data: [],
   err: null,
@@ -352,7 +352,6 @@ const initialProgrammeState: tab_programmeStore = {
   isLoading: false,
   error: null,
   programmes_ids: [],
-  data: [],
 };
 /*************************** */
 export const UserStore = signalStore(
@@ -451,22 +450,6 @@ export const ProgrammeStore = signalStore(
     }
 
     ),
-    getPhases: computed(() => {
-      let id = store.selectedId();
-      let phases = store.programmes_data().find(p => p.id === id)?.data.phases || [];
-      return phases;
-    }),
-    getBudgets: computed(() => {
-      let id = store.selectedId();
-      let budgets = store.programmes_data().find(p => p.id === id)?.data.budgets || [];
-      return budgets;
-    })
-    ,
-    getDocuments: computed(() => {
-      let id = store.selectedId();
-      let budgets = store.programmes_data().find(p => p.id === id)?.data.documents || [];
-      return budgets;
-    }),
     fn_isLoading: computed(() => store.isLoading),
     fn_error: computed(() => store.error),
     fn_selectedId: computed(() => store.selectedId),
@@ -481,43 +464,17 @@ export const ProgrammeStore = signalStore(
       patchState(store, { selectedIds: ids })
     }
     ,
-   loadAllData: rxMethod<void>(
-  pipe(
-    switchMap(() => _service.getProgrammes()),
-    concatMap(programmes => {
-      // Pour chaque programme, on récupère ses sous-collections et on fusionne les données
-      const programmesWithData$ = programmes.map(programme =>
-        forkJoin({
-           phases: _service.getPhases(programme.id).pipe(take(1)),
-          budgets: _service.getBudgets(programme.id).pipe(take(1)),
-          documents: _service.getDocuments(programme.id).pipe(take(1))
-        }).pipe( // On prend la première valeur émise
-          map(subs => ({
-            ...programme,
-            data: {
-              phases: subs.phases,
-              budgets: subs.budgets,
-              documents: subs.documents
-            }
-          }))
-        )
-      );
-      return forkJoin(programmesWithData$);
-    }),
-    tap(resp => {
-      patchState(store, { programmes_data: resp });
-    })
-  )
-),
+    loadAllData: rxMethod<void>(
+      pipe(
+        switchMap(() => _service.getProgrammes()),
+        tap(resp => {
+          patchState(store, { programmes_data: resp });
+        })
+      )
+    ),
     addProgramme: rxMethod<any>(
       pipe(
-        switchMap((programme) => _service.addProgramme(programme).pipe(switchMap(id =>
-          forkJoin([
-            _service.add_sousCollection(id, "phases"),
-            _service.add_sousCollection(id, "budgets"),
-            _service.add_sousCollection(id, "documents")
-          ])
-        ))),
+        switchMap((programme) => _service.addProgramme(programme)),
         tap({
           next: () => {
             Showsnackerbaralert('Programme créé avec succès !', 'pass', snackbar);
@@ -541,6 +498,13 @@ export const ProgrammeStore = signalStore(
         })
       )
     ),
+    removeProgramme: rxMethod<string>(
+      pipe(switchMap((programmeId) => _service.removeProgramme(programmeId)),
+        tap(() => {
+          patchState(store, { message: 'programme supprimé!' });
+          Showsnackerbaralert('Programme supprimé', 'pass', snackbar);
+        })
+      ),)
   }))
 )
 export const EntrepriseStore = signalStore(

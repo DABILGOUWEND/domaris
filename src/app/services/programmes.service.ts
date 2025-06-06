@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, doc, Firestore, setDoc } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, Firestore, setDoc } from '@angular/fire/firestore';
 import { forkJoin, from, map, Observable, switchMap, take } from 'rxjs';
 
 
@@ -53,5 +53,9 @@ export class ProgrammesService {
     const docRef = doc(this.firestore, `programmes/${id}`);
     const promise = setDoc(docRef, data)
     return from(promise)
+  }
+  removeProgramme(programmeId: string): Observable<void> {
+    const docRef = doc(this.firestore, `programmes/${programmeId}`);
+  return from(deleteDoc(docRef));
   }
 }

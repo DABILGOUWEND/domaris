@@ -29,10 +29,12 @@ export class CreationProgrammeComponent {
   isUpdated = input.required<boolean>();
   donneesProgramme = input<any>();
   is_opened = input<boolean>();
-  donnees_phases = input<any>();
   programmeForm = input.required<FormGroup>();
   phasesFormGroup = input.required<FormGroup>();
   users = input.required<any[]>();
+  //  outputs
+  save_event = output<any>();
+
 
   // output
   close_event = output();
@@ -93,16 +95,16 @@ export class CreationProgrammeComponent {
     this.phaseForm = this.fb.group({
       nom: ['', Validators.required],
       description: [''],
-      dateDebut: [new Date(), Validators.required],
-      dateFin: [new Date(), Validators.required],
+      dateDebut: ['', Validators.required],
+      dateFin: ['', Validators.required],
       statut: ['', Validators.required],
       responsableId: ['', Validators.required],
     });
     this.phasesForm = this.fb.group({
       nom: ['', Validators.required],
       description: [''],
-      dateDebut: ['', Validators.required],
-      dateFin: ['', Validators.required],
+      dateDebut: [new Date(), Validators.required],
+      dateFin: [new Date(), Validators.required],
       statut: ['', Validators.required],
       responsableId: ['', Validators.required],
     });
@@ -130,7 +132,6 @@ export class CreationProgrammeComponent {
   }
 
   hasChild = (_: number, node: any) => !!node.children && node.children.length > 0;
-
   // Ajout d'une sous-phase
   addChild(node: any) {
     this.editNode = node;
@@ -142,7 +143,6 @@ export class CreationProgrammeComponent {
     this.editMode = 'addR';
     this.noeud_racine.reset();
   }
-  // Edition d'une phase
   startEdit(node: any) {
     this.editNode = node;
     this.editMode = 'edit';
@@ -153,29 +153,14 @@ export class CreationProgrammeComponent {
       dateFin: this._utilitaires.convertDate(node.dateFin),
       statut: node.statut,
       responsableId: node.responsableId
-    });
+    }
+    );
   }
   cancelEdit() {
     this.editNode = null;
     this.editMode = null;
   }
 
-  // Suppression d'une phase ou sous-phase
-  deleteNode(node: any) {
-    const removeNode = (nodes: any[]) => {
-      const idx = nodes.indexOf(node);
-      if (idx > -1) {
-        nodes.splice(idx, 1);
-        return true;
-      }
-      for (const n of nodes) {
-        if (n.children && removeNode(n.children)) return true;
-      }
-      return false;
-    };
-    removeNode(this.dataSource.data);
-    this.dataSource.data = [...this.dataSource.data];
-  }
   confirmEdit(
     node: any,
     nom: string,
@@ -185,7 +170,6 @@ export class CreationProgrammeComponent {
     statut: string,
     responsableId: string
   ) {
-    console.log(node)
     node.nom = nom;
     node.description = description;
     node.dateDebut = dateDebut;
@@ -196,9 +180,7 @@ export class CreationProgrammeComponent {
     this.editNode = null;
     this.editMode = null;
   }
-
-  confirmAddChild(
-  ) {
+  confirmAddChild() {
     if (this.noeud_racine.invalid) {
       this.errorMessage = 'Veuillez remplir tous les champs obligatoires.';
       return;
@@ -219,11 +201,11 @@ export class CreationProgrammeComponent {
 
     this.editNode = null;
     this.editMode = null;
+    this.save_event.emit([...this.dataSource.data]);
   }
   ngOnInit() {
     this._programme_store.loadAllData();
   }
-
   onSubmit() {
     if (this.programmeForm().invalid) {
       this.errorMessage = 'Veuillez remplir tous les champs obligatoires.';
@@ -258,21 +240,33 @@ export class CreationProgrammeComponent {
     }
     this.close_event.emit();
   }
-
-  onPhaseFormSubmit(parentNode: any, mode: 'add' | 'edit') {
+  add_sous_node(parentNode: any, mode: 'add' | 'edit') {
     if (this.phaseForm.valid) {
       const values = this.phaseForm.value;
-      console.log('Phase Form Values:', values);
+      let date_debut = values.dateDebut.toLocaleDateString();
+      let date_fin = values.dateFin.toLocaleDateString();
       if (mode === 'edit') {
-        Object.assign(this.editNode, values);
+        Object.assign(this.editNode, {
+          ...values,
+          dateDebut: date_debut,
+          dateFin: date_fin
+        });
       } else {
-        const newPhase = { ...values,
-          dateDebut:values.dateDebut.tolocaleDateString(),
-          dateFin:values.dateFin.tolocaleDateString(),
-          documents: [], children: [] };
+        const newPhase = {
+          nom: values.nom,
+          description: values.description,
+          responsableId: values.responsableId,
+          statut: values.statut,
+          // Convert dates to string format
+          dateDebut: date_debut,
+          dateFin: date_fin,
+          documents: [], children: []
+        };
+
         if (parentNode) {
           if (!parentNode.children) parentNode.children = [];
           parentNode.children.push(newPhase);
+          ;
         } else {
           this.dataSource.data = [...this.dataSource.data, newPhase];
         }
@@ -280,16 +274,33 @@ export class CreationProgrammeComponent {
       this.dataSource.data = [...this.dataSource.data];
       this.editNode = null;
       this.editMode = null;
+      this.save_event.emit([...this.dataSource.data]);
+      this.treeControl.expandAll();
     }
   }
+  removeNode(node: any) {
+    if (confirm("Voulez-vous vraiment supprimer ce noeud ?")) {
+      const remove = (nodes: any[]): boolean => {
+        const idx = nodes.indexOf(node);
+        if (idx > -1) {
+          nodes.splice(idx, 1);
+          return true;
+        }
+        for (const n of nodes) {
+          if (n.children && remove(n.children)) return true;
+        }
+        return false;
+      };
+      remove(this.dataSource.data);
+      this.dataSource.data = [...this.dataSource.data]; // Pour déclencher le rafraîchissement de l'arbre
+      this.save_event.emit([...this.dataSource.data]);
+      this.treeControl.expandAll(); // Optionnel : pour développer tous les noeuds après suppression
 
+    }
 
+  }
   close() {
     this.close_event.emit();
-  }
-
-  save() {
-    // Optionnel : logique de sauvegarde supplémentaire
   }
 
   async onUpload(event: any, node: any) {
@@ -322,5 +333,16 @@ export class CreationProgrammeComponent {
   isLastStep(): boolean {
     return this.stepper && this.stepper.selectedIndex === this.stepper.steps.length - 1;
   }
+  getLevel(node: any, nodes: any[] = this.dataSource.data, level: number = 0): number {
+    for (const n of nodes) {
+      if (n === node) return level;
+      if (n.children && n.children.length > 0) {
+        const childLevel = this.getLevel(node, n.children, level + 1);
+        if (childLevel !== -1) return childLevel;
+      }
+    }
+    return -1;
+  }
+
 }
 
