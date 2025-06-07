@@ -1,19 +1,18 @@
 import { Component, computed, effect, forwardRef, inject, input, linkedSignal, output, signal, ViewChild } from '@angular/core';
 import { ProgrammeStore } from '../../stores/appstore';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ImportedModule } from '../../shared/modules/imported/imported.module';
 import { countries } from "../../modeles/pays"
-import { MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
+import { MatTreeNestedDataSource } from '@angular/material/tree';
 
-import { FlatTreeControl, NestedTreeControl } from '@angular/cdk/tree';
-import { child } from '@angular/fire/database';
-import { phases } from '../../modeles/models';
+import { NestedTreeControl } from '@angular/cdk/tree';
+import { intial_phases, phases } from '../../modeles/models';
 import { StorageService } from '../../services/storage.service';
 import { MatStepper } from '@angular/material/stepper';
 import { UtilitairesService } from '../../services/utilitaires.service';
 // Assuming you have a file with country data
 const my_countries = countries; // Extracting country names
+const initial_phases = intial_phases;
 @Component({
   selector: 'app-creation-programme',
   imports: [ImportedModule],
@@ -24,7 +23,7 @@ export class CreationProgrammeComponent {
   // injections
   _programme_store = inject(ProgrammeStore);
   _utilitaires = inject(UtilitairesService)
-  @ViewChild('stepper') stepper!: MatStepper;
+  @ViewChild('stepper') stepper: MatStepper;
   // signals inputs
   isUpdated = input.required<boolean>();
   donneesProgramme = input<any>();
@@ -32,11 +31,8 @@ export class CreationProgrammeComponent {
   programmeForm = input.required<FormGroup>();
   phasesFormGroup = input.required<FormGroup>();
   users = input.required<any[]>();
-  //  outputs
+  //signals outputs
   save_event = output<any>();
-
-
-  // output
   close_event = output();
 
   // computed signals
@@ -57,7 +53,7 @@ export class CreationProgrammeComponent {
         }
 
       }
-    ) : [];
+    ) : initial_phases;
   });
 
   // others data
@@ -201,7 +197,7 @@ export class CreationProgrammeComponent {
 
     this.editNode = null;
     this.editMode = null;
-    this.save_event.emit([...this.dataSource.data]);
+    //this.save_event.emit([...this.dataSource.data]);
   }
   ngOnInit() {
     this._programme_store.loadAllData();
@@ -214,7 +210,7 @@ export class CreationProgrammeComponent {
     this.isLoading = true;
     this.errorMessage = '';
     this.successMessage = '';
-    let phases = this.dataSource.data;
+    let phases = [...this.dataSource.data];
     const formData = this.programmeForm().value;
     if (this.isUpdated()) {
       let date = new Date();
@@ -237,6 +233,7 @@ export class CreationProgrammeComponent {
         updatedAt: date,
         phases: phases || []
       });
+
     }
     this.close_event.emit();
   }
@@ -274,7 +271,7 @@ export class CreationProgrammeComponent {
       this.dataSource.data = [...this.dataSource.data];
       this.editNode = null;
       this.editMode = null;
-      this.save_event.emit([...this.dataSource.data]);
+      //this.save_event.emit([...this.dataSource.data]);
       this.treeControl.expandAll();
     }
   }

@@ -726,19 +726,21 @@ export interface Programme {
   responsableId?: string;
   createdAt?: Date | any;
   updatedAt?: Date | any;
-  phases: phases[]; // Liste des phases associées au programme
+  phases: phases[];
+  budgets:budgets[];
+   // Liste des phases associées au programme
 }
 
 export interface phases {
   id: string;
   nom: string;
   description: string;
-  dateDebut: Date | any;
-  dateFin: Date | any;
+  dateDebut: string;
+  dateFin: string;
   statut: 'En attente' | 'En cours' | 'Terminée';
   responsableId: string;
-  documents:documents[]; // URLs des documents associés à la phase
-  children: phases[]
+  documents: documents[]|[]; // URLs des documents associés à la phase
+  children: phases[]|[]
 }
 
 export interface taches {
@@ -782,7 +784,7 @@ export interface tab_programmeStore {
   path_string: string;
   isLoading?: boolean;
   error?: string | null;
- 
+
 }
 export interface budgets {
   id?: string,
@@ -792,5 +794,311 @@ export interface budgets {
   description?: string,
   url_document?: string[],
 }
-
-
+export const intial_phases: phases[] =[
+  {
+    "id": "",
+    "nom": "Préparation / Définition du projet",
+    "description": "Phase de cadrage, études préalables, montage foncier et financier",
+    "statut": "En attente",
+    "children": [
+      {
+        "id": "",
+        "nom": "Identification du besoin",
+        "description": "Analyse des attentes et définition des objectifs",
+        "statut": "En attente",
+        "documents": [
+          {
+            "titre": "Note de cadrage",
+            "type": "pdf",
+            "url": "",
+            "createdAt": "2025-06-07T13:50:31.155664",
+            "updatedAt": "2025-06-07T13:50:31.155674"
+          }
+        ],
+        "children": [],
+        "dateDebut": "",
+        "dateFin": "",
+        "responsableId": ""
+      },
+      {
+        "id": "",
+        "nom": "Choix du site",
+        "description": "Analyse foncière, certificat d’urbanisme",
+        "statut": "En attente",
+        "documents": [
+          {
+            "titre": "Certificat d’urbanisme",
+            "type": "pdf",
+            "url": "",
+            "createdAt": "2025-06-07T13:50:31.155678",
+            "updatedAt": "2025-06-07T13:50:31.155680"
+          }
+        ],
+        "children": [],
+        "dateDebut": "",
+        "dateFin": "",
+        "responsableId": ""
+      },
+      {
+        "id": "",
+        "nom": "Étude de faisabilité",
+        "description": "Évaluation technique et financière",
+        "statut": "En attente",
+        "documents": [
+          {
+            "titre": "Étude de faisabilité",
+            "type": "pdf",
+            "url": "",
+            "createdAt": "2025-06-07T13:50:31.155685",
+            "updatedAt": "2025-06-07T13:50:31.155687"
+          }
+        ],
+        "children": [],
+        "dateDebut": "",
+        "dateFin": "",
+        "responsableId": ""
+      }
+    ],
+    "dateDebut": "",
+    "dateFin": "",
+    "responsableId": "",
+    "documents": []
+  },
+  {
+    "id": "",
+    "nom": "Études",
+    "description": "Phase de conception technique et réglementaire",
+    "statut": "En attente",
+    "children": [
+      {
+        "id": "",
+        "nom": "Études préliminaires",
+        "description": "Topographie, géotechnique, environnement",
+        "statut": "En attente",
+        "documents": [
+          {
+            "titre": "Rapport G1",
+            "type": "pdf",
+            "url": "",
+            "createdAt": "2025-06-07T13:50:31.155691",
+            "updatedAt": "2025-06-07T13:50:31.155693"
+          },
+          {
+            "titre": "Plan topographique",
+            "type": "image",
+            "url": "",
+            "createdAt": "2025-06-07T13:50:31.155695",
+            "updatedAt": "2025-06-07T13:50:31.155698"
+          }
+        ],
+        "children": [],
+        "dateDebut": "",
+        "dateFin": "",
+        "responsableId": ""
+      },
+      {
+        "id": "",
+        "nom": "Avant-Projet Sommaire (APS)",
+        "description": "Premiers plans de conception",
+        "statut": "En attente",
+        "documents": [
+          {
+            "titre": "Plans APS",
+            "type": "pdf",
+            "url": "",
+            "createdAt": "2025-06-07T13:50:31.155700",
+            "updatedAt": "2025-06-07T13:50:31.155702"
+          }
+        ],
+        "children": [],
+        "dateDebut": "",
+        "dateFin": "",
+        "responsableId": ""
+      },
+      {
+        "id": "",
+        "nom": "Avant-Projet Définitif (APD)",
+        "description": "Version détaillée du projet",
+        "statut": "En attente",
+        "children": [],
+        "dateDebut": "",
+        "dateFin": "",
+        "responsableId": "",
+        "documents": []
+      }
+    ],
+    "dateDebut": "",
+    "dateFin": "",
+    "responsableId": "",
+    "documents": []
+  },
+  {
+    "id": "",
+    "nom": "Consultation & passation des marchés",
+    "description": "Sélection des entreprises et signature des marchés",
+    "statut": "En attente",
+    "children": [
+      {
+        "id": "",
+        "nom": "Élaboration du DCE",
+        "description": "Plans, CCTP, DPGF, RC",
+        "statut": "En attente",
+        "children": [],
+        "dateDebut": "",
+        "dateFin": "",
+        "responsableId": "",
+        "documents": []
+      },
+      {
+        "id": "",
+        "nom": "Analyse des offres",
+        "description": "Ouverture des plis, négociations",
+        "statut": "En attente",
+        "children": [],
+        "dateDebut": "",
+        "dateFin": "",
+        "responsableId": "",
+        "documents": []
+      },
+      {
+        "id": "",
+        "nom": "Attribution des marchés",
+        "description": "Notification et signature des contrats",
+        "statut": "En attente",
+        "children": [],
+        "dateDebut": "",
+        "dateFin": "",
+        "responsableId": "",
+        "documents": []
+      }
+    ],
+    "dateDebut": "",
+    "dateFin": "",
+    "responsableId": "",
+    "documents": []
+  },
+  {
+    "id": "",
+    "nom": "Exécution des travaux",
+    "description": "Réalisation de l’ouvrage selon les plans",
+    "statut": "En attente",
+    "children": [
+      {
+        "id": "",
+        "nom": "Installation de chantier",
+        "description": "Préparation des accès, réseaux, sécurité",
+        "statut": "En attente",
+        "children": [],
+        "dateDebut": "",
+        "dateFin": "",
+        "responsableId": "",
+        "documents": []
+      },
+      {
+        "id": "",
+        "nom": "Gros œuvre",
+        "description": "Structure, fondations, murs, dalles",
+        "statut": "En attente",
+        "children": [],
+        "dateDebut": "",
+        "dateFin": "",
+        "responsableId": "",
+        "documents": []
+      },
+      {
+        "id": "",
+        "nom": "Second œuvre",
+        "description": "Plomberie, électricité, finitions",
+        "statut": "En attente",
+        "children": [],
+        "dateDebut": "",
+        "dateFin": "",
+        "responsableId": "",
+        "documents": []
+      }
+    ],
+    "dateDebut": "",
+    "dateFin": "",
+    "responsableId": "",
+    "documents": []
+  },
+  {
+    "id": "",
+    "nom": "Réception",
+    "description": "Contrôle qualité, OPR, levée des réserves",
+    "statut": "En attente",
+    "children": [
+      {
+        "id": "",
+        "nom": "Opérations Préalables à la Réception",
+        "description": "Tests, vérifications, constatations",
+        "statut": "En attente",
+        "children": [],
+        "dateDebut": "",
+        "dateFin": "",
+        "responsableId": "",
+        "documents": []
+      },
+      {
+        "id": "",
+        "nom": "Réception des ouvrages",
+        "description": "Signature des PV et transfert de responsabilité",
+        "statut": "En attente",
+        "children": [],
+        "dateDebut": "",
+        "dateFin": "",
+        "responsableId": "",
+        "documents": []
+      }
+    ],
+    "dateDebut": "",
+    "dateFin": "",
+    "responsableId": "",
+    "documents": []
+  },
+  {
+    "id": "",
+    "nom": "Exploitation & garanties",
+    "description": "Suivi post-livraison et garanties légales",
+    "statut": "En attente",
+    "children": [
+      {
+        "id": "",
+        "nom": "Garantie de parfait achèvement",
+        "description": "1 an après réception",
+        "statut": "En attente",
+        "children": [],
+        "dateDebut": "",
+        "dateFin": "",
+        "responsableId": "",
+        "documents": []
+      },
+      {
+        "id": "",
+        "nom": "Garantie biennale",
+        "description": "Sur les éléments démontables",
+        "statut": "En attente",
+        "children": [],
+        "dateDebut": "",
+        "dateFin": "",
+        "responsableId": "",
+        "documents": []
+      },
+      {
+        "id": "",
+        "nom": "Garantie décennale",
+        "description": "Sur la structure de l’ouvrage",
+        "statut": "En attente",
+        "children": [],
+        "dateDebut": "",
+        "dateFin": "",
+        "responsableId": "",
+        "documents": []
+      }
+    ],
+    "dateDebut": "",
+    "dateFin": "",
+    "responsableId": "",
+    "documents": []
+  }
+]

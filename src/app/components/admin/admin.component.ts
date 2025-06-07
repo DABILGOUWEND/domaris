@@ -22,14 +22,22 @@ export class AdminComponent implements OnInit {
   _auth_service = inject(AuthService);
   _utilitaires = inject(UtilitairesService);
   _users_store = inject(UserStore);
-
-
   //signals
   selectedProgrammme = signal<any | undefined>(undefined);
   is_updated = signal(false);
-  is_opened = signal(false)
-
+  is_opened = signal(false);
   //computed signals
+  donnees_programmes = computed(() => {
+    return new MatTableDataSource<any>(this._programme_store.allProgrammes().sort(
+      (a, b) => {
+        return a.nom.localeCompare(b.nom);
+      }
+    )
+    );
+  })
+  //others data
+  programme_formgroup: FormGroup
+  phasesformgroup: FormGroup
   displayedColumns = [
     'code',
     'nom',
@@ -39,42 +47,24 @@ export class AdminComponent implements OnInit {
     'dateFin',
     'budgetPrevu',
     'actions'];
-
-  donnees_programmes = computed(() => {
-    return new MatTableDataSource<any>(this._programme_store.allProgrammes().map(resp =>
-    ({
-      ...resp,
-      dateDebut: resp.dateDebut,
-      dateFin: resp.dateFin
-    })
-    ).sort((a, b) => {
-      return a.nom.localeCompare(b.nom);
-    }
-    )
-    );
-  })
-
-  //others data
-  mformgroup: FormGroup
-  phasesformgroup: FormGroup
-
   constructor(
     private fb: FormBuilder
   ) {
-    this.mformgroup = this.fb.group({
-      nom: ['', Validators.required],
-      description: [''],
-      type: ['', Validators.required],
-      statut: ['', Validators.required],
-      dateDebut: ['', Validators.required],
-      dateFin: ['', Validators.required],
-      budgetPrevu: [null, [Validators.required, Validators.min(0)]],
-      pays: ['', Validators.required],
-      ville: ['', Validators.required],
-      quartier: ['', Validators.required],
-      responsableId: ['', Validators.required],
-      code: ['', Validators.required]
-    });
+    this.programme_formgroup
+      = this.fb.group({
+        nom: ['', Validators.required],
+        description: [''],
+        type: ['', Validators.required],
+        statut: ['', Validators.required],
+        dateDebut: [new Date(), Validators.required],
+        dateFin: [new Date(), Validators.required],
+        budgetPrevu: [null, [Validators.required, Validators.min(0)]],
+        pays: ['', Validators.required],
+        ville: ['', Validators.required],
+        quartier: ['', Validators.required],
+        responsableId: ['', Validators.required],
+        code: ['', Validators.required]
+      });
     this.phasesformgroup = this.fb.group({
       nom: ['', Validators.required],
       description: [''],
@@ -92,14 +82,13 @@ export class AdminComponent implements OnInit {
     if (this._auth_service.userSignal()) {
       this._programme_store.setProgrammeIs(this._auth_service.userSignal().projet_id);
     }
-
   }
   close_drawer() {
     this.is_opened.set(false)
   }
   select_programme(row: any) {
     this.selectedProgrammme.set(row);
-    this.mformgroup.patchValue({
+    this.programme_formgroup.patchValue({
       ...row,
       dateDebut: this._utilitaires.convertDate(row.dateDebut),
       dateFin: this._utilitaires.convertDate(row.dateFin),
@@ -109,18 +98,17 @@ export class AdminComponent implements OnInit {
     this._programme_store.setProgrammeIs(row.id);
   }
   delete_programme(id: string) {
-    if(confirm("Voulez-vous vraiment supprimer ce programme ?")) 
-    this._programme_store.removeProgramme(id)
+    if (confirm("Voulez-vous vraiment supprimer ce programme ?"))
+      this._programme_store.removeProgramme(id)
   }
   add_programme() {
-    this.mformgroup.reset();
+    this.programme_formgroup.reset();
     this.is_updated.set(false);
     this.selectedProgrammme.set(undefined);
     this.is_opened.set(true);
   }
   save_data(data: any) {
     let mydata = { ...this.selectedProgrammme(), phases: data }
-    console.log(mydata);
     this._programme_store.updateProgramme(mydata)
   }
 }

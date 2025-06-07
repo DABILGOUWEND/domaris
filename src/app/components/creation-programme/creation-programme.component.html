@@ -1,6 +1,6 @@
 <mat-stepper linear #stepper>
   <!-- Étape 1 : Formulaire principal -->
-  <mat-step [stepControl]="programmeForm()" [editable]="true">
+  <mat-step  [editable]="true">
     <div class="programme-container">
       <h2>{{ isUpdated() ? "Modifier programme" : "Créer nouveau programme" }}</h2>
       <form [formGroup]="programmeForm()" (ngSubmit)="onSubmit()">
@@ -107,9 +107,16 @@
           <div class="col s12 l12 m12" *ngIf="!programmeForm().valid" class="error-message mat-caption">{{ errorMessage
             }}</div>
         </div>
+        <div class="row">
+          <div class="col s12 l12 m12">
+            <button mat-flat-button color="primary" type="submit" [disabled]="programmeForm().invalid">
+              {{ isUpdated() ? "Mettre à jour" : "Créer le programme" }}
+            </button>
+          </div>
+        </div>
       </form>
       <div [ngStyle]="{'display': 'flex', 'justify-content':'center', 'margin-bottom': '10px','width': '100%'}">
-        <button mat-flat-button matStepperNext [disabled]="programmeForm().invalid" (click)="editMode=null"
+        <button mat-flat-button matStepperNext  (click)="editMode=null"
           [ngStyle]="{'width': '150px'}">
           Suivant</button>
       </div>
@@ -175,7 +182,7 @@
         </div>
         <div class="action2">
           <button mat-flat-button color="primary" (click)="onSubmit()"
-            [disabled]="!programmeForm().valid">Terminer</button>
+            [disabled]="!programmeForm().valid">valider</button>
         </div>
       </div>
     </div>
@@ -266,10 +273,10 @@
     </div>
   </form>
 </ng-template>
-<ng-template #nodetree let-node="node" >
+<ng-template #nodetree let-node="node">
   <ng-container>
     <div [ngClass]="{'titres1':hasChild(0,node) ||getLevel(node)==0,'titres2':!hasChild(0,node) }">
-      {{ node.nom  }}  -- {{"du "+ node.dateDebut }} {{ "au "+node.dateFin }}
+      {{ node.nom }}  {{node.dateDebut!=""?"-- du "+ node.dateDebut:"" }} {{node.dateDebut!=""? "au "+node.dateFin:"" }}
     </div>
     <div class="n_action">
       <div class="n_action1">

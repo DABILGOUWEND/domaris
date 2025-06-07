@@ -467,7 +467,23 @@ export const ProgrammeStore = signalStore(
     loadAllData: rxMethod<void>(
       pipe(
         switchMap(() => _service.getProgrammes()),
+        switchMap((programmes) => {
+          const data = programmes.map(
+            programme => forkJoin({
+              phases: _service.getPhases(programme.id).pipe(take(1)),
+              budgets: _service.getBudgets(programme.id).pipe(take(1)),
+            }).pipe(map(resp => {
+              return {
+                ...programme,
+                phases: resp.phases,
+                budgets: resp.budgets
+              }
+            }))
+          );
+          return forkJoin(data)
+        }),
         tap(resp => {
+          console.log(resp);
           patchState(store, { programmes_data: resp });
         })
       )
