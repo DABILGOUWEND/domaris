@@ -47,6 +47,19 @@ export class ProgrammesService {
     const ref = collection(this.firestore, `programmes/${programmeId}/${ss_collectionName}`);
     return from(addDoc(ref, {}).then(response => response.id));
   }
+  update_sousCollection(programmeId: string, ss_collectionName: string, data: any) {
+    const docRef = doc(this.firestore, `programmes/${programmeId}/${ss_collectionName}/${data.id}`);
+    const promise = setDoc(docRef, data)
+    return from(promise)
+  }
+  remove_sousCollection(programmeId: string, ss_collectionName: string, id: string) {
+    const docRef = doc(this.firestore, `programmes/${programmeId}/${ss_collectionName}/${id}`);
+    return from(deleteDoc(docRef));
+  }
+  addPhase(programmeId: string, phase: any) {
+    const ref = collection(this.firestore, `programmes/${programmeId}/phases`);
+    return from(addDoc(ref, phase).then(response => response.id));
+  } 
 
   updateProgramme(data: any): Observable<any> {
     let id = data.id
