@@ -19,11 +19,11 @@ export class ProgrammesService {
     const ref = collection(this.firestore, `programmes/${programmeId}/phases`);
     return collectionData(ref, { idField: 'id' });
   }
- getDocuments(programmeId: string): Observable<any[]> {
+  getDocuments(programmeId: string): Observable<any[]> {
     const ref = collection(this.firestore, `programmes/${programmeId}/documents`);
     return collectionData(ref, { idField: 'id' });
   }
-  getBudgets( programmeId: string) {
+  getBudgets(programmeId: string) {
     const ref = collection(this.firestore, `programmes/${programmeId}/budgets`);
     return collectionData(ref, { idField: 'id' });
   }
@@ -38,14 +38,23 @@ export class ProgrammesService {
     const ref = collection(this.firestore, `programmes/${programmeId}/phases/${phaseId}/taches`);
     return collectionData(ref, { idField: 'id' });
   }
-  addProgramme(programme: any) {
-    const ref = collection(this.firestore, 'programmes');
-    return from(addDoc(ref, programme).then(response => response.id));
-  }
-  add_sousCollection(programmeId: string, ss_collectionName: string) {
-    ;
+
+  add_sousCollection(programmeId: string, ss_collectionName: string, data: any) {
+    
     const ref = collection(this.firestore, `programmes/${programmeId}/${ss_collectionName}`);
-    return from(addDoc(ref, {}).then(response => response.id));
+    return from(addDoc(ref, data).then(response => response.id));
+  }
+  add_multipleSousCollection(programmeId: string, ss_collectionName: string, data: any[]) {
+    const promises = data.map(item => { 
+      const ref = collection(this.firestore, `programmes/${programmeId}/${ss_collectionName}`);
+      return addDoc(ref, item).then(response => response.id);
+    }
+    );
+    return forkJoin(promises);
+  }
+  get_sousCollection(programmeId: string, ss_collectionName: string): Observable<any[]> {
+    const ref = collection(this.firestore, `programmes/${programmeId}/${ss_collectionName}`);
+    return collectionData(ref, { idField: 'id' });
   }
   update_sousCollection(programmeId: string, ss_collectionName: string, data: any) {
     const docRef = doc(this.firestore, `programmes/${programmeId}/${ss_collectionName}/${data.id}`);
@@ -56,10 +65,10 @@ export class ProgrammesService {
     const docRef = doc(this.firestore, `programmes/${programmeId}/${ss_collectionName}/${id}`);
     return from(deleteDoc(docRef));
   }
-  addPhase(programmeId: string, phase: any) {
-    const ref = collection(this.firestore, `programmes/${programmeId}/phases`);
-    return from(addDoc(ref, phase).then(response => response.id));
-  } 
+  addProgramme(programme: any) {
+    const ref = collection(this.firestore, 'programmes');
+    return from(addDoc(ref, programme).then(response => response.id));
+  }
 
   updateProgramme(data: any): Observable<any> {
     let id = data.id
@@ -69,6 +78,6 @@ export class ProgrammesService {
   }
   removeProgramme(programmeId: string): Observable<void> {
     const docRef = doc(this.firestore, `programmes/${programmeId}`);
-  return from(deleteDoc(docRef));
+    return from(deleteDoc(docRef));
   }
 }

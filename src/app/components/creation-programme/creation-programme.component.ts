@@ -10,6 +10,7 @@ import { intial_phases, phases } from '../../modeles/models';
 import { StorageService } from '../../services/storage.service';
 import { MatStepper } from '@angular/material/stepper';
 import { UtilitairesService } from '../../services/utilitaires.service';
+import { ProgrammesService } from '../../services/programmes.service';
 // Assuming you have a file with country data
 const my_countries = countries; // Extracting country names
 const initial_phases = intial_phases;
@@ -22,7 +23,8 @@ const initial_phases = intial_phases;
 export class CreationProgrammeComponent {
   // injections
   _programme_store = inject(ProgrammeStore);
-  _utilitaires = inject(UtilitairesService)
+  _utilitaires = inject(UtilitairesService);
+  _programme_service = inject(ProgrammesService);
   @ViewChild('stepper') stepper: MatStepper;
   // signals inputs
   isUpdated = input.required<boolean>();
@@ -197,7 +199,11 @@ export class CreationProgrammeComponent {
 
     this.editNode = null;
     this.editMode = null;
-    //this.save_event.emit([...this.dataSource.data]);
+    if (this.isUpdated()) {
+      this._programme_service.add_sousCollection(
+        this.donneesProgramme()?.id, 'phases', newPhase
+      ).subscribe();
+    }
   }
   ngOnInit() {
     this._programme_store.loadAllData();
@@ -242,22 +248,20 @@ export class CreationProgrammeComponent {
       const values = this.phaseForm.value;
       let date_debut = values.dateDebut.toLocaleDateString();
       let date_fin = values.dateFin.toLocaleDateString();
+      let newPhase = {
+        ...values,
+        dateDebut: date_debut,
+        dateFin: date_fin
+      }
       if (mode === 'edit') {
-        Object.assign(this.editNode, {
+        Object.assign(this.editNode, newPhase);
+      } else {
+        newPhase = {
           ...values,
           dateDebut: date_debut,
-          dateFin: date_fin
-        });
-      } else {
-        const newPhase = {
-          nom: values.nom,
-          description: values.description,
-          responsableId: values.responsableId,
-          statut: values.statut,
-          // Convert dates to string format
-          dateDebut: date_debut,
           dateFin: date_fin,
-          documents: [], children: []
+          documents: [],
+          children: []
         };
 
         if (parentNode) {
@@ -271,7 +275,11 @@ export class CreationProgrammeComponent {
       this.dataSource.data = [...this.dataSource.data];
       this.editNode = null;
       this.editMode = null;
-      //this.save_event.emit([...this.dataSource.data]);
+      if (this.isUpdated()) {
+        this._programme_service.add_sousCollection(
+          this.donneesProgramme()?.id, 'phases', parentNode
+        ).subscribe();
+      }
       this.treeControl.expandAll();
     }
   }
