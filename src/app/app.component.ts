@@ -1,6 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from './auth/services/auth.service';
+import { ProgrammesService } from './services/programmes.service';
+import { forkJoin, Observable, of, switchMap, tap } from 'rxjs';
+import { ProgrammeStore } from './stores/appstore';
 
 @Component({
   selector: 'app-root',
@@ -9,26 +13,10 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'domaris-app';
-  _auth=inject(Auth);
-  constructor() {
-    this._auth.onAuthStateChanged((user) => {
-      if (user) {
-        console.log("User is signed in:", user);
-        console.log("User ID:", user.uid);
-        console.log("User Email:", user.email);
-      } else {
-        console.log("No user is signed in.");
-      }
-    });
-  }
+  title = signal('domaris-app');
+  _auth = inject(Auth);
+  _auth_service = inject(AuthService);
   ngOnInit() {
-    this._auth.onAuthStateChanged((user) => {
-      if (user) {
-        console.log("User is signed in:", user);
-      } else {
-        console.log("No user is signed in.");
-      }
-    });
+   this._auth_service.autoLogin();
   }
 }

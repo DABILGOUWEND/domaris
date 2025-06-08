@@ -8,5 +8,5 @@ import { ImportedModule } from '../../../shared/modules/imported/imported.module
   styleUrl: './footer.component.scss'
 })
 export class FooterComponent {
-
+currentYear = new Date().getFullYear();
 }

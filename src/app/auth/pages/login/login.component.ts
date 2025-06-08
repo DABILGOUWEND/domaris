@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ImportedModule } from '../../../shared/modules/imported/imported.module';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,8 +13,11 @@ import { ImportedModule } from '../../../shared/modules/imported/imported.module
 export class LoginComponent {
   loginForm: FormGroup;
   errorMessage: string = '';
+  message = signal('vous êtes déconnecté');
+  isLoading = signal(false);
+  private fb = inject(FormBuilder);
   constructor(
-    private fb: FormBuilder,
+    private router: Router,
     private authService: AuthService
 
   ) {
@@ -24,13 +28,33 @@ export class LoginComponent {
   }
   onSubmit() {
     if (this.loginForm.valid) {
+      this.isLoading.set(true);
+      this.message.set('connexion en cours ...');
       const { email, password } = this.loginForm.value;
-      this.authService.login(email, password).subscribe(() =>
-        console.log(this.authService.userLoggedIn()));
+      this.authService.login(email, password).subscribe({
+        next: (res) => {
+          setInterval(() => {
+            this.isLoading.set(false);
+            this.message.set('vous êtes connecté');
+            this.router.navigate(['/admin']);
+          }, 5000);
+        },
+        error: (err) => {
+          this.isLoading.set(false);
+          this.errorMessage = err.message;
+          this.message.set('vous êtes déconnecté');
+           this.isLoading.set(false);
+        },
+        complete: () => {
+
+        }
+
+      }
+
+      );
     }
   }
-  logout()
-  {
+  logout() {
     this.authService.logout()
   }
 }

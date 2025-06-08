@@ -29,9 +29,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatStepperModule} from '@angular/material/stepper';
 const MATERIAL_COMPONENTS = [
   CommonModule,
   MatTabsModule,
@@ -69,16 +69,12 @@ const MATERIAL_COMPONENTS = [
   MatGridListModule,
   MatBadgeModule,
   MatFormFieldModule,
+  MatStepperModule
 ];
-
 
 @NgModule({
   declarations: [],
-  imports: [ 
-    ...MATERIAL_COMPONENTS,
-  ],
-  exports: [
-    ...MATERIAL_COMPONENTS,
-  ],
+  imports: [MATERIAL_COMPONENTS],
+  exports: [MATERIAL_COMPONENTS],
 })
 export class ImportedModule { }

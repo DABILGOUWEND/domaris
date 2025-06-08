@@ -1,0 +1,54 @@
+<div class="register-container">
+  <h2>Créer un compte</h2>
+  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="register-form">
+    <mat-form-field appearance="outline" class="form-group" floatLabel="always">
+      <mat-label>Prénom</mat-label>
+      <input matInput formControlName="prenom" placeholder="Votre prénom" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-group" floatLabel="always">
+      <mat-label>Nom</mat-label>
+      <input matInput formControlName="nom" placeholder="Votre nom" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-group" floatLabel="always">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email" placeholder="Votre email" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-group" floatLabel="always">
+      <mat-label>Mot de passe</mat-label>
+      <input matInput formControlName="password" type="password" placeholder="Mot de passe" />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-group" floatLabel="always">
+      <mat-label>Rôle</mat-label>
+      <mat-select formControlName="role" placeholder="Choisir un rôle">
+        <mat-option value="" disabled>Choisir un rôle</mat-option>
+        <mat-option *ngFor="let r of tableau" [value]="r.id">{{ r.valeur }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-group" floatLabel="always">
+      <mat-label>Entreprise</mat-label>
+      <mat-select formControlName="entreprise" placeholder="Choisir une entreprise">
+        <mat-option value="" disabled>Choisir une entreprise</mat-option>
+        <mat-option *ngFor="let e of tableauEntreprises()" [value]="e.id">{{ e.valeur }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="form-group" floatLabel="always">
+      <mat-label>Programme(s)</mat-label>
+      <mat-select formControlName="programme" multiple>
+        <mat-option *ngFor="let p of tableauProgrammes()" [value]="p.id">{{ p.valeur }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  <button mat-raised-button color="primary" type="submit" [disabled]="signupForm.invalid || isLoading" style="display: flex; align-items: center; justify-content: center;">
+  Créer le compte
+  <span *ngIf="isLoading" style="display: flex; align-items: center; margin-left: 10px;">
+    <mat-progress-spinner
+      diameter="22"
+      mode="indeterminate"
+      color="accent"
+      style="vertical-align: middle;"
+    ></mat-progress-spinner>
+  </span>
+</button>
+    <div *ngIf="errorMessage" class="error-message mat-caption">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" class="success-message mat-caption">{{ successMessage }}</div>
+  </form>
+</div>

@@ -1,3 +1,52 @@
-<h2>
-  Tableau de bord
-</h2>
+<!-- dashboard.component.html -->
+<div class="dashboard">
+  <div class="dashboard-title">Tableau de bord</div>
+
+  <div class="dashboard-kpis">
+    <mat-card>
+      <h2>{{ totalProjects() }}</h2>
+      <p>Projets en cours</p>
+    </mat-card>
+    <mat-card>
+      <h2>{{ lotsSold() }}/{{ lotsTotal() }}</h2>
+      <p>Lots vendus</p>
+    </mat-card>
+    <mat-card>
+      <h2>{{ budgetUsed() | currency }} / {{ budgetTotal() | currency }}</h2>
+      <p>Budget utilisé</p>
+    </mat-card>
+    <mat-card>
+      <h2>{{ overdueTasks() }}</h2>
+      <p>Tâches en retard</p>
+    </mat-card>
+  </div>
+
+  <div class="dashboard-section dashboard-progress">
+    <h3>Avancement des projets</h3>
+    <mat-progress-bar mode="determinate" [value]="globalProgress()"></mat-progress-bar>
+    <ul>
+      <li *ngFor="let project of projects()">
+        <strong>{{ project.name }}</strong> : {{ project.progress }}%
+        <mat-progress-bar mode="determinate" [value]="project.progress"></mat-progress-bar>
+      </li>
+    </ul>
+  </div>
+
+  <div class="dashboard-section dashboard-calendar">
+    <h3>Échéances à venir</h3>
+    <ul>
+      <li *ngFor="let event of upcomingEvents()">
+        <strong>{{ event.date | date:'shortDate' }}</strong> - {{ event.label }}
+      </li>
+    </ul>
+  </div>
+
+  <div class="dashboard-section dashboard-docs">
+    <h3>Documents récents</h3>
+    <ul>
+      <li *ngFor="let doc of recentDocs()">
+        <a [href]="doc.url" target="_blank">{{ doc.name }}</a> ({{ doc.date | date:'shortDate' }})
+      </li>
+    </ul>
+  </div>
+</div>

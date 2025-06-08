@@ -1,10 +1,17 @@
+<!-- À placer dans app.component.html ou ton layout principal -->
 <header class="header">
-  <div class="logo">Domaris</div>
+  <div class="logo">
+    <a routerLink="/">
+      <mat-icon style="vertical-align: middle; margin-right: 8px;">home</mat-icon>
+    </a>
+    Domaris
+  </div>
   <nav class="nav-links">
-    <a routerLink="/dashboard">Dashboard</a>
-    <a routerLink="/contrats">Contrats</a>
-    <a routerLink="/prestations">Prestations</a>
-    <a routerLink="/login">connexion</a>
-    <a routerLink="/logout">Déconnexion</a>
+      <a routerLink="/admin" class="btn" *ngIf="hasRole('admin')">Admin</a>
+    <a routerLink="/login" class="btn" *ngIf="!auth_service.userLoggedIn()">Connexion</a>
+    <a (click)="logout()" class="btn_deconnecter" *ngIf="auth_service.userLoggedIn()">Déconnexion</a>
+    <span *ngIf="auth_service.userLoggedIn()" class="username">
+      {{ auth_service.userSignal()?.username }}
+    </span>
   </nav>
 </header>
