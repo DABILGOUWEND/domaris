@@ -787,12 +787,10 @@ export interface tab_programmeStore {
 
 }
 export interface budgets {
-  id?: string,
+  id: string,
   intitule: string,
   montant_htva: number,
-  date: Date | any,
-  description?: string,
-  url_document?: string[],
+  description: string
 }
 export const intial_phases: phases[] =[
   {

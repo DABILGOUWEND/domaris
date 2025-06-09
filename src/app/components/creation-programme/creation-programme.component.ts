@@ -227,20 +227,22 @@ export class CreationProgrammeComponent {
         dateFin: formData.dateFin.toLocaleDateString(),
         createdAt: this.donneesProgramme()?.createdAt,
         updatedAt: date,
-        phases: phases || [],
+
       });
     } else {
       let date = new Date();
       this._programme_store.addProgramme({
-        ...formData,
-        dateDebut: formData.dateDebut.toLocaleDateString(),
-        dateFin: formData.dateFin.toLocaleDateString(),
-        createdAt: date,
-        updatedAt: date,
-        phases: phases || []
+        programme: {
+          ...formData,
+          dateDebut: formData.dateDebut.toLocaleDateString(),
+          dateFin: formData.dateFin.toLocaleDateString(),
+          createdAt: date,
+          updatedAt: date
+        }, phases: phases, budgets: []
       });
-
     }
+
+
     this.close_event.emit();
   }
   add_sous_node(parentNode: any, mode: 'add' | 'edit') {
@@ -271,15 +273,21 @@ export class CreationProgrammeComponent {
         } else {
           this.dataSource.data = [...this.dataSource.data, newPhase];
         }
+
+      }
+
+      if (this.isUpdated()) {
+        let node = this.getParent(parentNode);
+        let parent = node != null ? node : parentNode;
+        console.log('parent', parent);
+        this._programme_service.update_sousCollection(
+          this.donneesProgramme()?.id, 'phases', parent
+        ).subscribe();
       }
       this.dataSource.data = [...this.dataSource.data];
       this.editNode = null;
       this.editMode = null;
-      if (this.isUpdated()) {
-        this._programme_service.add_sousCollection(
-          this.donneesProgramme()?.id, 'phases', parentNode
-        ).subscribe();
-      }
+
       this.treeControl.expandAll();
     }
   }
@@ -296,9 +304,17 @@ export class CreationProgrammeComponent {
         }
         return false;
       };
+
+      if (this.isUpdated()) {
+        let nodep = this.getParent(node);
+        let parent = nodep != null ? nodep : node;
+        console.log('parent', parent);
+        this._programme_service.remove_sousCollection(
+          this.donneesProgramme()?.id, 'phases', parent.id
+        ).subscribe();
+      }
       remove(this.dataSource.data);
       this.dataSource.data = [...this.dataSource.data]; // Pour déclencher le rafraîchissement de l'arbre
-      this.save_event.emit([...this.dataSource.data]);
       this.treeControl.expandAll(); // Optionnel : pour développer tous les noeuds après suppression
 
     }
@@ -347,6 +363,19 @@ export class CreationProgrammeComponent {
       }
     }
     return -1;
+  }
+
+  getParent(targetNode: any, nodes: any[] = this.dataSource.data, parent: any = null): any {
+    for (const node of nodes) {
+      if (node === targetNode) {
+        return parent;
+      }
+      if (node.children && node.children.length > 0) {
+        const found = this.getParent(targetNode, node.children, node);
+        if (found) return found;
+      }
+    }
+    return null;
   }
 
 }

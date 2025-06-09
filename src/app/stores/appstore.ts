@@ -470,8 +470,8 @@ export const ProgrammeStore = signalStore(
         switchMap((programmes) => {
           const data = programmes.map(
             programme => forkJoin({
-              phases: _service.get_sousCollection(programme.id,"phases").pipe(take(1)),
-              budgets: _service.get_sousCollection(programme.id,"budgets").pipe(take(1)),
+              phases: _service.get_sousCollection(programme.id, "phases").pipe(take(1)),
+              budgets: _service.get_sousCollection(programme.id, "budgets").pipe(take(1)),
             }).pipe(map(resp => {
               return {
                 ...programme,
@@ -488,9 +488,33 @@ export const ProgrammeStore = signalStore(
         })
       )
     ),
-    addProgramme: rxMethod<any>(
+    addProgramme: rxMethod<{ programme: any, phases: any, budgets: any }>(
       pipe(
-        switchMap((programme) => _service.addProgramme(programme)),
+        switchMap((
+          { programme, phases, budgets }
+        ) => _service.addProgramme(programme).pipe(
+          map(
+            id => {
+              if (budgets.length > 0) {
+                return forkJoin(
+                  [
+                    _service.add_multipleSousCollection(id, "phases", phases).pipe(take(1)),
+                    _service.add_multipleSousCollection(id, "budgets", budgets).pipe(take(1))
+                  ]
+                )
+              }
+              else {
+                return forkJoin(
+                  [
+                    _service.add_multipleSousCollection(id, "phases", phases).pipe(take(1)),
+                    _service.add_sousCollection(id, "budgets", {}).pipe(take(1))
+                  ]
+                )
+              }
+
+            })
+        )
+        ),
         tap({
           next: () => {
             Showsnackerbaralert('Programme créé avec succès !', 'pass', snackbar);
