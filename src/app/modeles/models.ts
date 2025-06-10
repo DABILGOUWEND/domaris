@@ -716,7 +716,7 @@ export interface Programme {
   nom: string;
   description?: string;
   type?: 'Résidentiel' | 'Commercial' | 'Mixte' | string;
-  statut: 'Planifié' | 'En cours' | 'Terminé' | 'Suspendu';
+  statut: 'En attente' | 'En cours' | 'Terminé' | 'Suspendu';
   dateDebut: Date | any;
   dateFin: Date | any;
   budgetPrevu: number;
@@ -737,7 +737,7 @@ export interface phases {
   description: string;
   dateDebut: string;
   dateFin: string;
-  statut: 'En attente' | 'En cours' | 'Terminée';
+  statut: 'En attente' | 'En cours' | 'Terminé' | 'Suspendu';
   responsableId: string;
   documents: documents[]|[]; // URLs des documents associés à la phase
   children: phases[]|[]

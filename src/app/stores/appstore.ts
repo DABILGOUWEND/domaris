@@ -483,7 +483,6 @@ export const ProgrammeStore = signalStore(
           return forkJoin(data)
         }),
         tap(resp => {
-          console.log(resp);
           patchState(store, { programmes_data: resp });
         })
       )
