@@ -27,10 +27,11 @@ export class CreationProgrammeComponent {
   _utilitaires = inject(UtilitairesService);
   _programme_service = inject(ProgrammesService);
   @ViewChild('stepper') stepper: MatStepper;
-
+  @ViewChild('fileInput') fileInput: any;
 
   //signals
   editNode = signal<any>(null);
+  current_tab = signal<any>(null);
   editMode = signal<'add' | 'edit' | 'addR' | null>(null);
   fileUrl = signal<string | null>(null);
   lastFilePath = signal<string | null>(null);
@@ -94,7 +95,7 @@ export class CreationProgrammeComponent {
   })
   document_dataSource = computed(() => {
     if (this.editNode()) {
-      return new MatTableDataSource<any>(this.editNode().documents.map((doc: any) => {
+      return new MatTableDataSource<any>(this.current_tab().documents.map((doc: any) => {
         let date1 = new Date(doc.createdAt);
         let date2 = new Date(doc.updatedAt);
         return {
@@ -182,6 +183,7 @@ export class CreationProgrammeComponent {
     this.noeud_racine.reset();
   }
   startEdit(node: any) {
+    this.current_tab.set(node);
     this.editNode.set(node);
     this.editMode.set('edit');
     this.phaseForm.patchValue({
@@ -448,7 +450,14 @@ export class CreationProgrammeComponent {
 
     // 2. Rafraîchis la dataSource pour Angular Material
     this.dataSource.data = [...this.dataSource.data];
-    this.editNode.set({ ...node });
+    this.current_tab.set({ ...node });
+    this.doc.update(doc => ({
+      titre: '',
+      file: null,
+    }));
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
   }
 }
 

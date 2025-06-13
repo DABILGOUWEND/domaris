@@ -20,7 +20,7 @@ import { CreationProgrammeComponent } from './components/creation-programme/crea
 export const routes: Routes = [
 
   {
-    path: "", redirectTo: "/admin", pathMatch: "full"
+    path: "", redirectTo: "/accueil", pathMatch: "full"
   },
   {
     path: "layout", component: LayoutComponent,
@@ -57,6 +57,9 @@ export const routes: Routes = [
   },
   {
     path: "creation_programmes", component: CreationProgrammeComponent, canActivate: [authGuard], data: { role: 'admin' }
+  },
+  {
+    path: "accueil", component: AccueilComponent
   }
 
 ]

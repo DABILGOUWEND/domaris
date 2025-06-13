@@ -6422,8 +6422,10 @@ button[mat-raised-button] {
 
 
   }
-   mat-drawer .documents {
+
+  mat-drawer .documents {
     width: 70% !important;
+
     .table-update {
       .table-update__header {
         width: 100%;
@@ -6445,33 +6447,36 @@ button[mat-raised-button] {
           margin-top: 5px;
         }
       }
+
       .table-body {
-         width: 100%;
+        width: 100%;
         border-bottom: 1px solid black;
         padding-top: 20px;
       }
+
       .table-update__footer {
 
-        padding-top: 20px;
-        padding-left: 20px;
-        padding-right: 20px;
+        display: flex;
+        justify-content: center;
 
         button {
-          width: 40%;
-          margin-left: 5%;
-          margin-right: 5%;
+          width: 20%;
+          background-color: red;
         }
       }
     }
   }
+
   mat-drawer-content {
     display: block;
     min-height: 1000px;
+
     .content_head {
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 20px;
+
       h2 {
         font-family: 'Times New Roman', Times, serif;
         text-align: center;
@@ -6483,6 +6488,7 @@ button[mat-raised-button] {
         font-size: 18px;
       }
     }
+
     .content_body {
       display: block;
       align-items: center;
@@ -6493,7 +6499,7 @@ button[mat-raised-button] {
 
 .phases-container {
   display: grid;
-  grid-template-rows: 0.1fr 0.1fr 2fr 1fr;
+  grid-template-rows: 0.1fr 0.1fr 2fr 0.01fr;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
     "entete entete"
@@ -6502,6 +6508,8 @@ button[mat-raised-button] {
     "actions actions";
   gap: 0.5rem;
   width: 100%;
+  border: 1px solid #222020;
+  border-radius: 20px;
 }
 
 .entete {
@@ -6525,6 +6533,7 @@ button[mat-raised-button] {
     "entete_saisie" "reste_corps";
   grid-area: corps;
   grid-template-rows: auto auto;
+  background-color: white;
 }
 
 .entete_saisie {
@@ -6542,13 +6551,10 @@ button[mat-raised-button] {
 
 .actions {
   grid-area: actions;
-  grid-template-columns: 1fr 1fr;
   grid-template-areas:
-    "action1 action1"
-    "action2 action2"
-    "action3 action3";
-  grid-template-rows: 1fr 1fr 1fr;
-  gap: 10px;
+    "action1"
+    "action2";
+  grid-template-rows: 1fr 1fr;
   display: grid;
 }
 
@@ -6566,6 +6572,10 @@ button[mat-raised-button] {
   align-items: center;
   justify-content: center;
   padding: 10px;
+
+  button {
+    background-color: rgb(134, 209, 21) !important;
+  }
 }
 
 .action3 {
@@ -7578,4 +7588,45 @@ button[mat-raised-button] {
   .row .col.push-xl12 {
     left: 100%;
   }
+}
+
+.accueil-bg {
+   min-height: 100vh;
+  background-image: url('/arriereplan.png');
+  background-size: cover;
+  background-position: center -150px; /* Décalage vertical de l'image */
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* contenu vers le haut */
+  justify-content: left;
+}
+content {
+  background: rgba(0,0,0,0.5);
+  color: white;
+  padding: 40px;
+  border-radius: 12px;
+  max-width: 600px;
+  margin-top: 40px;
+}
+
+.footer {
+  width: 100%;
+   background-image: url('/piedpage.png');
+  color: #fff;
+  text-align: center;
+  padding: 150px 0;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  z-index: 100;
+}
+.logo-accueil {
+  display: block;
+  justify-content: left;
+  width: 120px;         /* ajuste la taille du logo */
+  margin-top: 32px;     /* espace depuis le haut */
+  margin-bottom: 24px;  /* espace sous le logo */
+  z-index: 2;
+  margin-left: 32px;
 }
