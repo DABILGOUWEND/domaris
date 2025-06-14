@@ -7591,18 +7591,20 @@ button[mat-raised-button] {
 }
 
 .accueil-bg {
-   min-height: 100vh;
+  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
   background-image: url('/arriereplan.png');
   background-size: cover;
-  background-position: center -150px; /* Décalage vertical de l'image */
   background-repeat: no-repeat;
+  background-position: center ;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* contenu vers le haut */
-  justify-content: left;
+  
 }
+
 content {
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   color: white;
   padding: 40px;
   border-radius: 12px;
@@ -7612,21 +7614,114 @@ content {
 
 .footer {
   width: 100%;
-   background-image: url('/piedpage.png');
-  color: #fff;
   text-align: center;
-  padding: 150px 0;
+  padding: 24px 0;
   position: fixed;
   left: 0;
   bottom: 0;
-  z-index: 100;
+  top: 60%;
+  font-size: 1.1em;
 }
+
 .logo-accueil {
   display: block;
   justify-content: left;
-  width: 120px;         /* ajuste la taille du logo */
-  margin-top: 32px;     /* espace depuis le haut */
-  margin-bottom: 24px;  /* espace sous le logo */
+  width: 120px;
+  /* ajuste la taille du logo */
+  margin-top: 50px;
+  /* espace depuis le haut */
+  margin-bottom: 24px;
+  /* espace sous le logo */
   z-index: 2;
-  margin-left: 32px;
+  margin-left: 100px;
+}
+
+.slogan-accueil {
+  margin-left: 100px;
+  margin-top: 24px;
+  color: rgb(30, 42, 97);
+  h1 {
+    font-size: 60px;
+    font-weight: bold;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin: 0;
+  }
+
+  button {
+    background-color: rgb(30, 42, 97) !important;
+    color: white !important;
+    font-weight: bold;
+    font-size: 30px;
+    margin-top: 10px;
+  }
+}
+
+.cards-container {
+ margin-top: 250px;
+ margin-left: 100px ;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  mat-card {
+    margin-right: 50px;
+    margin-top: -100px;
+    border: 2px solid rgb(30, 42, 97);
+    border-radius: 20px;
+    background-color: rgb(174, 223, 236);
+  }
+}
+
+.immobilier-card {
+  width: 400px;
+  min-height: 260px;
+  mat-card-header {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-bottom: 4px solid rgb(30, 42, 97);
+    margin-left: 20px;
+    margin-right: 20px;
+    mat-card-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: rgb(30, 42, 97) 
+    }
+
+    mat-card-subtitle {
+      font-size: 1rem;
+      color:  rgb(30, 42, 97) 
+    }
+
+    mat-icon {
+      font-size: 30px;
+      color: rgb(30, 42, 97) 
+    }
+
+  }
+  mat-card-content {
+    text-align: center;
+    font-size: 1.5rem;
+    color: rgb(30, 42, 97) !important;
+    height: 200px;
+    
+  }
+
+}
+.footer-text{
+  border-top:  1px solid white;
+  margin-top: 10px;
+  margin-left: 50px;
+  margin-right: 50px;
+  display: flex;
+  p{
+    margin-right: 100px;
+    font-size: 1.2rem;
+    color: white;
+  }
+  a{
+    color: white;
+  }
 }
