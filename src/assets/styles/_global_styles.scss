@@ -6,60 +6,85 @@
   font-size: 5rem;
 }
 
-
-
 .login-page {
-  margin-top: 50px;
-  height: 80%;
+  padding-left: 40%;
+  padding-right: 40%;
+  padding-top: 200px;
+  width: 20%;
 
-  .login-page__banner {
-    text-align: center;
-    color: rgb(223, 211, 211);
+  mat-card {
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+    background-color: white;
 
-    h1 {
-      font-family: 'Times New Roman', Times, serif;
-    }
-  }
+    mat-card-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
-  .login-form-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .login-disclaimer {
-      color: map-get($wen-colors, primary-dark);
-      font-size: 0.9rem;
-      margin-bottom: 2rem;
-      text-align: justify;
-      width: 20%;
-    }
-
-    .login-form {
-      width: 20%;
-
-      .login-form__footer {
-        margin: 25px 0;
-
-        button {
-          text-align: center;
-          width: 100%;
-        }
+      mat-card-title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
 
-      .login_saisi {
-        margin: 25px 0;
+      mat-card-title img {
+        width: 120px;
+        margin-bottom: 16px;
+      }
+
+      mat-card-title h2 {
+        font-size: 2rem;
+        font-weight: bold;
         text-align: center;
+        color: #1976d2;
+      }
+
+    }
+
+    mat-card-content {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .login-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
 
         mat-form-field {
-          align-items: center;
-          width: 100%;
+          width: 90%;
+          font-size: 24px;
+        }
 
+        mat-form-field .mat-form-field-appearance-outline .mat-form-field-outline {
+          border-radius: 24px !important;
+        }
+
+        button {
+          width: 90%;
+          font-size: 28px;
+          font-weight: bold;
+          border-radius: 18px;
+          padding: 30px;
+
+          /* Arrondi */
+          &:hover {
+            background-color: #5a5454;
+          }
         }
       }
 
+      .message {
+        color: red;
+        font-size: 18px;
+        text-align: center;
+      }
     }
   }
-
 }
 
 .accueil {
@@ -7597,10 +7622,10 @@ button[mat-raised-button] {
   background-image: url('/arriereplan.png');
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center ;
+  background-position: center;
   display: flex;
   flex-direction: column;
-  
+
 }
 
 content {
@@ -7640,6 +7665,7 @@ content {
   margin-left: 100px;
   margin-top: 24px;
   color: rgb(30, 42, 97);
+
   h1 {
     font-size: 60px;
     font-weight: bold;
@@ -7657,8 +7683,8 @@ content {
 }
 
 .cards-container {
- margin-top: 250px;
- margin-left: 100px ;
+  margin-top: 250px;
+  margin-left: 100px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -7675,6 +7701,7 @@ content {
 .immobilier-card {
   width: 400px;
   min-height: 260px;
+
   mat-card-header {
     text-align: center;
     display: flex;
@@ -7684,44 +7711,49 @@ content {
     border-bottom: 4px solid rgb(30, 42, 97);
     margin-left: 20px;
     margin-right: 20px;
+
     mat-card-title {
       font-size: 1.5rem;
       font-weight: bold;
-      color: rgb(30, 42, 97) 
+      color: rgb(30, 42, 97)
     }
 
     mat-card-subtitle {
       font-size: 1rem;
-      color:  rgb(30, 42, 97) 
+      color: rgb(30, 42, 97)
     }
 
     mat-icon {
       font-size: 30px;
-      color: rgb(30, 42, 97) 
+      color: rgb(30, 42, 97)
     }
 
   }
+
   mat-card-content {
     text-align: center;
     font-size: 1.5rem;
     color: rgb(30, 42, 97) !important;
     height: 200px;
-    
+
   }
 
 }
-.footer-text{
-  border-top:  1px solid white;
+
+.footer-text {
+  border-top: 1px solid white;
   margin-top: 10px;
   margin-left: 50px;
   margin-right: 50px;
   display: flex;
-  p{
+
+  p {
     margin-right: 100px;
     font-size: 1.2rem;
     color: white;
   }
-  a{
+
+  a {
     color: white;
   }
 }
