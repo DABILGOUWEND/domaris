@@ -1,11 +1,19 @@
 <div class="accueil-bg">
-  <img src="/logodomaris.png" alt="Logo" class="logo-accueil" />
+  <div class="entete">
+    <img src="/logodomaris.png" alt="Logo" class="logo-accueil" />
 
+    <div class="nav-links">
+      <a routerLink="/login" class="nav-link btn">Connexion</a>
+      <a routerLink="/register" class="nav-link btn">Inscription</a>
+      <a routerLink="/contact" class="nav-link btn">Contact</a>
+      <a routerLink="/about" class="nav-link btn">À propos</a>
+    </div>
+  </div>
   <div class="slogan-accueil">
     <h1>Bienvenue à DOMARIS</h1>
     <h1>Le Digital</h1>
     <h1>au coeur de l'Immobilier</h1>
-    <button mat-fab extended="true">
+    <button mat-fab extended="true" (click)="commencer()">
       Commencer
       <mat-icon>arrow_forward</mat-icon>
     </button>

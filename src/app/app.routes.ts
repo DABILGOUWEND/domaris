@@ -20,7 +20,7 @@ import { CreationProgrammeComponent } from './components/creation-programme/crea
 export const routes: Routes = [
 
   {
-    path: "", redirectTo: "/accueil", pathMatch: "full"
+    path: "", redirectTo: "/login", pathMatch: "full"
   },
   {
     path: "layout", component: LayoutComponent,

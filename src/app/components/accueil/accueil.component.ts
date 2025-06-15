@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ImportedModule } from '../../shared/modules/imported/imported.module';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-accueil',
@@ -8,5 +9,8 @@ import { ImportedModule } from '../../shared/modules/imported/imported.module';
   styleUrl: './accueil.component.scss'
 })
 export class AccueilComponent {
-
+  _router = inject(Router);
+  commencer() {
+    this._router.navigate(['/login']);
+  }
 }

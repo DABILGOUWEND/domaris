@@ -36,7 +36,7 @@ export class LoginComponent {
           setInterval(() => {
             this.isLoading.set(false);
             this.message.set('vous êtes connecté');
-            this.router.navigate(['/admin']);
+            this.router.navigate(['/accueil']);
           }, 5000);
         },
         error: (err) => {

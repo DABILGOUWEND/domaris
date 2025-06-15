@@ -7619,13 +7619,27 @@ button[mat-raised-button] {
   min-height: 100vh;
   height: 100vh;
   width: 100vw;
+  background-color: rgb(119, 186, 241);
   background-image: url('/arriereplan.png');
-  background-size: cover;
-  background-repeat: no-repeat;
+  background-size: 100% 80%;
   background-position: center;
+  background-repeat: no-repeat;
+
   display: flex;
   flex-direction: column;
-
+  z-index: 50;
+}
+.accueil-bg .entete{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.accueil-bg .entete .nav-link  {
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+  font-weight: 600;
+  font-size: 1.2rem;
 }
 
 content {
@@ -7653,7 +7667,6 @@ content {
   justify-content: left;
   width: 120px;
   /* ajuste la taille du logo */
-  margin-top: 50px;
   /* espace depuis le haut */
   margin-bottom: 24px;
   /* espace sous le logo */
@@ -7662,7 +7675,10 @@ content {
 }
 
 .slogan-accueil {
-  margin-left: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   margin-top: 24px;
   color: rgb(30, 42, 97);
 
@@ -7678,12 +7694,12 @@ content {
     color: white !important;
     font-weight: bold;
     font-size: 30px;
-    margin-top: 10px;
+    margin-top: 20px;
   }
 }
 
 .cards-container {
-  margin-top: 250px;
+  margin-top: 200px;
   margin-left: 100px;
   display: flex;
   flex-wrap: wrap;
@@ -7694,7 +7710,6 @@ content {
     margin-top: -100px;
     border: 2px solid rgb(30, 42, 97);
     border-radius: 20px;
-    background-color: rgb(174, 223, 236);
   }
 }
 
@@ -7741,7 +7756,7 @@ content {
 }
 
 .footer-text {
-  border-top: 1px solid white;
+  border-top: 2px solid rgb(30, 42, 97);
   margin-top: 10px;
   margin-left: 50px;
   margin-right: 50px;
@@ -7750,10 +7765,10 @@ content {
   p {
     margin-right: 100px;
     font-size: 1.2rem;
-    color: white;
+    color: rgb(30, 42, 97);
   }
 
   a {
-    color: white;
+    color: rgb(30, 42, 97);
   }
 }
