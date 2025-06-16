@@ -7614,161 +7614,213 @@ button[mat-raised-button] {
     left: 100%;
   }
 }
-
 .accueil-bg {
   min-height: 100vh;
-  height: 100vh;
   width: 100vw;
   background-color: rgb(119, 186, 241);
   background-image: url('/arriereplan.png');
   background-size: 100% 80%;
   background-position: center;
   background-repeat: no-repeat;
-
   display: flex;
   flex-direction: column;
-  z-index: 50;
+  align-items: stretch;
+  position: relative;
 }
-.accueil-bg .entete{
+
+/* Entête */
+.headers {
+  width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  padding: 24px 40px 0 40px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10;
+}
+
+.entete_gauche {
+  display: flex;
   align-items: center;
 }
-.accueil-bg .entete .nav-link  {
-  color: white;
-  text-decoration: none;
-  margin: 0 10px;
-  font-weight: 600;
-  font-size: 1.2rem;
-}
 
-content {
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  padding: 40px;
-  border-radius: 12px;
-  max-width: 600px;
-  margin-top: 40px;
-}
-
-.footer {
-  width: 100%;
-  text-align: center;
-  padding: 24px 0;
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  top: 60%;
-  font-size: 1.1em;
-}
-
-.logo-accueil {
-  display: block;
-  justify-content: left;
+.logo-accueil img {
   width: 120px;
-  /* ajuste la taille du logo */
-  /* espace depuis le haut */
-  margin-bottom: 24px;
-  /* espace sous le logo */
-  z-index: 2;
-  margin-left: 100px;
+  height: auto;
+}
+
+.entete_droite {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 16px;
+}
+
+.nav-link.btn {
+  font-weight: 600;
+  font-size: 1.1rem;
+  background-color: rgb(30, 42, 97);
+  border: 1px solid rgb(30, 42, 97);
+  border-radius: 10px;
+  padding: 10px 20px;
+  color: #fff;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.nav-link.btn:hover {
+  background: #1565c0;
+}
+
+.profil {
+  font-size: 1.1rem;
+  background: rgba(255,255,255,0.7);
+  border-radius: 16px;
+  padding: 8px 16px;
+  color: rgb(30, 42, 97);
+}
+
+/* Contenu principal */
+.contenu {
+  background-color: red;
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 40px;
+  margin-bottom: 120px; /* espace pour le footer */
 }
 
 .slogan-accueil {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  margin-top: 24px;
+  margin-top: 15px;
   color: rgb(30, 42, 97);
-
-  h1 {
-    font-size: 60px;
-    font-weight: bold;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    margin: 0;
-  }
-
-  button {
-    background-color: rgb(30, 42, 97) !important;
-    color: white !important;
-    font-weight: bold;
-    font-size: 30px;
-    margin-top: 20px;
-  }
+  background: rgba(255,255,255,0.7);
+  border-radius: 16px;
+  padding: 32px 48px;
+  text-align: center;
+}
+.slogan-accueil h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  margin: 0;
+}
+.slogan-accueil button {
+  background-color: rgb(30, 42, 97) !important;
+  color: white !important;
+  font-weight: bold;
+  font-size: 1.3rem;
+  margin-top: 20px;
 }
 
 .cards-container {
-  margin-top: 200px;
-  margin-left: 100px;
+  margin-top: 32px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-
-  mat-card {
-    margin-right: 50px;
-    margin-top: -100px;
-    border: 2px solid rgb(30, 42, 97);
-    border-radius: 20px;
-  }
+  gap: 32px;
 }
-
 .immobilier-card {
-  width: 400px;
-  min-height: 260px;
-
-  mat-card-header {
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    border-bottom: 4px solid rgb(30, 42, 97);
-    margin-left: 20px;
-    margin-right: 20px;
-
-    mat-card-title {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: rgb(30, 42, 97)
-    }
-
-    mat-card-subtitle {
-      font-size: 1rem;
-      color: rgb(30, 42, 97)
-    }
-
-    mat-icon {
-      font-size: 30px;
-      color: rgb(30, 42, 97)
-    }
-
-  }
-
-  mat-card-content {
-    text-align: center;
-    font-size: 1.5rem;
-    color: rgb(30, 42, 97) !important;
-    height: 200px;
-
-  }
-
+  width: 350px;
+  min-height: 220px;
+  border: 2px solid rgb(30, 42, 97);
+  border-radius: 20px;
+  background: #fff;
+}
+.immobilier-card mat-card-header {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-bottom: 4px solid rgb(30, 42, 97);
+  margin: 0 20px;
+}
+.immobilier-card mat-card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: rgb(30, 42, 97);
+}
+.immobilier-card mat-card-content {
+  text-align: center;
+  font-size: 1rem;
+  color: rgb(30, 42, 97);
+  min-height: 100px;
 }
 
+/* Footer */
 .footer-text {
-  border-top: 2px solid rgb(30, 42, 97);
-  margin-top: 10px;
-  margin-left: 50px;
-  margin-right: 50px;
+  width: 100vw;
+  background: rgba(255,255,255,0.9);
+  position: relative;
+  padding: 24px 0 8px 0;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+  margin-top: 32px;
+}
+.footer-text p {
+  margin: 4px 0;
+  font-size: 1.1rem;
+  color: rgb(30, 42, 97);
+}
+.footer-text a {
+  color: rgb(30, 42, 97);
+  text-decoration: underline;
+}
 
-  p {
-    margin-right: 100px;
-    font-size: 1.2rem;
-    color: rgb(30, 42, 97);
+/* Responsive */
+@media only screen and (max-width: 900px) {
+  .headers {
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 8px 0 8px;
+    gap: 16px;
   }
+  .entete_droite{
+    display: none;
 
-  a {
-    color: rgb(30, 42, 97);
+  }
+  .cards-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 0;
+  }
+  .slogan-accueil h1 {
+    font-size: 1.5rem;
+  }
+  .immobilier-card {
+    width: 50vw;
+  
+  }
+}
+@media only screen and (max-width: 600px) {
+  .headers {
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 0 0 0;
+    gap: 8px;
+  }
+  .nav-links {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .contenu {
+    margin-top: 20px;
+    margin-bottom: 80px;
+  }
+  .footer-text {
+    padding: 12px 0 4px 0;
+    font-size: 1em;
   }
 }
