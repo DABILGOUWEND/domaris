@@ -1,66 +1,68 @@
-<mat-drawer-container class="admin-table-drawer-container">
-  <mat-drawer mode="over" position="end" [opened]="is_opened()" disableClose="true">
-    <app-creation-programme [donneesProgramme]="selectedProgrammme()" [isUpdated]="is_updated()"
-      [is_opened]="is_opened()" [programmeForm]="programme_formgroup" [phasesFormGroup]="phasesformgroup"
-      [users]="_users_store.users()" (close_event)="close_drawer()" (save_event)="save_data($event)" />
-  </mat-drawer>
-  <mat-drawer-content>
-    <div class="content_head">
-      <button mat-flat-button (click)="add_programme()">
-        Nouveau programme
-      </button>
-    </div>
-    <div class="content_body">
-      <table mat-table [dataSource]="donnees_programmes()" class="mat-elevation-z8">
-        <ng-container matColumnDef="code">
-          <th mat-header-cell *matHeaderCellDef> CODE </th>
-          <td mat-cell *matCellDef="let programme"> {{ programme.code }} </td>
-        </ng-container>
-        <ng-container matColumnDef="nom">
-          <th mat-header-cell *matHeaderCellDef> Nom </th>
-          <td mat-cell *matCellDef="let programme"> {{ programme.nom }} </td>
-        </ng-container>
 
-        <ng-container matColumnDef="type">
-          <th mat-header-cell *matHeaderCellDef> Type </th>
-          <td mat-cell *matCellDef="let programme"> {{ programme.type }} </td>
-        </ng-container>
+  <mat-drawer-container>
+    <mat-drawer mode="over" position="end" [opened]="is_opened()" disableClose="true">
+      <app-creation-programme [donneesProgramme]="selectedProgrammme()" [isUpdated]="is_updated()"
+        [is_opened]="is_opened()" [programmeForm]="programme_formgroup" [phasesFormGroup]="phasesformgroup"
+        [users]="_users_store.users()" (close_event)="close_drawer()" (save_event)="save_data($event)" />
+    </mat-drawer>
+    <mat-drawer-content>
+      <div class="content_head">
+        <button mat-flat-button (click)="add_programme()">
+          Nouveau programme
+        </button>
+      </div>
+      <div class="content_body">
+        <table mat-table [dataSource]="donnees_programmes()" class="mat-elevation-z8">
+          <ng-container matColumnDef="code">
+            <th mat-header-cell *matHeaderCellDef> CODE </th>
+            <td mat-cell *matCellDef="let programme"> {{ programme.code }} </td>
+          </ng-container>
+          <ng-container matColumnDef="nom">
+            <th mat-header-cell *matHeaderCellDef> Nom </th>
+            <td mat-cell *matCellDef="let programme"> {{ programme.nom }} </td>
+          </ng-container>
 
-        <ng-container matColumnDef="statut">
-          <th mat-header-cell *matHeaderCellDef> Statut </th>
-          <td mat-cell *matCellDef="let programme"> {{ programme.statut }} </td>
-        </ng-container>
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef> Type </th>
+            <td mat-cell *matCellDef="let programme"> {{ programme.type }} </td>
+          </ng-container>
 
-        <ng-container matColumnDef="dateDebut">
-          <th mat-header-cell *matHeaderCellDef> Date de début </th>
-          <td mat-cell *matCellDef="let programme"> {{ programme.dateDebut }} </td>
-        </ng-container>
+          <ng-container matColumnDef="statut">
+            <th mat-header-cell *matHeaderCellDef> Statut </th>
+            <td mat-cell *matCellDef="let programme"> {{ programme.statut }} </td>
+          </ng-container>
 
-        <ng-container matColumnDef="dateFin">
-          <th mat-header-cell *matHeaderCellDef> Date de fin </th>
-          <td mat-cell *matCellDef="let programme"> {{ programme.dateFin }} </td>
-        </ng-container>
+          <ng-container matColumnDef="dateDebut">
+            <th mat-header-cell *matHeaderCellDef> Date de début </th>
+            <td mat-cell *matCellDef="let programme"> {{ programme.dateDebut }} </td>
+          </ng-container>
 
-        <ng-container matColumnDef="budgetPrevu">
-          <th mat-header-cell *matHeaderCellDef> Budget prévu </th>
-          <td mat-cell *matCellDef="let programme"> {{ programme.budgetPrevu | currency:'EUR':'symbol':'1.0-0' }} </td>
-        </ng-container>
+          <ng-container matColumnDef="dateFin">
+            <th mat-header-cell *matHeaderCellDef> Date de fin </th>
+            <td mat-cell *matCellDef="let programme"> {{ programme.dateFin }} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="budgetPrevu">
+            <th mat-header-cell *matHeaderCellDef> Budget prévu </th>
+            <td mat-cell *matCellDef="let programme"> {{ programme.budgetPrevu | currency:'EUR':'symbol':'1.0-0' }}
+            </td>
+          </ng-container>
 
 
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef> Actions </th>
-          <td mat-cell *matCellDef="let programme">
-            <button mat-icon-button (click)="select_programme(programme)">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button (click)="delete_programme(programme.id)">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-    </div>
-  </mat-drawer-content>
-</mat-drawer-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let programme">
+              <button mat-icon-button (click)="select_programme(programme)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="delete_programme(programme.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>

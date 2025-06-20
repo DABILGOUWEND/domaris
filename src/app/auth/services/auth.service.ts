@@ -45,6 +45,7 @@ export class AuthService {
               this.userLoggedIn.set(true);
 
               this.affichage.set(user.email);
+              this.router.navigate(['/accueil']);
             }
 
           });
@@ -67,7 +68,7 @@ export class AuthService {
         this.userSignal.set(undefined);
         this.current_projet_id.set(undefined);
         localStorage.removeItem('user');
-        this.router.navigate(['/login']);
+        this.router.navigate(['/accueil']);
       }, 3000);
 
     })
@@ -122,7 +123,7 @@ export class AuthService {
                 'email': new_user.email,
                 'token': this.token(),
                 'role': data.role,
-                'username': data.username,
+                'username': data.nom + ' ' + data.prenom,
                 'entreprise_id': data.entreprise_id,
                 'projet_id': data.projet_id,
                 'current_projet_id': data.projet_id[1]

@@ -15,12 +15,13 @@ import { AdminComponent } from './components/admin/admin.component';
 import { MoedashboardComponent } from './components/moedashboard/moedashboard.component';
 import { ModashboardComponent } from './components/modashboard/modashboard.component';
 import { CreationProgrammeComponent } from './components/creation-programme/creation-programme.component';
+import { TestComponent } from './components/test/test.component';
 
 
 export const routes: Routes = [
 
   {
-    path: "", redirectTo: "/login", pathMatch: "full"
+    path: "", redirectTo: "/accueil", pathMatch: "full"
   },
   {
     path: "layout", component: LayoutComponent,
@@ -60,6 +61,16 @@ export const routes: Routes = [
   },
   {
     path: "accueil", component: AccueilComponent
+  ,
+    children: [
+       {
+        path: "", redirectTo: "/accueil/dashboard", pathMatch: "full"
+      },
+      {
+        path: 'dashboard',
+        component: AdminComponent
+      }
+    ]
   }
 
 ]
