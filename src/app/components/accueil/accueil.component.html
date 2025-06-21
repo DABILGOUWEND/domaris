@@ -1,24 +1,10 @@
 <div class="accueil-bg">
   <!-- Entête -->
   <div class="headers">
-    <div class="icon_menu" *ngIf="_auth_service.userSignal()">
-      <button mat-icon-button (click)="toggleMenu()">
-        <mat-icon>menu</mat-icon>
-      </button>
-    </div>
+   
 
     <div class="my_logo">
       <img src="/logodomaris.png" alt="Logo Domaris" />
-    </div>
-    <div class="my-links" [class.active]="menuOpen()">
-      <a *ngIf="_auth_service.userSignal()" routerLink="/dashboard" class="nav-link btn">Tableau de bord</a>
-      <a *ngIf="_auth_service.userSignal()" routerLink="/programmes" class="nav-link btn">Programmes</a>
-      <a *ngIf="_auth_service.userSignal()" routerLink="/entreprises" class="nav-link btn">Entreprises</a>
-      <a *ngIf="_auth_service.userSignal()" routerLink="/documents" class="nav-link btn">Documents</a>
-
-      <a *ngIf="!_auth_service.userSignal()" routerLink="/login" class="nav-link btn">se connecter</a>
-      <a *ngIf="_auth_service.userSignal()" (click)="logout()" class="nav-link btn"
-        [ngStyle]="{'background-color':'red'}">se déconnecter</a>
     </div>
     <div class="profil2" *ngIf="_auth_service.userSignal()">
       <button mat-icon-button (click)="toggleProfile()">
@@ -30,66 +16,8 @@
   </div>
   <!-- Contenu principal -->
 
-  @if (_auth_service.isloagouting()) {
+  @if(!_islogouting()) {
   <div class="contenu">
-    <div class="spinner-container">
-      <h1>
-        Déconnexion en cours...
-      </h1>
-      <mat-spinner diameter="100"></mat-spinner>
-    </div>
-  </div>
-
-  } @else {
-  <div class="contenu">
-    <ng-container [ngTemplateOutlet]="content">
-    </ng-container>
-  </div>
-
-  }
-  <!-- Pied de page -->
-  <div class="footer-text">
-    <p>© 2025 Domaris. Tous droits réservés.</p>
-    <p>Politique de confidentialité | Conditions d'utilisation</p>
-    <p><a href="/sitemap.xml">Plan du site</a></p>
-    <p><a href="/mentions-legales">Mentions légales</a></p>
-    <p><a href="/cookies">Gestion des cookies</a></p>
-  </div>
-</div>
-@if(_auth_service.userSignal()) {
-<div class="affiche_profile" [class.active]="profileOpen()">
-  <div class="button_back">
-    <button (click)="profileOpen.set(false)">
-      <mat-icon>arrow_back</mat-icon>
-    </button>
-    DOMARIS
-  </div>
-  <div class="mes_infos">
-    <mat-icon>account_circle</mat-icon>
-    <div [ngStyle]="{'texalign': 'left'}">
-      <p>{{'UserName: '+_auth_service.userSignal()?.username}}</p>
-      <p>{{'Email: '+_auth_service.userSignal()?.email}}</p>
-      <p>{{'Rôle: '+_auth_service.userSignal()?.role}}</p>
-    </div>
-    <button mat-flat-button (click)="logout()" style="background-color: red;">
-      deconnexion
-    </button>
-  </div>
-
-</div>
-}
-
-
-<div class="position-info" [class.active]="MyPosition()" [ngStyle]="{ 'top': positionY + 'px', 'left': 0 + 'px'}">
-
-  <div class="infos_card">
-    <p #infoDiv></p>
-
-    <button mat-button (click)="close_info($event)">Fermer</button>
-  </div>
-</div>
-<ng-template #content>
-  <ng-container *ngIf="!_auth_service.userSignal(); else guestContent">
     <div class="slogan-accueil">
       <h1>Bienvenue à DOMARIS</h1>
       <h2>Le Digital</h2>
@@ -99,7 +27,6 @@
         <mat-icon>arrow_forward</mat-icon>
       </button>
     </div>
-
     <section class="cards-container">
       <mat-card class="immobilier-card">
         <mat-card-header>
@@ -118,7 +45,8 @@
         </mat-card-header>
         <mat-card-content>
           <p>
-            Création de budgets par phase, validation des devis et décomptes, suivi des paiements et analyse des écarts.
+            Création de budgets par phase, validation des devis et décomptes, suivi des paiements et analyse des
+            écarts.
           </p>
         </mat-card-content>
       </mat-card>
@@ -194,11 +122,55 @@
         </div>
       </div>
     </section>
-  </ng-container>
-  <ng-template #guestContent>
-    <div class="admin-table-drawer-container">
-      <router-outlet></router-outlet>
-    </div>
-  </ng-template>
+  </div>
 
-</ng-template>
+  }@else {
+  <div class="contenu">
+    <div class="spinner-container">
+      
+    <mat-spinner diameter="50" color="accent"></mat-spinner>
+    <p>Déconnexion en cours...</p>
+    </div>
+  </div>
+
+  }
+
+
+  <!-- Pied de page -->
+  <div class="footer-text">
+    <p>© 2025 Domaris. Tous droits réservés.</p>
+    <p>Politique de confidentialité | Conditions d'utilisation</p>
+    <p><a href="/sitemap.xml">Plan du site</a></p>
+    <p><a href="/mentions-legales">Mentions légales</a></p>
+    <p><a href="/cookies">Gestion des cookies</a></p>
+  </div>
+</div>
+@if(_auth_service.userSignal()) {
+<div class="affiche_profile" [class.active]="profileOpen()">
+  <div class="button_back">
+    <button (click)="profileOpen.set(false)">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    DOMARIS
+  </div>
+  <div class="mes_infos">
+    <mat-icon>account_circle</mat-icon>
+    <div [ngStyle]="{'texalign': 'left'}">
+      <p>{{'UserName: '+_auth_service.userSignal()?.username}}</p>
+      <p>{{'Email: '+_auth_service.userSignal()?.email}}</p>
+      <p>{{'Rôle: '+_auth_service.userSignal()?.role}}</p>
+    </div>
+    <button mat-flat-button (click)="logout()" style="background-color: red;">
+      deconnexion
+    </button>
+  </div>
+
+</div>
+}
+<div class="position-info" [class.active]="MyPosition()" [ngStyle]="{ 'top': positionY + 'px', 'left': 0 + 'px'}">
+  <div class="infos_card">
+    <p #infoDiv></p>
+
+    <button mat-button (click)="close_info($event)">Fermer</button>
+  </div>
+</div>

@@ -6,10 +6,9 @@ export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const _service = inject(AuthService);
   const expectedRole = route.data['role']; // ex: 'admin', 'mo', etc.
-  console.log('User role matches expected role:', expectedRole);
   return _service.getCurrentUserRole().pipe(
     map(role => {
-      if (role === expectedRole) {
+      if (expectedRole.includes(role)) {
         return true;
       } else {
         // Redirection si le rôle ne correspond pas

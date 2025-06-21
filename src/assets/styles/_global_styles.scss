@@ -6431,11 +6431,9 @@ button[mat-raised-button] {
 }
 
 .admin-table-drawer-container {
-  position: relative;
-  top: 0;
-  left: 0;
-  background-color: gray;
-  padding: 50px;
+  width: 100vw;
+  height: 100vh;
+  padding: 20px;
 
   mat-drawer {
     width: 60% !important;
@@ -7779,7 +7777,7 @@ button[mat-raised-button] {
   position: relative;
   top: 0px;
   left: 0;
-  flex: 1 0 auto;
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -7920,8 +7918,9 @@ button[mat-raised-button] {
 
 .footer-text {
   position: relative;
-  bottom: 0;
+  top: 0;
   left: 0;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -8061,13 +8060,12 @@ button[mat-raised-button] {
   .my-links {
     display: none;
     top: 150px;
-    left: 0;
+    left: 10px;
     z-index: 100;
     padding: 10px 10px;
     border: 1px solid rgb(30, 42, 97);
     border-radius: 20px;
     width: 50%;
-    height: 250px;
   }
 
   .my-links.active {
@@ -8160,15 +8158,11 @@ button[mat-raised-button] {
 }
 
 .spinner-container {
+  margin-top: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  width: 100%;
-  border: 1px solid rgb(30, 42, 97);
-  background-color: #c6cece;
-  position: absolute;
-  top: 0;
-  left: 0;
+  font-size: 2rem;
+  color: white;
 }

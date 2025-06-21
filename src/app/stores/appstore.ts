@@ -389,7 +389,7 @@ export const UserStore = signalStore(
       ))),
       addUser: rxMethod<any>(pipe(
         switchMap((personnel) => {
-          return _task_service.addModel("myusers", personnel).pipe(
+          return _task_service.addModel("domaris_users", personnel).pipe(
             tap({
               next: () => {
                 Showsnackerbaralert('ajouté avec succes', 'pass', snackbar)
@@ -405,7 +405,7 @@ export const UserStore = signalStore(
       )),
       removeUser: rxMethod<string>(pipe(
         switchMap((id) => {
-          return _task_service.deleteModel("myusers", id).pipe(tap({
+          return _task_service.deleteModel("domaris_users", id).pipe(tap({
             next: () => {
 
               Showsnackerbaralert('élément supprimé', 'pass', snackbar)
@@ -419,7 +419,7 @@ export const UserStore = signalStore(
         }))),
       updateUser: rxMethod<tab_personnel>(pipe(
         switchMap((user) => {
-          return _task_service.updateModel("myusers", user).pipe(
+          return _task_service.updateModel("domaris_users", user).pipe(
             tap({
               next: () => {
 

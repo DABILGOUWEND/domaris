@@ -12,7 +12,7 @@ import { UtilitairesService } from '../../services/utilitaires.service';
 
 @Component({
   selector: 'app-admin',
-  imports: [ImportedModule, CreationProgrammeComponent],
+  imports: [ImportedModule],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss'
 })

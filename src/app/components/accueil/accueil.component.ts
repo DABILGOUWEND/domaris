@@ -7,7 +7,7 @@ import { set } from '@angular/fire/database';
 
 @Component({
   selector: 'app-accueil',
-  imports: [ImportedModule, RouterOutlet],
+  imports: [ImportedModule],
   templateUrl: './accueil.component.html',
   styleUrl: './accueil.component.scss'
 })
@@ -49,7 +49,11 @@ export class AccueilComponent implements OnInit {
     "Gestion documentaire, archivage des pièces et accès sécurisé"
   ];
   commencer() {
-    this._router.navigate(['/login']);
+    if(this._auth_service.userSignal()){
+      this._router.navigate(['/connect']);
+    }else{
+      this._router.navigate(['/login']);
+    }
   }
   toggleMenu() {
     this.menuOpen.set(!this.menuOpen());
@@ -111,11 +115,13 @@ export class AccueilComponent implements OnInit {
   logout() {
     this.profileOpen.set(false);
     this.menuOpen.set(false);
+    this._islogouting.set(true);
     this._auth_service.isloagouting.set(true);
+    this._auth_service.logout();
     setTimeout(() => {
-      this._auth_service.logout();
+      this._islogouting.set(false);
     }
-      , 5000);
+      , 3000);
 
   }
 }

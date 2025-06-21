@@ -16,6 +16,9 @@ import { MoedashboardComponent } from './components/moedashboard/moedashboard.co
 import { ModashboardComponent } from './components/modashboard/modashboard.component';
 import { CreationProgrammeComponent } from './components/creation-programme/creation-programme.component';
 import { TestComponent } from './components/test/test.component';
+import { ConnectedPageComponent } from './components/connected-page/connected-page.component';
+import { ProgrammesComponent } from './components/programmes/programmes.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 
 export const routes: Routes = [
@@ -37,10 +40,8 @@ export const routes: Routes = [
   { path: "login", component: LoginComponent },
   {
     path: 'unauthorized', component: UnauthorizedComponent
-  },
-  {
-    path: "admin", component: AdminComponent
   }
+
   ,
   {
     path: "moe", component: MoedashboardComponent, canActivate: [authGuard], data: { role: 'moe' },
@@ -61,14 +62,31 @@ export const routes: Routes = [
   },
   {
     path: "accueil", component: AccueilComponent
-  ,
+
+  },
+  {
+    path: "connect", component: ConnectedPageComponent
+    ,
+    canActivate: [authGuard]
+    ,
+    data: { role: ['admin', 'manager'] },
     children: [
-       {
-        path: "", redirectTo: "/accueil/dashboard", pathMatch: "full"
+      {
+        path: "admin", component: AdminComponent,
+        canActivate: [authGuard],
+        data: { role: 'admin' },
       },
       {
         path: 'dashboard',
-        component: AdminComponent
+        component: DashboardComponent,
+        canActivate: [authGuard],
+        data: { role: ['admin', 'manager','users'] }
+      },
+      {
+        path: 'programmes',
+        component: ProgrammesComponent,
+        canActivate: [authGuard],
+        data: { role: ['admin', 'manager'] }
       }
     ]
   }
