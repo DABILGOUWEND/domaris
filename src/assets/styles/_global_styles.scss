@@ -7777,7 +7777,7 @@ button[mat-raised-button] {
   position: relative;
   top: 0px;
   left: 0;
-  flex:  1 1 0;
+  flex:  1 ;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -7869,7 +7869,7 @@ button[mat-raised-button] {
 }
 
 .immobilier-card {
-  width: 450px;
+  width: 400px;
   min-height: 220px;
   min-width: 300px;
   border: 2px solid rgb(30, 42, 97);
