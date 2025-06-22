@@ -7777,12 +7777,12 @@ button[mat-raised-button] {
   position: relative;
   top: 0px;
   left: 0;
-  flex: 1;
+  flex:  1 1 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  width: 100%;
+  
   background-image: url('/arriereplan.png');
   background-size: cover;
   background-position: center;

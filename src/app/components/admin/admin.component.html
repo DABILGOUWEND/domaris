@@ -1,0 +1,118 @@
+<mat-tab-group >
+  <mat-tab label="Utilisateurs">
+    <ng-container [ngTemplateOutlet]="userTab">
+    </ng-container>
+  </mat-tab>
+  <mat-tab label="entreprises">
+    <ng-container [ngTemplateOutlet]="entrepriseTab">
+    </ng-container>
+  </mat-tab>
+</mat-tab-group>
+
+<ng-template #userTab>
+  <table mat-table [dataSource]="users_dataSource()" class="mat-elevation-z8">
+    <ng-container matColumnDef="nom">
+      <th mat-header-cell *matHeaderCellDef> enseigne </th>
+      <td mat-cell *matCellDef="let user"> {{user.enseigne}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="prenom">
+      <th mat-header-cell *matHeaderCellDef> code </th>
+      <td mat-cell *matCellDef="let user"> {{user.prenom}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> Email </th>
+      <td mat-cell *matCellDef="let user"> {{user.email}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef> Rôle </th>
+      <td mat-cell *matCellDef="let user"> {{user.role}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="entreprise">
+      <th mat-header-cell *matHeaderCellDef> Entreprise </th>
+      <td mat-cell *matCellDef="let user"> {{user.entreprise}} </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let user">
+        <button mat-icon-button (click)="click_user(user)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="removeUser(user)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="user_columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: user_columns;"></tr>
+  </table>
+</ng-template>
+<ng-template #entrepriseTab>
+  <table style="width: 100%;" mat-table [dataSource]="entreprises_dataSource()" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="enseigne">
+      <th mat-header-cell *matHeaderCellDef> Enseigne </th>
+      <td mat-cell *matCellDef="let entreprise"> {{entreprise.enseigne}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="code">
+      <th mat-header-cell *matHeaderCellDef> Code </th>
+      <td mat-cell *matCellDef="let entreprise"> {{entreprise.code}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="adresse">
+      <th mat-header-cell *matHeaderCellDef> Adresse </th>
+      <td mat-cell *matCellDef="let entreprise"> {{entreprise.adresse}} </td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> Email </th>
+      <td mat-cell *matCellDef="let entreprise"> {{entreprise.email}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="telephone">
+      <th mat-header-cell *matHeaderCellDef> Téléphone </th>
+      <td mat-cell *matCellDef="let entreprise"> {{entreprise.telephone}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="site_web">
+      <th mat-header-cell *matHeaderCellDef> Site Web </th>
+      <td mat-cell *matCellDef="let entreprise"> {{entreprise.site_web}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="rccm">
+      <th mat-header-cell *matHeaderCellDef> Rccm </th>
+      <td mat-cell *matCellDef="let entreprise"> {{entreprise.rccm}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ifu">
+      <th mat-header-cell *matHeaderCellDef> Numero Ifu </th>
+      <td mat-cell *matCellDef="let entreprise"> {{entreprise.ifu | date:'dd/MM/yyyy'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="signataire">
+      <th mat-header-cell *matHeaderCellDef> Statut </th>
+      <td mat-cell *matCellDef="let entreprise"> {{entreprise.signataire}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let entreprise">
+        <button mat-icon-button (click)="click_entreprise(entreprise)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="removeEntreprise(entreprise.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="entreprise_columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: entreprise_columns;"></tr>
+  </table>
+</ng-template>

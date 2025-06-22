@@ -24,7 +24,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 export const routes: Routes = [
 
   {
-    path: "", redirectTo: "/accueil", pathMatch: "full"
+    path: "", redirectTo: "/test", pathMatch: "full"
   },
   {
     path: "layout", component: LayoutComponent,
@@ -90,7 +90,10 @@ export const routes: Routes = [
       }
     ]
   }
-
+,{
+  path:'test',
+  component:TestComponent
+}
 ]
 
 
