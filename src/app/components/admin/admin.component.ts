@@ -48,6 +48,9 @@ export class AdminComponent implements OnInit {
   _is_update_entreprise = signal(false);
   _selected_entreprise = signal<any>(undefined);
   _selected_user = signal<any>(undefined);
+  activate_usersForm = signal(false); 
+  activate_entrepriseForm = signal(false);
+  //table columns
   user_columns: string[] = ['nom', 'prenom', 'email', 'role', 'entreprise', 'actions'];
   entreprise_columns: string[] = ['code', 'enseigne', 'email', 'adresse', 'telephone', 'site_web', 'rccm', 'ifu', 'signataire', 'actions'];
 
@@ -62,13 +65,16 @@ export class AdminComponent implements OnInit {
   _router = inject(RouterOutlet);
 
   //computed properties
-  users = computed(() => {return this._users_store.users().map((users:any) => {
-    return {
-      ...users,
-      entreprise: this.entreprises().find(x=>x.id==users.entreprise_id)?.enseigne || 'Inconnu' ,
-    };
-  })});
+  users = computed(() => {
+    return this._users_store.users().map((users: any) => {
+      return {
+        ...users,
+        entreprise: this.entreprises().find(x => x.id == users.entreprise_id)?.enseigne || 'Inconnu',
+      };
+    })
+  });
   entreprises = computed(() => this._entreprise_store.allEntreprises());
+  programmes = computed(() => this._programme_store.allProgrammes());
   users_dataSource = computed(() => {
     return new MatTableDataSource<any>(this.users());
   }
@@ -80,12 +86,14 @@ export class AdminComponent implements OnInit {
   ngOnInit() {
     this._users_store.loadUsers();
     this._entreprise_store.loadAllData();
+    this._programme_store.loadAllData();
   }
   //users
   new_user() {
     this._selected_user.set(undefined);
     this.users_formGroup.reset();
     this._is_update_users.set(false);
+    this.activate_usersForm.set(true);
   }
   click_user(user: any) {
     this._selected_user.set(user);
@@ -98,6 +106,7 @@ export class AdminComponent implements OnInit {
       projet_ids: user.projet_ids
     })
     this._is_update_users.set(true);
+    this.activate_usersForm.set(true);
   }
   submit_creationCompte() {
     if (this.users_formGroup.valid) {

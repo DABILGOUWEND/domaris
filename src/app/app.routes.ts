@@ -24,7 +24,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 export const routes: Routes = [
 
   {
-    path: "", redirectTo: "/test", pathMatch: "full"
+    path: "", redirectTo: "/accueil", pathMatch: "full"
   },
   {
     path: "layout", component: LayoutComponent,
