@@ -1,0 +1,29 @@
+.mat-card-avatar {
+  width: 64px;
+  height: 64px;
+  min-width: 64px;
+  min-height: 64px;
+  background-color: red;
+}
+
+.mat-card-avatar mat-icon {
+  font-size: 36px;
+}
+
+.circle-icon {
+  background: #1976d2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circle-icon mat-icon {
+  font-size: 60px;
+  height: 100px ;
+  width: 100px ;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #d8da75;
+
+}
