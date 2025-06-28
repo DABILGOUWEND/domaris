@@ -1,7 +1,6 @@
 import { Component, effect, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { ImportedModule } from '../../shared/modules/imported/imported.module';
 import { Router, RouterOutlet } from '@angular/router';
-import { sign } from 'node:crypto';
 import { AuthService } from '../../auth/services/auth.service';
 import { set } from '@angular/fire/database';
 

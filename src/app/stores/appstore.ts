@@ -7,11 +7,8 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { v4 as uuidv4 } from 'uuid';
 import { Auth, authState, user } from "@angular/fire/auth";
 import { DateAdapter } from "@angular/material/core";
-import { PassThrough } from "node:stream";
 
-import { error } from "node:console";
 
-import e from "express";
 import {
   gasoilStore, tab_ProjetStore,
   tab_DevisStore,
@@ -38,8 +35,6 @@ import {
 } from "../modeles/models";
 import { TaskService } from "../services/task.service";
 import { ProgrammesService } from "../services/programmes.service";
-import { get } from "node:http";
-import { remove, set } from "@angular/fire/database";
 import { AuthService } from "../auth/services/auth.service";
 const initialGasoilState: gasoilStore = {
   conso_data: [],

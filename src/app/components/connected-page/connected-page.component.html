@@ -1,79 +1,85 @@
 <div class="accueil-bg">
   <!-- Entête -->
   <div class="headers">
-    <div class="icon_menu" *ngIf="_auth_service.userSignal()">
-      <button mat-icon-button (click)="toggleMenu()">
-        <mat-icon>menu</mat-icon>
-      </button>
-    </div>
+    @if (_auth_service.userSignal()) {
+      <div class="icon_menu">
+        <button mat-icon-button (click)="toggleMenu()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+    }
     <div class="my_logo">
       <img src="/logodomaris.png" alt="Logo Domaris" />
     </div>
     <div class="my-links" [class.active]="menuOpen()">
       @switch (_auth_service.userSignal()?.role) {
-      @case ('admin') {
-      <a routerLink="/connect/admin" class="nav-link btn" (click)="menuOpen.set(false)">Admin</a>
-      }
-      @case ('respo_programmes') {
-      <a routerLink="/connect/programmes" class="nav-link btn" (click)="menuOpen.set(false)"> Pilotage de Programmes</a>
-      <a routerLink="/connect/budget" class="nav-link btn" (click)="menuOpen.set(false)"> Budget</a>
-      <a routerLink="/connect/avancement" class="nav-link btn" (click)="menuOpen.set(false)"> Avancement </a>
-      <a routerLink="/connect/validation" class="nav-link btn" (click)="menuOpen.set(false)">Validation</a>
-      }
-      @case ('respo_projet') {
-      <a routerLink="/connect/programmes" class="nav-link btn" (click)="menuOpen.set(false)"> Pilotage de Programmes</a>
-      <a routerLink="/connect/budget" class="nav-link btn" (click)="menuOpen.set(false)"> Budget</a>
-      <a routerLink="/connect/avancement" class="nav-link btn" (click)="menuOpen.set(false)"> Avancement </a>
-      <a routerLink="/connect/validation" class="nav-link btn" (click)="menuOpen.set(false)">Validation</a>
-      }
-      @case ('respo_finances') {
-      <a routerLink="/connect/compta" class="nav-link btn" (click)="menuOpen.set(false)"> Pilotage de Programmes</a>
-      <a routerLink="/connect/budget" class="nav-link btn" (click)="menuOpen.set(false)"> Budget</a>
-      <a routerLink="/connect/validation" class="nav-link btn" (click)="menuOpen.set(false)">Validation</a>
-      }
+        @case ('admin') {
+          <a routerLink="/connect/admin" class="nav-link btn" (click)="menuOpen.set(false)">Admin</a>
+        }
+        @case ('respo_programmes') {
+          <a routerLink="/connect/programmes" class="nav-link btn" (click)="menuOpen.set(false)"> Pilotage de Programmes</a>
+          <a routerLink="/connect/budget" class="nav-link btn" (click)="menuOpen.set(false)"> Budget</a>
+          <a routerLink="/connect/avancement" class="nav-link btn" (click)="menuOpen.set(false)"> Avancement </a>
+          <a routerLink="/connect/validation" class="nav-link btn" (click)="menuOpen.set(false)">Validation</a>
+        }
+        @case ('respo_projet') {
+          <a routerLink="/connect/programmes" class="nav-link btn" (click)="menuOpen.set(false)"> Pilotage de Programmes</a>
+          <a routerLink="/connect/budget" class="nav-link btn" (click)="menuOpen.set(false)"> Budget</a>
+          <a routerLink="/connect/avancement" class="nav-link btn" (click)="menuOpen.set(false)"> Avancement </a>
+          <a routerLink="/connect/validation" class="nav-link btn" (click)="menuOpen.set(false)">Validation</a>
+        }
+        @case ('respo_finances') {
+          <a routerLink="/connect/compta" class="nav-link btn" (click)="menuOpen.set(false)"> Pilotage de Programmes</a>
+          <a routerLink="/connect/budget" class="nav-link btn" (click)="menuOpen.set(false)"> Budget</a>
+          <a routerLink="/connect/validation" class="nav-link btn" (click)="menuOpen.set(false)">Validation</a>
+        }
 
-      @case ('respo_travaux') {
-      <a routerLink="/connect/travaux" class="nav-link btn" (click)="menuOpen.set(false)">Suivi des travaux</a>
-      <a routerLink="/connect/prestataires" class="nav-link btn" (click)="menuOpen.set(false)">Prestataires</a>
-      <a routerLink="/connect/materiaux" class="nav-link btn" (click)="menuOpen.set(false)">Materiaux</a>
-      <a routerLink="/connect/materiel" class="nav-link btn" (click)="menuOpen.set(false)">Materiels</a>
-      <a routerLink="/connect/facturation" class="nav-link btn" (click)="menuOpen.set(false)">Facturation</a>
-      }
-      @case ('respo_ventes') {
-      <a routerLink="/connect/biens_immobiliers" class="nav-link btn" (click)="menuOpen.set(false)">Biens immobiliers</a>
-      <a routerLink="/connect/ventes" class="nav-link btn" (click)="menuOpen.set(false)">Ventes</a>
-      }
-      @case ('comptable') {
-      <a routerLink="/connect/compta" class="nav-link btn" (click)="menuOpen.set(false)">comptabilité</a>
+        @case ('respo_travaux') {
+          <a routerLink="/connect/travaux" class="nav-link btn" (click)="menuOpen.set(false)">Suivi des travaux</a>
+          <a routerLink="/connect/prestataires" class="nav-link btn" (click)="menuOpen.set(false)">Prestataires</a>
+          <a routerLink="/connect/materiaux" class="nav-link btn" (click)="menuOpen.set(false)">Materiaux</a>
+          <a routerLink="/connect/materiel" class="nav-link btn" (click)="menuOpen.set(false)">Materiels</a>
+          <a routerLink="/connect/facturation" class="nav-link btn" (click)="menuOpen.set(false)">Facturation</a>
+        }
+        @case ('respo_ventes') {
+          <a routerLink="/connect/biens_immobiliers" class="nav-link btn" (click)="menuOpen.set(false)">Biens immobiliers</a>
+          <a routerLink="/connect/ventes" class="nav-link btn" (click)="menuOpen.set(false)">Ventes</a>
+        }
+        @case ('comptable') {
+          <a routerLink="/connect/compta" class="nav-link btn" (click)="menuOpen.set(false)">comptabilité</a>
 
-      }
+        }
       }
       <a routerLink="/accueil" class="nav-link btn">Accueil</a>
-      <a *ngIf="!_auth_service.userSignal()" routerLink="/login" class="nav-link btn">se connecter</a>
+      @if (!_auth_service.userSignal()) {
+        <a routerLink="/login" class="nav-link btn">se connecter</a>
+      }
     </div>
-    <div class="profil2" *ngIf="_auth_service.userSignal()">
-      <button mat-icon-button (click)="toggleProfile()">
-        <mat-icon>
-          account_circle
-        </mat-icon>
-      </button>
-    </div>
+    @if (_auth_service.userSignal()) {
+      <div class="profil2">
+        <button mat-icon-button (click)="toggleProfile()">
+          <mat-icon>
+            account_circle
+          </mat-icon>
+        </button>
+      </div>
+    }
   </div>
   <!-- Contenu principal -->
 
   @if(!_islogouting()) {
-  <div class="contenu">
-    <div class="row" >
-      <router-outlet></router-outlet>
+    <div class="contenu">
+      <div class="row" >
+        <router-outlet></router-outlet>
+      </div>
     </div>
-  </div>
-  }@else {
-  <div class="contenu">
-    <div class="spinner-container">
-      <mat-spinner diameter="50" color="accent"></mat-spinner>
-      <p>Déconnexion en cours...</p>
+    }@else {
+    <div class="contenu">
+      <div class="spinner-container">
+        <mat-spinner diameter="50" color="accent"></mat-spinner>
+        <p>Déconnexion en cours...</p>
+      </div>
     </div>
-  </div>
   }
 
 
@@ -87,26 +93,26 @@
   </div>
 </div>
 @if(_auth_service.userSignal()) {
-<div class="affiche_profile" [class.active]="profileOpen()">
-  <div class="button_back">
-    <button (click)="profileOpen.set(false)">
-      <mat-icon>arrow_back</mat-icon>
-    </button>
-    DOMARIS
-  </div>
-  <div class="mes_infos">
-    <mat-icon>account_circle</mat-icon>
-    <div [ngStyle]="{'texalign': 'left'}">
-      <p>{{'UserName: '+_auth_service.userSignal()?.username}}</p>
-      <p>{{'Email: '+_auth_service.userSignal()?.email}}</p>
-      <p>{{'Rôle: '+_auth_service.userSignal()?.role}}</p>
+  <div class="affiche_profile" [class.active]="profileOpen()">
+    <div class="button_back">
+      <button (click)="profileOpen.set(false)">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      DOMARIS
     </div>
-    <button mat-flat-button (click)="logout()" style="background-color: red;">
-      deconnexion
-    </button>
-  </div>
+    <div class="mes_infos">
+      <mat-icon>account_circle</mat-icon>
+      <div [ngStyle]="{'texalign': 'left'}">
+        <p>{{'UserName: '+_auth_service.userSignal()?.username}}</p>
+        <p>{{'Email: '+_auth_service.userSignal()?.email}}</p>
+        <p>{{'Rôle: '+_auth_service.userSignal()?.role}}</p>
+      </div>
+      <button mat-flat-button (click)="logout()" style="background-color: red;">
+        deconnexion
+      </button>
+    </div>
 
-</div>
+  </div>
 }
 <div class="position-info" [class.active]="MyPosition()" [ngStyle]="{ 'top': positionY + 'px', 'left': 0 + 'px'}">
   <div class="infos_card">

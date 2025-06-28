@@ -4,132 +4,134 @@
     <div class="my_logo">
       <img src="/logodomaris.png" alt="Logo Domaris" />
     </div>
-    <div class="profil2" *ngIf="_auth_service.userSignal()">
-      <button mat-icon-button (click)="toggleProfile()">
-        <mat-icon>
-          account_circle
-        </mat-icon>
-      </button>
-    </div>
+    @if (_auth_service.userSignal()) {
+      <div class="profil2">
+        <button mat-icon-button (click)="toggleProfile()">
+          <mat-icon>
+            account_circle
+          </mat-icon>
+        </button>
+      </div>
+    }
   </div>
   <!-- Contenu principal -->
 
   @if(!_islogouting()) {
-  <div class="contenu">
-    <div class="slogan-accueil">
-      <h1>Bienvenue à DOMARIS</h1>
-      <h2>Le Digital</h2>
-      <h2>au coeur de l'Immobilier</h2>
-      <button mat-fab extended="true" (click)="commencer()">
-        Commencer
-        <mat-icon>arrow_forward</mat-icon>
-      </button>
-    </div>
-    <section class="cards-container">
-      <mat-card class="immobilier-card">
-        <mat-card-header>
-          <mat-icon mat-card-avatar color="primary">dashboard</mat-icon>
-          <mat-card-title>Pilotage global du programme</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>Suivi des phases du projet, visualisation des jalons clés, alertes de retard et tableaux de bord
+    <div class="contenu">
+      <div class="slogan-accueil">
+        <h1>Bienvenue à DOMARIS</h1>
+        <h2>Le Digital</h2>
+        <h2>au coeur de l'Immobilier</h2>
+        <button mat-fab extended="true" (click)="commencer()">
+          Commencer
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+      <section class="cards-container">
+        <mat-card class="immobilier-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar color="primary">dashboard</mat-icon>
+            <mat-card-title>Pilotage global du programme</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>Suivi des phases du projet, visualisation des jalons clés, alertes de retard et tableaux de bord
             dynamiques.</p>
-        </mat-card-content>
-      </mat-card>
-      <mat-card class="immobilier-card">
-        <mat-card-header>
-          <mat-icon mat-card-avatar color="primary">account_balance_wallet</mat-icon>
-          <mat-card-title>Gestion budgétaire</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>
-            Création de budgets par phase, validation des devis et décomptes, suivi des paiements et analyse des
-            écarts.
-          </p>
-        </mat-card-content>
-      </mat-card>
-      <mat-card class="immobilier-card">
-        <mat-card-header>
-          <mat-icon mat-card-avatar color="primary">check_circle</mat-icon>
-          <mat-card-title>Validation & décisions</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>Interface d'approbation rapide, notifications pour décisions à prendre et historique des validations
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="immobilier-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar color="primary">account_balance_wallet</mat-icon>
+            <mat-card-title>Gestion budgétaire</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>
+              Création de budgets par phase, validation des devis et décomptes, suivi des paiements et analyse des
+              écarts.
+            </p>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="immobilier-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar color="primary">check_circle</mat-icon>
+            <mat-card-title>Validation & décisions</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>Interface d'approbation rapide, notifications pour décisions à prendre et historique des validations
             enregistrées.</p>
-        </mat-card-content>
-      </mat-card>
-      <mat-card class="immobilier-card">
-        <mat-card-header>
-          <mat-icon mat-card-avatar color="primary">engineering</mat-icon>
-          <mat-card-title>Suivi des entreprises</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>Vue globale sur les entreprises, leurs tâches, performances, incidents ou litiges en cours.</p>
-        </mat-card-content>
-      </mat-card>
-      <mat-card class="immobilier-card">
-        <mat-card-header>
-          <mat-icon mat-card-avatar color="primary">folder</mat-icon>
-          <mat-card-title>Gestion documentaire</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>Classement des documents par phase et entreprise, accès rapide et sécurisé aux pièces techniques et
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="immobilier-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar color="primary">engineering</mat-icon>
+            <mat-card-title>Suivi des entreprises</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>Vue globale sur les entreprises, leurs tâches, performances, incidents ou litiges en cours.</p>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="immobilier-card">
+          <mat-card-header>
+            <mat-icon mat-card-avatar color="primary">folder</mat-icon>
+            <mat-card-title>Gestion documentaire</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>Classement des documents par phase et entreprise, accès rapide et sécurisé aux pièces techniques et
             contractuelles.</p>
-        </mat-card-content>
-      </mat-card>
-    </section>
-    <section class="cards-rubriques" (click)="showRubrique($event)">
-      <div class="rubrique" id="1">
-        <div class="icon_rubrique">
-          <mat-icon>dashboard</mat-icon>
+          </mat-card-content>
+        </mat-card>
+      </section>
+      <section class="cards-rubriques" (click)="showRubrique($event)">
+        <div class="rubrique" id="1">
+          <div class="icon_rubrique">
+            <mat-icon>dashboard</mat-icon>
+          </div>
+          <div class="title_rubrique">
+            Pilotage global du programme
+          </div>
         </div>
-        <div class="title_rubrique">
-          Pilotage global du programme
+        <div class="rubrique" id="2" (click)="showRubrique($event)">
+          <div class="icon_rubrique">
+            <mat-icon>account_balance_wallet</mat-icon>
+          </div>
+          <div class="title_rubrique">
+            Gestion budgétaire
+          </div>
         </div>
-      </div>
-      <div class="rubrique" id="2" (click)="showRubrique($event)">
-        <div class="icon_rubrique">
-          <mat-icon>account_balance_wallet</mat-icon>
+        <div class="rubrique" id="3" (click)="showRubrique($event)">
+          <div class="icon_rubrique">
+            <mat-icon>check_circle</mat-icon>
+          </div>
+          <div class="title_rubrique">
+            Validation & décisions
+          </div>
         </div>
-        <div class="title_rubrique">
-          Gestion budgétaire
+        <div class="rubrique" id="4" (click)="showRubrique($event)">
+          <div class="icon_rubrique">
+            <mat-icon>engineering</mat-icon>
+          </div>
+          <div class="title_rubrique">
+            Suivi des entreprises
+          </div>
         </div>
-      </div>
-      <div class="rubrique" id="3" (click)="showRubrique($event)">
-        <div class="icon_rubrique">
-          <mat-icon>check_circle</mat-icon>
+        <div class="rubrique" id="5" (click)="showRubrique($event)">
+          <div class="icon_rubrique">
+            <mat-icon>folder</mat-icon>
+          </div>
+          <div class="title_rubrique">
+            Gestion documentaire
+          </div>
         </div>
-        <div class="title_rubrique">
-          Validation & décisions
-        </div>
-      </div>
-      <div class="rubrique" id="4" (click)="showRubrique($event)">
-        <div class="icon_rubrique">
-          <mat-icon>engineering</mat-icon>
-        </div>
-        <div class="title_rubrique">
-          Suivi des entreprises
-        </div>
-      </div>
-      <div class="rubrique" id="5" (click)="showRubrique($event)">
-        <div class="icon_rubrique">
-          <mat-icon>folder</mat-icon>
-        </div>
-        <div class="title_rubrique">
-          Gestion documentaire
-        </div>
-      </div>
-    </section>
-  </div>
-
-  }@else {
-  <div class="contenu">
-    <div class="spinner-container">
-      
-    <mat-spinner diameter="50" color="accent"></mat-spinner>
-    <p>Déconnexion en cours...</p>
+      </section>
     </div>
-  </div>
+
+    }@else {
+    <div class="contenu">
+      <div class="spinner-container">
+
+        <mat-spinner diameter="50" color="accent"></mat-spinner>
+        <p>Déconnexion en cours...</p>
+      </div>
+    </div>
 
   }
 
@@ -144,26 +146,26 @@
   </div>
 </div>
 @if(_auth_service.userSignal()) {
-<div class="affiche_profile" [class.active]="profileOpen()">
-  <div class="button_back">
-    <button (click)="profileOpen.set(false)">
-      <mat-icon>arrow_back</mat-icon>
-    </button>
-    DOMARIS
-  </div>
-  <div class="mes_infos">
-    <mat-icon>account_circle</mat-icon>
-    <div [ngStyle]="{'texalign': 'left'}">
-      <p>{{'UserName: '+_auth_service.userSignal()?.username}}</p>
-      <p>{{'Email: '+_auth_service.userSignal()?.email}}</p>
-      <p>{{'Rôle: '+_auth_service.userSignal()?.role}}</p>
+  <div class="affiche_profile" [class.active]="profileOpen()">
+    <div class="button_back">
+      <button (click)="profileOpen.set(false)">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      DOMARIS
     </div>
-    <button mat-flat-button (click)="logout()" style="background-color: red;">
-      deconnexion
-    </button>
-  </div>
+    <div class="mes_infos">
+      <mat-icon>account_circle</mat-icon>
+      <div [ngStyle]="{'texalign': 'left'}">
+        <p>{{'UserName: '+_auth_service.userSignal()?.username}}</p>
+        <p>{{'Email: '+_auth_service.userSignal()?.email}}</p>
+        <p>{{'Rôle: '+_auth_service.userSignal()?.role}}</p>
+      </div>
+      <button mat-flat-button (click)="logout()" style="background-color: red;">
+        deconnexion
+      </button>
+    </div>
 
-</div>
+  </div>
 }
 <div class="position-info" [class.active]="MyPosition()" [ngStyle]="{ 'top': positionY + 'px', 'left': 0 + 'px'}">
   <div class="infos_card">

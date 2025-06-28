@@ -7,11 +7,19 @@
     Domaris
   </div>
   <nav class="nav-links">
-      <a routerLink="/admin" class="btn" *ngIf="hasRole('admin')">Admin</a>
-    <a routerLink="/login" class="btn" *ngIf="!auth_service.userLoggedIn()">Connexion</a>
-    <a (click)="logout()" class="btn_deconnecter" *ngIf="auth_service.userLoggedIn()">Déconnexion</a>
-    <span *ngIf="auth_service.userLoggedIn()" class="username">
-      {{ auth_service.userSignal()?.username }}
-    </span>
+    @if (hasRole('admin')) {
+      <a routerLink="/admin" class="btn">Admin</a>
+    }
+    @if (!auth_service.userLoggedIn()) {
+      <a routerLink="/login" class="btn">Connexion</a>
+    }
+    @if (auth_service.userLoggedIn()) {
+      <a (click)="logout()" class="btn_deconnecter">Déconnexion</a>
+    }
+    @if (auth_service.userLoggedIn()) {
+      <span class="username">
+        {{ auth_service.userSignal()?.username }}
+      </span>
+    }
   </nav>
 </header>

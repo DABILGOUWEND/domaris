@@ -21,34 +21,46 @@
       <mat-label>Rôle</mat-label>
       <mat-select formControlName="role" placeholder="Choisir un rôle">
         <mat-option value="" disabled>Choisir un rôle</mat-option>
-        <mat-option *ngFor="let r of tableau" [value]="r.id">{{ r.valeur }}</mat-option>
+        @for (r of tableau; track r) {
+          <mat-option [value]="r.id">{{ r.valeur }}</mat-option>
+        }
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="outline" class="form-group" floatLabel="always">
       <mat-label>Entreprise</mat-label>
       <mat-select formControlName="entreprise" placeholder="Choisir une entreprise">
         <mat-option value="" disabled>Choisir une entreprise</mat-option>
-        <mat-option *ngFor="let e of tableauEntreprises()" [value]="e.id">{{ e.valeur }}</mat-option>
+        @for (e of tableauEntreprises(); track e) {
+          <mat-option [value]="e.id">{{ e.valeur }}</mat-option>
+        }
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="outline" class="form-group" floatLabel="always">
       <mat-label>Programme(s)</mat-label>
       <mat-select formControlName="programme" multiple>
-        <mat-option *ngFor="let p of tableauProgrammes()" [value]="p.id">{{ p.valeur }}</mat-option>
+        @for (p of tableauProgrammes(); track p) {
+          <mat-option [value]="p.id">{{ p.valeur }}</mat-option>
+        }
       </mat-select>
     </mat-form-field>
-  <button mat-raised-button color="primary" type="submit" [disabled]="signupForm.invalid || isLoading" style="display: flex; align-items: center; justify-content: center;">
-  Créer le compte
-  <span *ngIf="isLoading" style="display: flex; align-items: center; margin-left: 10px;">
-    <mat-progress-spinner
-      diameter="22"
-      mode="indeterminate"
-      color="accent"
-      style="vertical-align: middle;"
-    ></mat-progress-spinner>
-  </span>
-</button>
-    <div *ngIf="errorMessage" class="error-message mat-caption">{{ errorMessage }}</div>
-    <div *ngIf="successMessage" class="success-message mat-caption">{{ successMessage }}</div>
+    <button mat-raised-button color="primary" type="submit" [disabled]="signupForm.invalid || isLoading" style="display: flex; align-items: center; justify-content: center;">
+      Créer le compte
+      @if (isLoading) {
+        <span style="display: flex; align-items: center; margin-left: 10px;">
+          <mat-progress-spinner
+            diameter="22"
+            mode="indeterminate"
+            color="accent"
+            style="vertical-align: middle;"
+          ></mat-progress-spinner>
+        </span>
+      }
+    </button>
+    @if (errorMessage) {
+      <div class="error-message mat-caption">{{ errorMessage }}</div>
+    }
+    @if (successMessage) {
+      <div class="success-message mat-caption">{{ successMessage }}</div>
+    }
   </form>
 </div>

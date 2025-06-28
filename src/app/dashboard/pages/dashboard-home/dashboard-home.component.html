@@ -25,28 +25,34 @@
     <h3>Avancement des projets</h3>
     <mat-progress-bar mode="determinate" [value]="globalProgress()"></mat-progress-bar>
     <ul>
-      <li *ngFor="let project of projects()">
-        <strong>{{ project.name }}</strong> : {{ project.progress }}%
-        <mat-progress-bar mode="determinate" [value]="project.progress"></mat-progress-bar>
-      </li>
+      @for (project of projects(); track project) {
+        <li>
+          <strong>{{ project.name }}</strong> : {{ project.progress }}%
+          <mat-progress-bar mode="determinate" [value]="project.progress"></mat-progress-bar>
+        </li>
+      }
     </ul>
   </div>
 
   <div class="dashboard-section dashboard-calendar">
     <h3>Échéances à venir</h3>
     <ul>
-      <li *ngFor="let event of upcomingEvents()">
-        <strong>{{ event.date | date:'shortDate' }}</strong> - {{ event.label }}
-      </li>
+      @for (event of upcomingEvents(); track event) {
+        <li>
+          <strong>{{ event.date | date:'shortDate' }}</strong> - {{ event.label }}
+        </li>
+      }
     </ul>
   </div>
 
   <div class="dashboard-section dashboard-docs">
     <h3>Documents récents</h3>
     <ul>
-      <li *ngFor="let doc of recentDocs()">
-        <a [href]="doc.url" target="_blank">{{ doc.name }}</a> ({{ doc.date | date:'shortDate' }})
-      </li>
+      @for (doc of recentDocs(); track doc) {
+        <li>
+          <a [href]="doc.url" target="_blank">{{ doc.name }}</a> ({{ doc.date | date:'shortDate' }})
+        </li>
+      }
     </ul>
   </div>
 </div>

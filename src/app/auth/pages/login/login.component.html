@@ -29,8 +29,10 @@
         <h3>{{message()}}</h3>
       </div>
       <div class="sspinner">
-        <mat-spinner *ngIf="isLoading()" diameter="50">
-        </mat-spinner>
+        @if (isLoading()) {
+          <mat-spinner diameter="50">
+          </mat-spinner>
+        }
       </div>
     </mat-card-content>
   </mat-card>
