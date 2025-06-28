@@ -6,6 +6,7 @@ import { AuthService } from '../../auth/services/auth.service';
 import { UtilitairesService } from '../../services/utilitaires.service';
 import { ProgrammeStore, UserStore } from '../../stores/appstore';
 import { CreationProgrammeComponent } from '../creation-programme/creation-programme.component';
+import { DashboardComponent } from '../dashboard/dashboard.component';
 
 @Component({
   selector: 'app-programmes',
@@ -77,7 +78,7 @@ export class ProgrammesComponent {
     this._users_store.loadUsers();
     this._programme_store.loadAllData()
     if (this._auth_service.userSignal()) {
-      this._programme_store.setProgrammeIs(this._auth_service.userSignal().projet_id);
+      this._programme_store.setProgrammeIds(this._auth_service.userSignal().projet_id);
     }
   }
   close_drawer() {
@@ -92,7 +93,7 @@ export class ProgrammesComponent {
     });
     this.is_opened.set(true);
     this.is_updated.set(true);
-    this._programme_store.setProgrammeIs(row.id);
+    this._programme_store.setProgrammeIds(row.id);
   }
   delete_programme(id: string) {
     if (confirm("Voulez-vous vraiment supprimer ce programme ?"))

@@ -1,7 +1,7 @@
 import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
-import { Auth, authState, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { Auth, authState, createUserWithEmailAndPassword, deleteUser } from '@angular/fire/auth';
 import { getAuth, setPersistence, signInWithEmailAndPassword, browserSessionPersistence, browserLocalPersistence } from "firebase/auth";
-import { doc, Firestore, getDoc, setDoc } from '@angular/fire/firestore';
+import { deleteDoc, doc, Firestore, getDoc, setDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { from, map, Observable, of, switchMap, tap } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
@@ -76,25 +76,48 @@ export class AuthService {
         console.error("Error signing out: ", error);
       });
   }
-  register(email: string, password: string, role: string, nom: string, entreprise_id: string, projet_id: string[]): Observable<any> {
+  register(email: string,
+    password: string,
+    role: string,
+    nom: string,
+    prenom: string,
+    entreprise_id: string,
+    projet_ids: string[]): Observable<any> {
     return this._http.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + apiKey,
       {
         email: email,
         password: password
       }
-    ).pipe(tap((resp: any) => {
+    ).pipe(map((resp: any) => {
       let userId = resp.localId;
       let data = {
         id: userId,
         email: resp.email,
-        username: nom,
+        nom: nom,
+        prenom: prenom,
+        mot_de_passe: password,
         role: role,
         entreprise_id: entreprise_id,
-        projet_id: projet_id
+        projet_ids: projet_ids
       }
-      this.addUser(data).subscribe()
+      return data;
+    }), switchMap((data: any) => {
+      return this.addUser(data);
     }))
   };
+
+  deleteUser(uid: string): Observable<any> {
+    // First delete from Firestore
+    const userDocRef = doc(this.db, 'domaris_users', uid);
+    const deleteFromFirestore = from(deleteDoc(userDocRef));
+    return deleteFromFirestore
+  }
+  deleteUserFromAuth(uid: string): Observable<any> {
+    // Cette méthode nécessite un token d'admin ou un appel vers votre backend
+    return this._http.post(`https://identitytoolkit.googleapis.com/v1/accounts:delete?key=${apiKey}`, {
+      localId: uid
+    });
+  }
   addUser(data: any): Observable<any> {
     const docRef = setDoc(doc(this.db, 'domaris_users/' + data.id), data)
     return from(docRef)
@@ -115,6 +138,8 @@ export class AuthService {
       tap(
         (resp: any) => {
           let data = resp.data();
+
+          console.log('user data', data);
           this.userSignal.update(
             (user: any) =>
             (
@@ -125,13 +150,13 @@ export class AuthService {
                 'role': data.role,
                 'username': data.nom + ' ' + data.prenom,
                 'entreprise_id': data.entreprise_id,
-                'projet_id': data.projet_id,
-                'current_projet_id': data.projet_id[1]
+                'projet_id': data.projet_ids,
+                'current_projet_id': data.projet_ids[0]
               }
             )
           )
           localStorage.setItem('user', JSON.stringify(this.userSignal()));
-          this.current_projet_id.set(data.projet_id[1]);
+          this.current_projet_id.set(data.projet_ids[0]);
         }
       )
     )
@@ -162,19 +187,19 @@ export class AuthService {
     }
 
   }
-getCurrentUserRole(): Observable<string> {
-  return authState(this._auth).pipe(
-    switchMap(user => {
-      if (!user) return of('guest');
-      // Utilise Firestore pour récupérer le rôle de l'utilisateur
-      const docRef = doc(this.db, "domaris_users", user.uid);
-      return from(getDoc(docRef)).pipe(
-        map((snap: any) => {
-          const data = snap.data();
-          return data?.role || 'guest';
-        })
-      );
-    })
-  );
-}
+  getCurrentUserRole(): Observable<string> {
+    return authState(this._auth).pipe(
+      switchMap(user => {
+        if (!user) return of('guest');
+        // Utilise Firestore pour récupérer le rôle de l'utilisateur
+        const docRef = doc(this.db, "domaris_users", user.uid);
+        return from(getDoc(docRef)).pipe(
+          map((snap: any) => {
+            const data = snap.data();
+            return data?.role || 'guest';
+          })
+        );
+      })
+    );
+  }
 }

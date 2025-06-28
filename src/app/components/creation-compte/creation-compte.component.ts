@@ -78,7 +78,8 @@ export class CreationCompteComponent {
       formData.email,
       formData.password,
       formData.role,
-      `${formData.prenom} ${formData.nom}`,
+      formData.prenom,
+      formData.nom,
       formData.entreprise,
       formData.programme
     ).subscribe({

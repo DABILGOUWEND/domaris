@@ -45,10 +45,10 @@ export class ConnectedPageComponent implements OnInit {
       let role = this._auth_service.userSignal()?.role;
     switch (role) {
       case 'admin':
-        this._router.navigate(['connect/dashboard']);
+        this._router.navigate(['connect/admin']);
         break;
-      case 'user':
-        // Show user features
+      case 'respo_programmes':
+        this._router.navigate(['connect/programmes']);
         break;
     }
     }

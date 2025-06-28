@@ -1,24 +1,43 @@
-<mat-tab-group>
+<div class="titre">
+  <h1>Administration</h1>
+</div>
+<mat-tab-group style="background-color: white">
   <mat-tab label="Utilisateurs">
-    <ng-container [ngTemplateOutlet]="userTab">
-</ng-container>
-<ng-container [ngTemplateOutlet]="user_form">
-</ng-container>
+    <div style="padding: 20px;
+    background-color: rgb(200, 204, 207);">
+      <ng-container [ngTemplateOutlet]="userTab">
+      </ng-container>
+    </div>
+
   </mat-tab>
   <mat-tab label="entreprises">
     <ng-container [ngTemplateOutlet]="entrepriseTab">
     </ng-container>
   </mat-tab>
 </mat-tab-group>
+<ng-container [ngTemplateOutlet]="user_form">
+</ng-container>
+<ng-container [ngTemplateOutlet]="entreprise_form">
+</ng-container>
 <ng-template #userTab>
+  <div class="row">
+    <div style="
+    display: flex;
+    justify-content: center;
+    background-color: rgb(140, 207, 216);
+    width: 5%;">
+      <button mat-icon-button color="primary" (click)="new_user()" aria-label="Ajouter un utilisateur">
+        <mat-icon>add</mat-icon> </button>
+    </div>
+  </div>
   <table mat-table [dataSource]="users_dataSource()" class="mat-elevation-z8">
     <ng-container matColumnDef="nom">
-      <th mat-header-cell *matHeaderCellDef> enseigne </th>
-      <td mat-cell *matCellDef="let user"> {{user.enseigne}} </td>
+      <th mat-header-cell *matHeaderCellDef> Nom </th>
+      <td mat-cell *matCellDef="let user"> {{user.nom}} </td>
     </ng-container>
 
     <ng-container matColumnDef="prenom">
-      <th mat-header-cell *matHeaderCellDef> code </th>
+      <th mat-header-cell *matHeaderCellDef> Prénom </th>
       <td mat-cell *matCellDef="let user"> {{user.prenom}} </td>
     </ng-container>
 
@@ -47,7 +66,6 @@
         </button>
       </td>
     </ng-container>
-
     <tr mat-header-row *matHeaderRowDef="user_columns"></tr>
     <tr mat-row *matRowDef="let row; columns: user_columns;"></tr>
   </table>
@@ -118,69 +136,169 @@
   </table>
 </ng-template>
 <ng-template #user_form>
-  <div class="user_formContainer"   [class.ativate]="activate_usersForm()">
+  <div class="user_formContainer" [class.activate]="activate_usersForm()">
     <form [formGroup]="users_formGroup" (ngSubmit)="submit_creationCompte()">
-      <mat-form-field appearance="fill">
-        <mat-label>Nom </mat-label>
-        <input matInput formControlName="nom" required>
-        <mat-error *ngIf="users_formGroup.get('nom')?.hasError('required')">
-          Le champ nom est requis.
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <mat-label>Prenom</mat-label>
-        <input matInput formControlName="prenom" required>
-        <mat-error *ngIf="users_formGroup.get('prenom')?.hasError('required')">
-          Le champ prenom est requis.
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <mat-label>Email</mat-label>
-        <input matInput formControlName="email" required>
-        <mat-error *ngIf="users_formGroup.get('email')?.hasError('required')">
-          Le champ email est requis.
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <mat-label>Rôle</mat-label>
-        <mat-select formControlName="role" required>
-          <mat-option value="admin">Admin</mat-option>
-          <mat-option value="user">Utilisateur</mat-option>
-        </mat-select>
-        <mat-error *ngIf="users_formGroup.get('role')?.hasError('required')">
-          Le champ rôle est requis.
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <mat-label>Entreprise</mat-label>
-        <mat-select formControlName="entreprise_id" required>
-          <mat-option *ngFor="let entreprise of entreprises()" [value]="entreprise.id">
-            {{entreprise.enseigne}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="users_formGroup.get('entreprise')?.hasError('required')">
-          Le champ entreprise est requis.
-        </mat-error>
-      </mat-form-field>
-
-
-      <mat-form-field appearance="fill">
-        <mat-label>Projets</mat-label>
-        <mat-select formControlName="projet_ids" required multiple>
-          <mat-option *ngFor="let programme of programmes()" [value]="programme.id">
-            {{programme.nom}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="users_formGroup.get('projet_ids')?.hasError('required')">
-          Le champ projets est requis.
-        </mat-error>
-      </mat-form-field>
-      <button mat-raised-button color="primary" type="submit">Enregistrer</button>
+      <div class="row">
+        <div class="col s6">
+          <mat-form-field appearance="fill">
+            <mat-label>Nom </mat-label>
+            <input matInput formControlName="nom" required>
+            <mat-error *ngIf="users_formGroup.get('nom')?.hasError('required')">
+              Le champ nom est requis.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col s6">
+          <mat-form-field appearance="fill">
+            <mat-label>Prénom</mat-label>
+            <input matInput formControlName="prenom" required>
+            <mat-error *ngIf="users_formGroup.get('prenom')?.hasError('required')">
+              Le champ prénom est requis.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col s6">
+          <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" required>
+            <mat-error *ngIf="users_formGroup.get('email')?.hasError('required')">
+              Le champ email est requis.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col s6">
+          <mat-form-field appearance="fill">
+            <mat-label>Rôle</mat-label>
+            <mat-select formControlName="role" required>
+              <mat-option value="admin">Admin</mat-option>
+              <mat-option value="respo_programmes">Directeur programmes</mat-option>
+              <mat-option value="respo_projet">Chef de projet</mat-option>
+              <mat-option value="respo_travaux">Chef opérations</mat-option>
+              <mat-option value="respo_finances">Chef opérations</mat-option>
+            </mat-select>
+            <mat-error *ngIf="users_formGroup.get('role')?.hasError('required')">
+              Le champ rôle est requis.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col s6">
+          <mat-form-field appearance="fill">
+            <mat-label>entreprises</mat-label>
+            <mat-select formControlName="entreprise_id" required>
+              <mat-option *ngFor="let entreprise of entreprises()" [value]="entreprise.id">
+                {{entreprise.enseigne}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="users_formGroup.get('entreprise')?.hasError('required')">
+              Le champ entreprise est requis.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col s6">
+          <mat-form-field appearance="fill">
+            <mat-label>Projets</mat-label>
+            <mat-select formControlName="projet_ids" required multiple>
+              <mat-option *ngFor="let programme of programmes()" [value]="programme.id">
+                {{programme.nom}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="users_formGroup.get('projet_ids')?.hasError('required')">
+              Le champ projets est requis.
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <button mat-flat-button color="primary" type="submit" [disabled]="users_formGroup.invalid">{{
+            _is_update_users() ? 'Mettre à jour' : 'Créer' }}</button>
+        </div>
+        <div class="col s12 warning">
+          <button mat-flat-button color="warn" type="button" (click)="activate_usersForm.set(false)">Annuler</button>
+        </div>
+      </div>
     </form>
+  </div>
+</ng-template>
+<ng-template #entreprise_form>
+  <div class="entreprise_formContainer" [class.activate]="activate_entrepriseForm()">
+    <form [formGroup]="entreprise_formGroup" (ngSubmit)="submit_creationEntreprise()">
+      <div class="row">
+        <div class="col s6">
+          <mat-form-field appearance="fill">
+            <mat-label>Nom de l'entreprise</mat-label>
+            <input matInput formControlName="enseigne" required>
+            <mat-error *ngIf="entreprise_formGroup.get('enseigne')?.hasError('required')">
+              Le champ nom est requis.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col s6">
+          <mat-form-field appearance="fill">
+            <mat-label>Code</mat-label>
+            <input matInput formControlName="code" required>
+            <mat-error *ngIf="entreprise_formGroup.get('code')?.hasError('required')">
+              Le champ code est requis.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col s6">
+          <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email">
+          </mat-form-field>
+        </div>
+        <div class="col s6">
+          <mat-form-field appearance="fill">
+            <mat-label>Adresse</mat-label>
+            <input matInput formControlName="adresse">
 
+          </mat-form-field>
+        </div>
+        <div class="col s6">
+          <mat-form-field appearance="fill">
+            <mat-label>Téléphone</mat-label>
+            <input matInput formControlName="telephone" required>
+            <mat-error *ngIf="entreprise_formGroup.get('telephone')?.hasError('required')">
+              Le champ téléphone est requis.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col s6">
+          <mat-form-field appearance="fill">
+            <mat-label>Site Web</mat-label>
+            <input matInput formControlName="site_web">
+          </mat-form-field>
+        </div>
+        <div class="col s6">
+          <mat-form-field appearance="fill">
+            <mat-label>RCCM</mat-label>
+            <input matInput formControlName="rccm">
+          </mat-form-field>
+        </div>
+        <div class="col s6">
+          <mat-form-field appearance="fill">
+            <mat-label>Numéro IFU</mat-label>
+            <input matInput formControlName="ifu">
+          </mat-form-field>
+        </div>
+        <div class="col s6">
+          <mat-form-field appearance="fill">
+            <mat-label>Statut du signataire</mat-label>
+            <input matInput formControlName="signataire">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <button mat-flat-button color="primary" type="submit" [disabled]="entreprise_formGroup.invalid">{{
+            _is_update_entreprise() ? 'Mettre à jour' : 'Créer' }}</button>
+        </div>
+        <div class="col s12 warning">
+          <button mat-flat-button color="warn" type="button"
+            (click)="activate_entrepriseForm.set(false)">Annuler</button>
+        </div>
+      </div>
+    </form>
   </div>
 </ng-template>

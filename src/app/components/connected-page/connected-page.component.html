@@ -6,20 +6,46 @@
         <mat-icon>menu</mat-icon>
       </button>
     </div>
-
     <div class="my_logo">
       <img src="/logodomaris.png" alt="Logo Domaris" />
     </div>
     <div class="my-links" [class.active]="menuOpen()">
       @switch (_auth_service.userSignal()?.role) {
       @case ('admin') {
-      <a routerLink="/connect/admin" class="nav-link btn">Admin</a>
-      <a routerLink="/connect/dashboard" class="nav-link btn">Tableau de bord</a>
-      <a routerLink="/connect/programmes" class="nav-link btn">Programme</a>
+      <a routerLink="/connect/admin" class="nav-link btn" (click)="menuOpen.set(false)">Admin</a>
       }
-      @case ('manager') {
-      <a routerLink="/connect/dashboard" class="nav-link btn">Tableau de bord</a>
-      <a routerLink="/connect/programmes" class="nav-link btn">Programme</a>
+      @case ('respo_programmes') {
+      <a routerLink="/connect/programmes" class="nav-link btn" (click)="menuOpen.set(false)"> Pilotage de Programmes</a>
+      <a routerLink="/connect/budget" class="nav-link btn" (click)="menuOpen.set(false)"> Budget</a>
+      <a routerLink="/connect/avancement" class="nav-link btn" (click)="menuOpen.set(false)"> Avancement </a>
+      <a routerLink="/connect/validation" class="nav-link btn" (click)="menuOpen.set(false)">Validation</a>
+      }
+      @case ('respo_projet') {
+      <a routerLink="/connect/programmes" class="nav-link btn" (click)="menuOpen.set(false)"> Pilotage de Programmes</a>
+      <a routerLink="/connect/budget" class="nav-link btn" (click)="menuOpen.set(false)"> Budget</a>
+      <a routerLink="/connect/avancement" class="nav-link btn" (click)="menuOpen.set(false)"> Avancement </a>
+      <a routerLink="/connect/validation" class="nav-link btn" (click)="menuOpen.set(false)">Validation</a>
+      }
+      @case ('respo_finances') {
+      <a routerLink="/connect/compta" class="nav-link btn" (click)="menuOpen.set(false)"> Pilotage de Programmes</a>
+      <a routerLink="/connect/budget" class="nav-link btn" (click)="menuOpen.set(false)"> Budget</a>
+      <a routerLink="/connect/validation" class="nav-link btn" (click)="menuOpen.set(false)">Validation</a>
+      }
+
+      @case ('respo_travaux') {
+      <a routerLink="/connect/travaux" class="nav-link btn" (click)="menuOpen.set(false)">Suivi des travaux</a>
+      <a routerLink="/connect/prestataires" class="nav-link btn" (click)="menuOpen.set(false)">Prestataires</a>
+      <a routerLink="/connect/materiaux" class="nav-link btn" (click)="menuOpen.set(false)">Materiaux</a>
+      <a routerLink="/connect/materiel" class="nav-link btn" (click)="menuOpen.set(false)">Materiels</a>
+      <a routerLink="/connect/facturation" class="nav-link btn" (click)="menuOpen.set(false)">Facturation</a>
+      }
+      @case ('respo_ventes') {
+      <a routerLink="/connect/biens_immobiliers" class="nav-link btn" (click)="menuOpen.set(false)">Biens immobiliers</a>
+      <a routerLink="/connect/ventes" class="nav-link btn" (click)="menuOpen.set(false)">Ventes</a>
+      }
+      @case ('comptable') {
+      <a routerLink="/connect/compta" class="nav-link btn" (click)="menuOpen.set(false)">comptabilité</a>
+
       }
       }
       <a routerLink="/accueil" class="nav-link btn">Accueil</a>
@@ -36,16 +62,11 @@
   <!-- Contenu principal -->
 
   @if(!_islogouting()) {
-  <div  
-  style="
-  
-  position: relative;
-  top:0;
-  padding: 20px;
-  background-color: gray;" >
-    <router-outlet></router-outlet>
+  <div class="contenu">
+    <div class="row" >
+      <router-outlet></router-outlet>
+    </div>
   </div>
-
   }@else {
   <div class="contenu">
     <div class="spinner-container">
@@ -53,7 +74,6 @@
       <p>Déconnexion en cours...</p>
     </div>
   </div>
-
   }
 
 

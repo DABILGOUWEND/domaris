@@ -40,6 +40,7 @@ import { TaskService } from "../services/task.service";
 import { ProgrammesService } from "../services/programmes.service";
 import { get } from "node:http";
 import { remove, set } from "@angular/fire/database";
+import { AuthService } from "../auth/services/auth.service";
 const initialGasoilState: gasoilStore = {
   conso_data: [],
   err: null,
@@ -369,7 +370,7 @@ export const UserStore = signalStore(
     }
   )
   ),
-  withMethods((store, _task_service = inject(TaskService), snackbar = inject(MatSnackBar), _auth = inject(Auth)) =>
+  withMethods((store, _auth_service = inject(AuthService), _task_service = inject(TaskService), snackbar = inject(MatSnackBar), _auth = inject(Auth)) =>
   (
     {
       setUrl(url: string) {
@@ -388,8 +389,16 @@ export const UserStore = signalStore(
       }
       ))),
       addUser: rxMethod<any>(pipe(
-        switchMap((personnel) => {
-          return _task_service.addModel("domaris_users", personnel).pipe(
+        switchMap((user) => {
+          return _auth_service.register(
+            user.email,
+            user.password,
+            user.role,
+            user.nom,
+            user.prenom,
+            user.entreprise_id,
+            user.projet_ids
+          ).pipe(
             tap({
               next: () => {
                 Showsnackerbaralert('ajouté avec succes', 'pass', snackbar)
@@ -398,31 +407,29 @@ export const UserStore = signalStore(
                 patchState(store, { message: 'echoué' });
                 Showsnackerbaralert('échoué', 'fail', snackbar)
               }
-            }
-            )
-          )
+            })
+          );
         })
       )),
       removeUser: rxMethod<string>(pipe(
         switchMap((id) => {
-          return _task_service.deleteModel("domaris_users", id).pipe(tap({
-            next: () => {
-
-              Showsnackerbaralert('élément supprimé', 'pass', snackbar)
-            },
-            error: () => {
-              patchState(store, { message: 'echoué' });
-              Showsnackerbaralert('échoué', 'fail', snackbar)
-            }
+          return _auth_service.deleteUser(id)
+        }),
+        tap({
+          next: () => {
+            Showsnackerbaralert('élément supprimé', 'pass', snackbar)
+          },
+          error: () => {
+            patchState(store, { message: 'echoué' });
+            Showsnackerbaralert('échoué', 'fail', snackbar)
           }
-          ))
-        }))),
+        })
+      )),
       updateUser: rxMethod<tab_personnel>(pipe(
         switchMap((user) => {
           return _task_service.updateModel("domaris_users", user).pipe(
             tap({
               next: () => {
-
                 Showsnackerbaralert('modifié avec succes', 'pass', snackbar)
               },
               error: () => {
@@ -432,7 +439,8 @@ export const UserStore = signalStore(
             }
             )
           )
-        })
+        }),
+        
       )),
 
     }
@@ -460,7 +468,7 @@ export const ProgrammeStore = signalStore(
     setSelectedId(id: string) {
       patchState(store, { selectedId: id });
     },
-    setProgrammeIs(ids: string[]) {
+    setProgrammeIds(ids: string[]) {
       patchState(store, { selectedIds: ids })
     }
     ,

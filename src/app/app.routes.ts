@@ -69,7 +69,7 @@ export const routes: Routes = [
     ,
     canActivate: [authGuard]
     ,
-    data: { role: ['admin', 'manager'] },
+    data: { role: ['admin', 'respo_programmes'] },
     children: [
       {
         path: "admin", component: AdminComponent,
@@ -77,16 +77,10 @@ export const routes: Routes = [
         data: { role: 'admin' },
       },
       {
-        path: 'dashboard',
-        component: DashboardComponent,
-        canActivate: [authGuard],
-        data: { role: ['admin', 'manager','users'] }
-      },
-      {
         path: 'programmes',
         component: ProgrammesComponent,
         canActivate: [authGuard],
-        data: { role: ['admin', 'manager'] }
+        data: { role: ['admin', 'respo_programmes'] }
       }
     ]
   }

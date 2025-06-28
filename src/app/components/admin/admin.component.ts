@@ -8,7 +8,10 @@ import { EntrepriseStore, ProgrammeStore, UserStore } from '../../stores/appstor
 import { AuthService } from '../../auth/services/auth.service';
 import { UtilitairesService } from '../../services/utilitaires.service';
 import { user } from '@angular/fire/auth';
-
+const lowercase = "abcdefghijklmnopqrstuvwxyz";
+const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const numbers = "0123456789";
+const symbols = "!@#$%^&*";
 @Component({
   selector: 'app-admin',
   imports: [ImportedModule],
@@ -30,17 +33,20 @@ export class AdminComponent implements OnInit {
     this.entreprise_formGroup = this._fb.group({
       code: ['', [Validators.required, Validators.minLength(2)]],
       enseigne: ['', [Validators.required, Validators.minLength(5)]],
-      email: ['', [Validators.required, Validators.email]],
-      adresse: ['', [Validators.required, Validators.minLength(5)]],
-      telephone: ['', [Validators.required, Validators.minLength(10)]],
-      site_web: ['', [Validators.required, Validators.minLength(5)]],
-      rccm: ['', [Validators.required, Validators.minLength(5)]],
-      ifu: ['', [Validators.required, Validators.minLength(5)]],
-      signataire: ['', [Validators.required, Validators.minLength(5)]],
+      email: [''],
+      adresse: [''],
+      telephone: ['', [Validators.required, Validators.minLength(8)]],
+      site_web: [''],
+      rccm: [''],
+      ifu: [''],
+      signataire: [''],
 
     });
-
+    effect(() => {
+      //console.log(this.entreprises())
+    });
   }
+
   //properties
   users_formGroup: FormGroup;
   entreprise_formGroup: FormGroup;
@@ -48,7 +54,7 @@ export class AdminComponent implements OnInit {
   _is_update_entreprise = signal(false);
   _selected_entreprise = signal<any>(undefined);
   _selected_user = signal<any>(undefined);
-  activate_usersForm = signal(false); 
+  activate_usersForm = signal(false);
   activate_entrepriseForm = signal(false);
   //table columns
   user_columns: string[] = ['nom', 'prenom', 'email', 'role', 'entreprise', 'actions'];
@@ -66,6 +72,7 @@ export class AdminComponent implements OnInit {
 
   //computed properties
   users = computed(() => {
+
     return this._users_store.users().map((users: any) => {
       return {
         ...users,
@@ -102,7 +109,7 @@ export class AdminComponent implements OnInit {
       prenom: user.prenom,
       email: user.email,
       role: user.role,
-      entreprise_id: user.entreprise,
+      entreprise_id: user.entreprise_id,
       projet_ids: user.projet_ids
     })
     this._is_update_users.set(true);
@@ -111,21 +118,22 @@ export class AdminComponent implements OnInit {
   submit_creationCompte() {
     if (this.users_formGroup.valid) {
       let values = this.users_formGroup.value;
+      let password = this._utilitaires.generateRandomPassword(8);
       if (this._is_update_users()) {
         if (this._selected_user()) {
           let users = { ...values, id: this._selected_user()?.id };
           this._users_store.updateUser(users);
         }
       } else {
-        this._users_store.addUser(values)
+        this._users_store.addUser({ ...values, password: password });
       }
       this._selected_user.set(undefined);
+      this.activate_usersForm.set(false);
     }
   }
 
-  removeUser(user: Users) {
-    if (this._selected_user()) {
-      let user = this._selected_user();
+  removeUser(user: any) {
+    if (user) {
       if (confirm(`Êtes-vous sûr de vouloir supprimer l'utilisateur ${user.prenom} ${user.nom} ?`)) {
         this._users_store.removeUser(user.id);
       }
@@ -137,13 +145,15 @@ export class AdminComponent implements OnInit {
     this._selected_entreprise.set(undefined);
     this.entreprise_formGroup.reset();
     this._is_update_entreprise.set(false);
+    this.activate_entrepriseForm.set(true);
   }
   click_entreprise(entreprise: any) {
     this._selected_entreprise.set(entreprise);
-    this.entreprise_formGroup.patchValue({
+    this.entreprise_formGroup.patchValue(
       entreprise
-    })
+    );
     this._is_update_entreprise.set(true);
+    this.activate_entrepriseForm.set(true);
   }
   submit_creationEntreprise() {
     if (this.entreprise_formGroup.valid) {
@@ -158,6 +168,7 @@ export class AdminComponent implements OnInit {
       }
       this._selected_entreprise.set(undefined);
     }
+    this.activate_entrepriseForm.set(false);
   }
   removeEntreprise(entreprise: any) {
     if (this._selected_entreprise()) {
