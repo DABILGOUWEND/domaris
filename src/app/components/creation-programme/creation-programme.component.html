@@ -29,61 +29,61 @@
           </div>
         </form>
         @if(editNode() && editNode().documents.length > 0) {
-          <div class="row">
-            <div class="col s12">
-              <h3> Listes des documents</h3>
-            </div>
+        <div class="row">
+          <div class="col s12">
+            <h3> Listes des documents</h3>
           </div>
-          <div class="row">
-            <div class="col s12">
-              <table mat-table [dataSource]="document_dataSource()" class="mat-elevation-z8">
-                <ng-container matColumnDef="titre">
-                  <th mat-header-cell *matHeaderCellDef> Titre</th>
-                  <td mat-cell *matCellDef="let doc"> {{ doc.titre }} </td>
-                </ng-container>
+        </div>
+        <div class="row">
+          <div class="col s12">
+            <table mat-table [dataSource]="document_dataSource()" class="mat-elevation-z8">
+              <ng-container matColumnDef="titre">
+                <th mat-header-cell *matHeaderCellDef> Titre</th>
+                <td mat-cell *matCellDef="let doc"> {{ doc.titre }} </td>
+              </ng-container>
 
-                <ng-container matColumnDef="type">
-                  <th mat-header-cell *matHeaderCellDef> Type </th>
-                  <td mat-cell *matCellDef="let doc"> {{ doc.type }} </td>
-                </ng-container>
+              <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef> Type </th>
+                <td mat-cell *matCellDef="let doc"> {{ doc.type }} </td>
+              </ng-container>
 
-                <ng-container matColumnDef="createdAt">
-                  <th mat-header-cell *matHeaderCellDef> Date de création </th>
-                  <td mat-cell *matCellDef="let doc"> {{ doc.createdAt | date:'dd/MM/yyyy hh :mm :ss' }} </td>
-                </ng-container>
+              <ng-container matColumnDef="createdAt">
+                <th mat-header-cell *matHeaderCellDef> Date de création </th>
+                <td mat-cell *matCellDef="let doc"> {{ doc.createdAt | date:'dd/MM/yyyy hh :mm :ss' }} </td>
+              </ng-container>
 
-                <ng-container matColumnDef="updatedAt">
-                  <th mat-header-cell *matHeaderCellDef> Date de modification </th>
-                  <td mat-cell *matCellDef="let doc"> {{ doc.updatedAt | date:'dd/MM/yyyy hh :mm :ss' }} </td>
-                </ng-container>
+              <ng-container matColumnDef="updatedAt">
+                <th mat-header-cell *matHeaderCellDef> Date de modification </th>
+                <td mat-cell *matCellDef="let doc"> {{ doc.updatedAt | date:'dd/MM/yyyy hh :mm :ss' }} </td>
+              </ng-container>
 
-                <ng-container matColumnDef="download">
-                  <th mat-header-cell *matHeaderCellDef> Télécharger </th>
-                  <td mat-cell *matCellDef="let doc">
-                    <a [href]="doc.url" target="_blank" download>
-                      <button mat-icon-button color="primary">
-                        <mat-icon>download</mat-icon>
-                      </button>
-                    </a>
-                  </td>
-                </ng-container>
-
-                <ng-container matColumnDef="actions">
-                  <th mat-header-cell *matHeaderCellDef> Actions </th>
-                  <td mat-cell *matCellDef="let doc">
+              <ng-container matColumnDef="download">
+                <th mat-header-cell *matHeaderCellDef> Télécharger </th>
+                <td mat-cell *matCellDef="let doc">
+                  <a [href]="doc.url" target="_blank" download>
                     <button mat-icon-button color="primary">
-                      <mat-icon>edit</mat-icon>
+                      <mat-icon>download</mat-icon>
                     </button>
-                    <button mat-icon-button color="warn">
-                      <mat-icon>delete</mat-icon>
-                    </button>
-                  </td>
-                </ng-container>
-                <tr mat-header-row *matHeaderRowDef="document_displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: document_displayedColumns;"></tr>
-              </table>
-            </div>
+                  </a>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <td mat-cell *matCellDef="let doc">
+                  <button mat-icon-button color="primary">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="document_displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: document_displayedColumns;"></tr>
+            </table>
           </div>
+        </div>
         }
 
       </div>
@@ -121,389 +121,388 @@
                   <mat-label>Date de début</mat-label>
                   <input matInput [matDatepicker]="pickerDebut" formControlName="dateDebut"
                     placeholder="Date de début" />
-                    <mat-datepicker-toggle matSuffix [for]="pickerDebut"></mat-datepicker-toggle>
-                    <mat-datepicker #pickerDebut></mat-datepicker>
-                  </mat-form-field>
-                </div>
-                <div class="col s6 l12 m12">
-                  <mat-form-field appearance="outline" class="form-group">
-                    <mat-label>Date de fin</mat-label>
-                    <input matInput [matDatepicker]="pickerFin" formControlName="dateFin" placeholder="Date de fin" />
-                    <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
-                    <mat-datepicker #pickerFin></mat-datepicker>
-                  </mat-form-field>
-                </div>
-                <div class="col s6 l12 m12">
-                  <mat-form-field appearance="outline" class="form-group">
-                    <mat-label>Type</mat-label>
-                    <mat-select formControlName="type">
-                      @for (t of types; track t) {
-                        <mat-option [value]="t">{{ t }}</mat-option>
-                      }
-                    </mat-select>
-                  </mat-form-field>
-                </div>
+                  <mat-datepicker-toggle matSuffix [for]="pickerDebut"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerDebut></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col s6 l12 m12">
+                <mat-form-field appearance="outline" class="form-group">
+                  <mat-label>Date de fin</mat-label>
+                  <input matInput [matDatepicker]="pickerFin" formControlName="dateFin" placeholder="Date de fin" />
+                  <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerFin></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col s6 l12 m12">
+                <mat-form-field appearance="outline" class="form-group">
+                  <mat-label>Type</mat-label>
+                  <mat-select formControlName="type">
+                    @for (t of types; track t) {
+                    <mat-option [value]="t">{{ t }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              </div>
 
-                <div class="col s6 l12 m12">
-                  <mat-form-field appearance="outline" class="form-group">
-                    <mat-label>Statut</mat-label>
-                    <mat-select formControlName="statut">
-                      @for (s of statuts; track s) {
-                        <mat-option [value]="s">{{ s }}</mat-option>
-                      }
-                    </mat-select>
-                  </mat-form-field>
-                </div>
+              <div class="col s6 l12 m12">
+                <mat-form-field appearance="outline" class="form-group">
+                  <mat-label>Statut</mat-label>
+                  <mat-select formControlName="statut">
+                    @for (s of statuts; track s) {
+                    <mat-option [value]="s">{{ s }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
               </div>
-              <div class="row">
-                <div class="col s4 l12 m12">
-                  <mat-form-field appearance="outline" class="form-group">
-                    <mat-label>Pays</mat-label>
-                    <mat-select formControlName="pays">
-                      <mat-option value="" disabled>Choisir un pays</mat-option>
-                      @for (r of pays; track r) {
-                        <mat-option [value]="r">{{ r }}</mat-option>
-                      }
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-                <div class="col s4 l12 m12">
-                  <mat-form-field appearance="outline" class="form-group">
-                    <mat-label>Ville</mat-label>
-                    <input matInput formControlName="ville" placeholder="Ville" />
-                  </mat-form-field>
-                </div>
-                <div class="col s4 l12 m12">
-                  <mat-form-field appearance="outline" class="form-group">
-                    <mat-label>Quartier</mat-label>
-                    <input matInput formControlName="quartier" placeholder="Quartier" />
-                  </mat-form-field>
-                </div>
-
-                <div class="col s4 l12 m12">
-                  <mat-form-field appearance="outline" class="form-group">
-                    <mat-label>Responsable</mat-label>
-                    <mat-select formControlName="responsableId">
-                      <mat-option value="">Aucun</mat-option>
-                      @for (r of responsables(); track r) {
-                        <mat-option [value]="r.id">{{ r.name }}</mat-option>
-                      }
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-                <div class="col s4 l12 m12">
-                  <mat-form-field appearance="outline" class="form-group">
-                    <mat-label>Code du programme</mat-label>
-                    <input matInput formControlName="code" placeholder="Code unique" />
-                  </mat-form-field>
-                </div>
-                <div class="col s4 l12 m12">
-                  <mat-form-field appearance="outline" class="form-group">
-                    <mat-label>Budget prévu</mat-label>
-                    <input matInput type="number" formControlName="budgetPrevu" placeholder="Budget prévu" />
-                  </mat-form-field>
-                </div>
-              </div>
-              <div class="row">
-                @if (!programmeForm().valid) {
-                  <div class="col s12 l12 m12" class="error-message mat-caption">{{
-                    errorMessage }}
-                  </div>
-                }
-                <div class="col s12 l12 m12">
-                  <button mat-flat-button color="primary" type="submit" [disabled]="programmeForm().invalid">
-                    {{ isUpdated() ? "Mettre à jour" : "Créer le programme" }}
-                  </button>
-                </div>
-              </div>
-            </form>
+            </div>
             <div class="row">
+              <div class="col s4 l12 m12">
+                <mat-form-field appearance="outline" class="form-group">
+                  <mat-label>Pays</mat-label>
+                  <mat-select formControlName="pays">
+                    <mat-option value="" disabled>Choisir un pays</mat-option>
+                    @for (r of pays; track r) {
+                    <mat-option [value]="r">{{ r }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col s4 l12 m12">
+                <mat-form-field appearance="outline" class="form-group">
+                  <mat-label>Ville</mat-label>
+                  <input matInput formControlName="ville" placeholder="Ville" />
+                </mat-form-field>
+              </div>
+              <div class="col s4 l12 m12">
+                <mat-form-field appearance="outline" class="form-group">
+                  <mat-label>Quartier</mat-label>
+                  <input matInput formControlName="quartier" placeholder="Quartier" />
+                </mat-form-field>
+              </div>
+
+              <div class="col s4 l12 m12">
+                <mat-form-field appearance="outline" class="form-group">
+                  <mat-label>Responsable</mat-label>
+                  <mat-select formControlName="responsableId">
+                    <mat-option value="">Aucun</mat-option>
+                    @for (r of responsables(); track r) {
+                    <mat-option [value]="r.id">{{ r.name }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col s4 l12 m12">
+                <mat-form-field appearance="outline" class="form-group">
+                  <mat-label>Code du programme</mat-label>
+                  <input matInput formControlName="code" placeholder="Code unique" />
+                </mat-form-field>
+              </div>
+              <div class="col s4 l12 m12">
+                <mat-form-field appearance="outline" class="form-group">
+                  <mat-label>Budget prévu</mat-label>
+                  <input matInput type="number" formControlName="budgetPrevu" placeholder="Budget prévu" />
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              @if (!programmeForm().valid) {
+              <div class="col s12 l12 m12" class="error-message mat-caption">{{
+                errorMessage }}
+              </div>
+              }
               <div class="col s12 l12 m12">
-                <button mat-icon-button matStepperNext (click)="editMode()==null">
-                  <mat-icon>arrow_forward</mat-icon>
-                  Suivant
+                <button mat-flat-button color="primary" type="submit" [disabled]="programmeForm().invalid">
+                  {{ isUpdated() ? "Mettre à jour" : "Créer le programme" }}
                 </button>
               </div>
-              <div class="col s12 l12 m12">
-                <button mat-flat-button color="warning" style="background-color: red;" (click)="close()">
-                Quitter</button>
-              </div>
             </div>
-          </div>
-        </mat-step>
-
-        <!-- Étape 2 : Phases (arbre imbriqué) -->
-        <mat-step [editable]="true">
-          <div class="phases-container">
-            <div class="entete">
-              <h2>Phases du programme</h2>
-            </div>
-            <div class="sous_entete">
-              <button mat-fab color="primary" (click)="addChildR()">
-                <mat-icon>add</mat-icon>
+          </form>
+          <div class="row">
+            <div class="col s12 l12 m12">
+              <button mat-icon-button matStepperNext (click)="editMode()==null">
+                <mat-icon>arrow_forward</mat-icon>
+                Suivant
               </button>
             </div>
-            <div class="corps">
-              <ng-container *ngTemplateOutlet="saisie_template"></ng-container>
-              <div class="reste_corps">
-                <!-- L'arbre des phases -->
-                <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-                  <mat-nested-tree-node *matTreeNodeDef="let node" style="width: 100%;">
-                    <div class="mat-tree-node" matTreeNodePadding>
-                      @if (editNode()!=node|| editMode()=='add') {
-                        <div class="node">
-                          <div class="arrow">
-                            @if (hasChild(0, node)) {
-                              <button mat-icon-button matTreeNodeToggle
-                                [attr.aria-label]="'expand ' + node.nom">
-                                <mat-icon>
-                                  {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
-                                </mat-icon>
-                              </button>
-                            }
-                          </div>
-                          <ng-container [ngTemplateOutlet]="nodetree" [ngTemplateOutletContext]="{ node: node}">
-                          </ng-container>
-                        </div>
-                      }
-                      <!-- Formulaire d'édition/ajout inline -->
-                      <div style="width: 100%;">
-                        @if (editNode() === node) {
-                          <ng-container
-                            *ngTemplateOutlet="phaseFormTemplate; context: { $implicit: node, mode: editMode() }">
-                          </ng-container>
+            <div class="col s12 l12 m12">
+              <button mat-flat-button color="warning" style="background-color: red;" (click)="close()">
+                Quitter</button>
+            </div>
+          </div>
+        </div>
+      </mat-step>
+
+      <!-- Étape 2 : Phases (arbre imbriqué) -->
+      <mat-step [editable]="true">
+        <div class="phases-container">
+          <div class="entete">
+            <h2>Phases du programme</h2>
+          </div>
+          <div class="sous_entete">
+            <button mat-fab color="primary" (click)="addChildR()">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+          <div class="corps">
+            <ng-container *ngTemplateOutlet="saisie_template"></ng-container>
+            <div class="reste_corps">
+              <!-- L'arbre des phases -->
+              <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+                <mat-nested-tree-node *matTreeNodeDef="let node" style="width: 100%;">
+                  <div class="mat-tree-node" matTreeNodePadding>
+                    @if (editNode()!=node|| editMode()=='add') {
+                    <div class="node">
+                      <div class="ligne_arrow">
+                        @if (hasChild(0, node)) {
+                        <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'expand ' + node.nom">
+                          <mat-icon>
+                            {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+                          </mat-icon>
+                        </button>
                         }
+                        <div [ngClass]="{'titres1':hasChild(0,node) ||getLevel(node)==0,'titres2':!hasChild(0,node) }">
+                          {{ node.nom }} {{node.dateDebut!=""?"-- du "+ node.dateDebut:"" }} {{node.dateDebut!=""? "au
+                          "+node.dateFin:"" }}
+                        </div>
                       </div>
+                      <ng-container [ngTemplateOutlet]="nodetree" [ngTemplateOutletContext]="{ node: node}">
+                      </ng-container>
                     </div>
-                    @if (treeControl.isExpanded(node)) {
-                      <div>
-                        <ng-container matTreeNodeOutlet></ng-container>
-                      </div>
                     }
-                  </mat-nested-tree-node>
-                </mat-tree>
-
-                <div class="row">
-                  <div class="col s12 l12 m12">
-                    <button mat-icon-button matStepperPrevious>
-                      <mat-icon>arrow_back</mat-icon>
-                      Précédent
-                    </button>
+                    <!-- Formulaire d'édition/ajout inline -->
+                    <div style="width: 100%;">
+                      @if (editNode() === node) {
+                      <ng-container
+                        *ngTemplateOutlet="phaseFormTemplate; context: { $implicit: node, mode: editMode() }">
+                      </ng-container>
+                      }
+                    </div>
                   </div>
-                  <div class="col s12 l12 m12">
-                    <button mat-flat-button color="primary" (click)="onSubmit()"
+                  @if (treeControl.isExpanded(node)) {
+                  <div>
+                    <ng-container matTreeNodeOutlet></ng-container>
+                  </div>
+                  }
+                </mat-nested-tree-node>
+              </mat-tree>
+
+              <div class="row">
+                <div class="col s12 l12 m12">
+                  <button mat-icon-button matStepperPrevious>
+                    <mat-icon>arrow_back</mat-icon>
+                    Précédent
+                  </button>
+                </div>
+                <div class="col s12 l12 m12">
+                  <button mat-flat-button color="primary" (click)="onSubmit()"
                     [disabled]="!programmeForm().valid">Terminer</button>
-                  </div>
+                </div>
 
-                  <div class="col s12 l12 m12">
-                    <button mat-flat-button color="warning" style="background-color: red;" (click)="close()">
+                <div class="col s12 l12 m12">
+                  <button mat-flat-button color="warning" style="background-color: red;" (click)="close()">
                     Quitter</button>
-                  </div>
                 </div>
               </div>
-
             </div>
-          </div>
-        </mat-step>
-      </mat-stepper>
-    </mat-drawer-content>
-  </mat-drawer-container>
-
-  <ng-template #phaseFormTemplate let-node let-mode="mode">
-    <div [ngStyle]="{'border':'2px solid black'}">
-      <form [formGroup]="phaseForm" (ngSubmit)="add_sous_node(node, mode)">
-        <div class="row">
-          <div class="col s12">
-            <h3> {{ editMode()=="add"?"Ajout sous phase de "+node.nom:"Modication de " + node.nom }} </h3>
-          </div>
-          <div class="col s6">
-            <mat-form-field appearance="outline" style="width: 140px; margin-right: 8px;">
-              <mat-label>Nom</mat-label>
-              <input matInput formControlName="nom">
-            </mat-form-field>
-          </div>
-
-          <div class="col s6">
-            <mat-form-field appearance="outline" style="width: 140px; margin-right: 8px;">
-              <mat-label>Description</mat-label>
-              <input matInput formControlName="description">
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="row" style="width: 50%;">
-          <div class="col s6">
-            <mat-form-field appearance="outline" style="width: 140px; margin-right: 8px;">
-              <mat-label>Date début</mat-label>
-              <input matInput [matDatepicker]="pickerDebut" formControlName="dateDebut">
-              <mat-datepicker-toggle matSuffix [for]="pickerDebut"></mat-datepicker-toggle>
-              <mat-datepicker #pickerDebut></mat-datepicker>
-            </mat-form-field>
-          </div>
-          <div class="col s6">
-            <mat-form-field appearance="outline" style="width: 140px; margin-right: 8px;">
-              <mat-label>Date fin</mat-label>
-              <input matInput [matDatepicker]="pickerFin" formControlName="dateFin">
-              <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
-              <mat-datepicker #pickerFin></mat-datepicker>
-            </mat-form-field>
 
           </div>
         </div>
-        <div class="row">
-          <div class="col s6">
-            <mat-form-field appearance="outline" style="width: 140px; margin-right: 8px;">
-              <mat-label>Statut</mat-label>
-              <mat-select formControlName="statut">
-                @for (s of statuts; track s) {
-                  <mat-option [value]="s">{{ s }}</mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="col s6">
-            <mat-form-field appearance="outline" style="width: 140px; margin-right: 8px;">
-              <mat-label>Responsable</mat-label>
-              <mat-select formControlName="responsableId">
-                <mat-option value="">Aucun</mat-option>
-                @for (r of responsables(); track r) {
-                  <mat-option [value]="r.id">{{ r.name }}</mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col s6">
-            <button mat-flat-button color="primary" type="submit" [disabled]="phaseForm.invalid">
-              valider
-            </button>
-          </div>
-          <div class="col s6">
-            <button mat-flat-button type="button" (click)="cancelEdit()" style="background-color: red;">
-              annuler
-            </button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col s12">
-            @if (phaseForm.invalid) {
-              <div class="error-message mat-caption">
-                Veuillez remplir tous les champs requis.
-              </div>
-            }
-          </div>
-        </div>
-      </form>
+      </mat-step>
+    </mat-stepper>
+  </mat-drawer-content>
+</mat-drawer-container>
+
+<ng-template #phaseFormTemplate let-node let-mode="mode">
+  <div [ngStyle]="{'border':'2px solid black'}">
+    <form [formGroup]="phaseForm" (ngSubmit)="add_sous_node(node, mode)">
       <div class="row">
-        <div class="col s12 ">
-          <a (click)="open_doc.set(true)" class="btn">
-            liste des documents
-          </a>
+        <div class="col s12">
+          <h3> {{ editMode()=="add"?"Ajout sous phase de "+node.nom:"Modication de " + node.nom }} </h3>
         </div>
+        <div class="col l12 s6">
+          <mat-form-field appearance="outline" >
+            <mat-label>Nom</mat-label>
+            <input matInput formControlName="nom">
+          </mat-form-field>
+        </div>
+
+        <div class="col l12 s6">
+          <mat-form-field appearance="outline" >
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="description">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row" >
+        <div class="col l12 s6">
+          <mat-form-field appearance="outline" >
+            <mat-label>Date début</mat-label>
+            <input matInput [matDatepicker]="pickerDebut" formControlName="dateDebut">
+            <mat-datepicker-toggle matSuffix [for]="pickerDebut"></mat-datepicker-toggle>
+            <mat-datepicker #pickerDebut></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col l12 s6">
+          <mat-form-field appearance="outline" >
+            <mat-label>Date fin</mat-label>
+            <input matInput [matDatepicker]="pickerFin" formControlName="dateFin">
+            <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFin></mat-datepicker>
+          </mat-form-field>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col l12 s6">
+          <mat-form-field appearance="outline" >
+            <mat-label>Statut</mat-label>
+            <mat-select formControlName="statut">
+              @for (s of statuts; track s) {
+              <mat-option [value]="s">{{ s }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col l12 s6">
+          <mat-form-field appearance="outline" >
+            <mat-label>Responsable</mat-label>
+            <mat-select formControlName="responsableId">
+              <mat-option value="">Aucun</mat-option>
+              @for (r of responsables(); track r) {
+              <mat-option [value]="r.id">{{ r.name }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col l12 s6">
+          <button mat-flat-button color="primary" type="submit" [disabled]="phaseForm.invalid">
+            valider
+          </button>
+        </div>
+        <div class="col l12 s6">
+          <button mat-flat-button type="button" (click)="cancelEdit()" style="background-color: red;">
+            annuler
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col  l12 s12">
+          @if (phaseForm.invalid) {
+          <div class="error-message mat-caption">
+            Veuillez remplir tous les champs requis.
+          </div>
+          }
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col l12 s12 ">
+        <a (click)="open_doc.set(true)" class="btn">
+          liste des documents
+        </a>
       </div>
     </div>
-  </ng-template>
+  </div>
+</ng-template>
 
-  <ng-template #nodetree let-node="node">
-    <ng-container>
-      <div [ngClass]="{'titres1':hasChild(0,node) ||getLevel(node)==0,'titres2':!hasChild(0,node) }">
-        {{ node.nom }} {{node.dateDebut!=""?"-- du "+ node.dateDebut:"" }} {{node.dateDebut!=""? "au "+node.dateFin:"" }}
+<ng-template #nodetree let-node="node">
+
+  <div class="n_action">
+    <div class="n_action1">
+      <button mat-icon-button color="primary" (click)="addChild(node)">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    <div class="n_action2">
+      <button mat-icon-button color="accent" (click)="startEdit(node)">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+
+    <div class="n_action3">
+      <button mat-icon-button color="warn" (click)="removeNode(node)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #saisie_template>
+  @if (editNode() === null && editMode() === 'addR') {
+  <div class="entete_saisie">
+    <h3>Nouvelle Phase</h3>
+    <form [formGroup]="noeud_racine" (ngSubmit)="confirmAddChild()">
+      <div class="row">
+        <div class="col s6">
+          <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Nom</mat-label>
+            <input matInput formControlName="nom" placeholder="Nom de la phase">
+          </mat-form-field>
+        </div>
+        <div class="col s6">
+          <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="description" placeholder="Description">
+          </mat-form-field>
+        </div>
       </div>
-      <div class="n_action">
-        <div class="n_action1">
-          <button mat-icon-button color="primary" (click)="addChild(node)">
-            <mat-icon>add</mat-icon>
+      <div class="row">
+        <div class="col s6">
+          <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Date début</mat-label>
+            <input matInput [matDatepicker]="rootPickerDebut" formControlName="dateDebut">
+            <mat-datepicker-toggle matSuffix [for]="rootPickerDebut"></mat-datepicker-toggle>
+            <mat-datepicker #rootPickerDebut></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col s6">
+          <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Date fin</mat-label>
+            <input matInput [matDatepicker]="rootPickerFin" formControlName="dateFin">
+            <mat-datepicker-toggle matSuffix [for]="rootPickerFin"></mat-datepicker-toggle>
+            <mat-datepicker #rootPickerFin></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s6">
+          <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Statut</mat-label>
+            <mat-select formControlName="statut">
+              @for (s of statuts; track s) {
+              <mat-option [value]="s">{{ s }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col s6">
+          <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Responsable</mat-label>
+            <mat-select formControlName="responsableId">
+              <mat-option value="">Aucun</mat-option>
+              @for (r of responsables(); track r) {
+              <mat-option [value]="r.id">{{ r.name }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s6">
+          <button mat-flat-button color="primary" type="submit" [disabled]="noeud_racine.invalid">
+            enregistrer
           </button>
         </div>
-
-        <div class="n_action2">
-          <button mat-icon-button color="accent" (click)="startEdit(node)">
-            <mat-icon>edit</mat-icon>
-          </button>
-        </div>
-
-        <div class="n_action3">
-          <button mat-icon-button color="warn" (click)="removeNode(node)">
-            <mat-icon>delete</mat-icon>
+        <div class="col s6">
+          <button mat-flat-button [ngStyle]="{'background-color':'red'}" (click)="cancelEdit()">
+            annuler
           </button>
         </div>
       </div>
-    </ng-container>
-  </ng-template>
-
-  <ng-template #saisie_template>
-    @if (editNode() === null && editMode() === 'addR') {
-      <div class="entete_saisie">
-        <h3>Nouvelle Phase</h3>
-        <form [formGroup]="noeud_racine" (ngSubmit)="confirmAddChild()">
-          <div class="row">
-            <div class="col s6">
-              <mat-form-field appearance="outline" style="width: 100%;">
-                <mat-label>Nom</mat-label>
-                <input matInput formControlName="nom" placeholder="Nom de la phase">
-              </mat-form-field>
-            </div>
-            <div class="col s6">
-              <mat-form-field appearance="outline" style="width: 100%;">
-                <mat-label>Description</mat-label>
-                <input matInput formControlName="description" placeholder="Description">
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col s6">
-              <mat-form-field appearance="outline" style="width: 100%;">
-                <mat-label>Date début</mat-label>
-                <input matInput [matDatepicker]="rootPickerDebut" formControlName="dateDebut">
-                <mat-datepicker-toggle matSuffix [for]="rootPickerDebut"></mat-datepicker-toggle>
-                <mat-datepicker #rootPickerDebut></mat-datepicker>
-              </mat-form-field>
-            </div>
-            <div class="col s6">
-              <mat-form-field appearance="outline" style="width: 100%;">
-                <mat-label>Date fin</mat-label>
-                <input matInput [matDatepicker]="rootPickerFin" formControlName="dateFin">
-                <mat-datepicker-toggle matSuffix [for]="rootPickerFin"></mat-datepicker-toggle>
-                <mat-datepicker #rootPickerFin></mat-datepicker>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col s6">
-              <mat-form-field appearance="outline" style="width: 100%;">
-                <mat-label>Statut</mat-label>
-                <mat-select formControlName="statut">
-                  @for (s of statuts; track s) {
-                    <mat-option [value]="s">{{ s }}</mat-option>
-                  }
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div class="col s6">
-              <mat-form-field appearance="outline" style="width: 100%;">
-                <mat-label>Responsable</mat-label>
-                <mat-select formControlName="responsableId">
-                  <mat-option value="">Aucun</mat-option>
-                  @for (r of responsables(); track r) {
-                    <mat-option [value]="r.id">{{ r.name }}</mat-option>
-                  }
-                </mat-select>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col s6">
-              <button mat-flat-button color="primary" type="submit" [disabled]="noeud_racine.invalid">
-                enregistrer
-              </button>
-            </div>
-            <div class="col s6">
-              <button mat-flat-button [ngStyle]="{'background-color':'red'}" (click)="cancelEdit()">
-                annuler
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    }
-  </ng-template>
+    </form>
+  </div>
+  }
+</ng-template>

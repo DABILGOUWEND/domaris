@@ -6645,8 +6645,8 @@ button[mat-raised-button] {
   grid-area: "reste_corps";
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: center;
 
 }
 
@@ -6707,19 +6707,24 @@ button[mat-raised-button] {
 }
 
 .node {
-  display: grid;
-  grid-template-columns: 0.2fr 2fr 0.6fr;
-  grid-template-areas: "arrow titres1 n_action";
+  display:flex  ;
+  justify-content: flex-start ;
+  align-items: center;
+
   width: 100%;
-  border-bottom: 1px solid #ccc;
+  border: 1px solid #e2d8d8;
+}
+.ligne_arrow{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-@media screen and (max-width: 1200) {
+@media only screen and (max-width: 600px) {
   .node {
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      "arrow titres"
-      "n_action n_action" ;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 
