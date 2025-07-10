@@ -387,7 +387,7 @@ export const UserStore = signalStore(
         switchMap((user) => {
           return _auth_service.register(
             user.email,
-            user.password,
+            user.mot_de_passe,
             user.role,
             user.nom,
             user.prenom,

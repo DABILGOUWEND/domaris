@@ -19,6 +19,8 @@ import { TestComponent } from './components/test/test.component';
 import { ConnectedPageComponent } from './components/connected-page/connected-page.component';
 import { ProgrammesComponent } from './components/programmes/programmes.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { FinancesComponent } from './components/finances/finances.component';
+import { OperationsComponent } from './components/operations/operations.component';
 
 
 export const routes: Routes = [
@@ -69,7 +71,7 @@ export const routes: Routes = [
     ,
     canActivate: [authGuard]
     ,
-    data: { role: ['admin', 'respo_programmes'] },
+    data: { role: ['admin', 'respo_programmes','respo_finances','respo_travaux'] },
     children: [
       {
         path: "admin", component: AdminComponent,
@@ -81,6 +83,18 @@ export const routes: Routes = [
         component: ProgrammesComponent,
         canActivate: [authGuard],
         data: { role: ['admin', 'respo_programmes'] }
+      },
+      {
+        path: 'finances',
+        component: FinancesComponent,
+        canActivate: [authGuard],
+        data: { role: ['admin', 'respo_finances'] }
+      },
+      {
+        path: 'operations',
+        component: OperationsComponent,
+        canActivate: [authGuard],
+        data: { role: ['admin', 'respo_travaux'] }
       }
     ]
   }

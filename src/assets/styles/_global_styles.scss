@@ -8246,6 +8246,17 @@ button[mat-raised-button] {
 .user_formContainer.activate {
   display: flex;
 }
+@media screen and (max-width: 900px) {
+  .user_formContainer {
+    width: 100%;
+    
+  }
+
+  .user_formContainer .col.s12 button {
+    width: 80%;
+  }
+  
+}
 
 .entreprise_formContainer {
   position: absolute;
@@ -8273,6 +8284,17 @@ button[mat-raised-button] {
 
 .entreprise_formContainer.activate {
   display: flex;
+}
+@media screen and (max-width: 900px) {
+  .entreprise_formContainer {
+    width: 100%;
+    
+  }
+
+  .entreprise_formContainer .col.s12 button {
+    width: 80%;
+  }
+  
 }
 
 // ...existing code...
@@ -8339,5 +8361,19 @@ button[mat-raised-button] {
       border-bottom: none;
       margin-bottom: 0;
     }
+  }
+}
+.add_button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(140, 207, 216);
+  width: 5%;
+  margin-bottom: 10px;
+  border: 1px solid rgb(30, 42, 97);
+}
+@media only screen and (max-width: 600px) {
+  .add_button {
+    width: 80%;
   }
 }

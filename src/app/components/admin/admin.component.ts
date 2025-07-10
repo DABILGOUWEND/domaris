@@ -57,7 +57,7 @@ export class AdminComponent implements OnInit {
   activate_usersForm = signal(false);
   activate_entrepriseForm = signal(false);
   //table columns
-  user_columns: string[] = ['nom', 'prenom', 'email', 'role', 'entreprise', 'actions'];
+  user_columns: string[] = ['nom', 'prenom', 'email', 'password', 'role', 'entreprise', 'actions'];
   entreprise_columns: string[] = ['code', 'enseigne', 'email', 'adresse', 'telephone', 'site_web', 'rccm', 'ifu', 'signataire', 'actions'];
 
 
@@ -121,11 +121,11 @@ export class AdminComponent implements OnInit {
       let password = this._utilitaires.generateRandomPassword(8);
       if (this._is_update_users()) {
         if (this._selected_user()) {
-          let users = { ...values, id: this._selected_user()?.id };
+          let users = { ...values, id: this._selected_user()?.id, mot_de_passe: this._selected_user()?.mot_de_passe  };
           this._users_store.updateUser(users);
         }
       } else {
-        this._users_store.addUser({ ...values, password: password });
+        this._users_store.addUser({ ...values, mot_de_passe: password });
       }
       this._selected_user.set(undefined);
       this.activate_usersForm.set(false);

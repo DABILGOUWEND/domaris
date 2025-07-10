@@ -231,7 +231,6 @@
           </div>
         </div>
       </mat-step>
-
       <!-- Étape 2 : Phases (arbre imbriqué) -->
       <mat-step [editable]="true">
         <div class="phases-container">
@@ -249,21 +248,21 @@
               <!-- L'arbre des phases -->
               <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
                 <mat-nested-tree-node *matTreeNodeDef="let node" style="width: 100%;">
-                  <div class="mat-tree-node" matTreeNodePadding>
+                  <div class="mat-tree-node" matTreeNodePadding [style.padding-left.px]="getLevel(node) * 20">
                     @if (editNode()!=node|| editMode()=='add') {
-                    <div class="node">
-                      <div class="ligne_arrow">
-                        @if (hasChild(0, node)) {
-                        <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'expand ' + node.nom">
-                          <mat-icon>
-                            {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
-                          </mat-icon>
-                        </button>
-                        }
-                        <div [ngClass]="{'titres1':hasChild(0,node) ||getLevel(node)==0,'titres2':!hasChild(0,node) }">
-                          {{ node.nom }} {{node.dateDebut!=""?"-- du "+ node.dateDebut:"" }} {{node.dateDebut!=""? "au
-                          "+node.dateFin:"" }}
-                        </div>
+                    <div class="node"
+                      [ngStyle]="{'background-color':hasChild(0,node) ||getLevel(node)==0? 'gray':'transparent'}">
+
+                      @if (hasChild(0, node)) {
+                      <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'expand ' + node.nom">
+                        <mat-icon>
+                          {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+                        </mat-icon>
+                      </button>
+                      }
+                      <div [ngClass]="{'titres1':hasChild(0,node) ||getLevel(node)==0,'titres2':!hasChild(0,node) }">
+                        {{ node.nom }} {{node.dateDebut!=""?"-- du "+ node.dateDebut:"" }} {{node.dateDebut!=""? "au
+                        "+node.dateFin:"" }}
                       </div>
                       <ng-container [ngTemplateOutlet]="nodetree" [ngTemplateOutletContext]="{ node: node}">
                       </ng-container>
@@ -320,22 +319,22 @@
           <h3> {{ editMode()=="add"?"Ajout sous phase de "+node.nom:"Modication de " + node.nom }} </h3>
         </div>
         <div class="col l12 s6">
-          <mat-form-field appearance="outline" >
+          <mat-form-field appearance="outline">
             <mat-label>Nom</mat-label>
             <input matInput formControlName="nom">
           </mat-form-field>
         </div>
 
         <div class="col l12 s6">
-          <mat-form-field appearance="outline" >
+          <mat-form-field appearance="outline">
             <mat-label>Description</mat-label>
             <input matInput formControlName="description">
           </mat-form-field>
         </div>
       </div>
-      <div class="row" >
+      <div class="row">
         <div class="col l12 s6">
-          <mat-form-field appearance="outline" >
+          <mat-form-field appearance="outline">
             <mat-label>Date début</mat-label>
             <input matInput [matDatepicker]="pickerDebut" formControlName="dateDebut">
             <mat-datepicker-toggle matSuffix [for]="pickerDebut"></mat-datepicker-toggle>
@@ -343,7 +342,7 @@
           </mat-form-field>
         </div>
         <div class="col l12 s6">
-          <mat-form-field appearance="outline" >
+          <mat-form-field appearance="outline">
             <mat-label>Date fin</mat-label>
             <input matInput [matDatepicker]="pickerFin" formControlName="dateFin">
             <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
@@ -354,7 +353,7 @@
       </div>
       <div class="row">
         <div class="col l12 s6">
-          <mat-form-field appearance="outline" >
+          <mat-form-field appearance="outline">
             <mat-label>Statut</mat-label>
             <mat-select formControlName="statut">
               @for (s of statuts; track s) {
@@ -364,7 +363,7 @@
           </mat-form-field>
         </div>
         <div class="col l12 s6">
-          <mat-form-field appearance="outline" >
+          <mat-form-field appearance="outline">
             <mat-label>Responsable</mat-label>
             <mat-select formControlName="responsableId">
               <mat-option value="">Aucun</mat-option>

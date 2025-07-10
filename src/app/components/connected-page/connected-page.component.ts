@@ -43,14 +43,20 @@ export class ConnectedPageComponent implements OnInit {
   ngOnInit() {
     if (this._auth_service.userSignal()) {
       let role = this._auth_service.userSignal()?.role;
-    switch (role) {
-      case 'admin':
-        this._router.navigate(['connect/admin']);
-        break;
-      case 'respo_programmes':
-        this._router.navigate(['connect/programmes']);
-        break;
-    }
+      switch (role) {
+        case 'admin':
+          this._router.navigate(['connect/admin']);
+          break;
+        case 'respo_programmes':
+          this._router.navigate(['connect/programmes']);
+          break;
+        case 'respo_finances':
+          this._router.navigate(['connect/finances']);
+          break;
+          case 'respo_travaux':
+          this._router.navigate(['connect/operations']);
+          break;
+      }
     }
 
   }
