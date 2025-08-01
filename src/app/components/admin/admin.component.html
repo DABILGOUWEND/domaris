@@ -223,7 +223,7 @@
           <mat-form-field appearance="fill">
             <mat-label>Projets</mat-label>
             <mat-select formControlName="projet_ids" required multiple>
-              @for (programme of programmes(); track programme) {
+              @for (programme of programmes(); track  programme.id) {
               <mat-option [value]="programme.id">
                 {{programme.nom}}
               </mat-option>

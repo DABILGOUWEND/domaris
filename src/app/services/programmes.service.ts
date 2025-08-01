@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { addDoc, collection, collectionData, deleteDoc, doc, Firestore, setDoc } from '@angular/fire/firestore';
-import { forkJoin, from, map, Observable, switchMap, take } from 'rxjs';
+import { concat, forkJoin, from, map, Observable, switchMap, take } from 'rxjs';
 
 
 @Injectable({
@@ -76,8 +76,37 @@ export class ProgrammesService {
     const promise = setDoc(docRef, data)
     return from(promise)
   }
-  removeProgramme(programmeId: string): Observable<void> {
-    const docRef = doc(this.firestore, `programmes/${programmeId}`);
-    return from(deleteDoc(docRef));
-  }
+removeProgramme(programmeId: string): Observable<void> {
+  // First, get all documents in subcollections and delete them
+  const phases$ = this.getPhases(programmeId).pipe(
+    take(1),
+    switchMap(phases => {
+      if (phases.length === 0) return from([]);
+      const deletePromises = phases.map(phase => 
+        deleteDoc(doc(this.firestore, `programmes/${programmeId}/phases/${phase.id}`))
+      );
+      return forkJoin(deletePromises);
+    })
+  );
+
+  const budgets$ = this.getBudgets(programmeId).pipe(
+    take(1),
+    switchMap(budgets => {
+      if (budgets.length === 0) return from([]);
+      const deletePromises = budgets.map(budget => 
+        deleteDoc(doc(this.firestore, `programmes/${programmeId}/budgets/${budget.id}`))
+      );
+      return forkJoin(deletePromises);
+    })
+  );
+
+
+  // Delete all subcollection documents first, then delete the main document
+  return forkJoin([phases$, budgets$]).pipe(
+    switchMap(() => {
+      const docRef = doc(this.firestore, `programmes/${programmeId}`);
+      return from(deleteDoc(docRef));
+    })
+  );
+}
 }

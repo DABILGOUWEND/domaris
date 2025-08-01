@@ -740,16 +740,20 @@ export interface phases {
   statut: 'En attente' | 'En cours' | 'Terminé' | 'Suspendu';
   responsableId: string;
   documents: documents[]|[]; // URLs des documents associés à la phase
-  children: phases[]|[]
+  children: phases[]|[],
+  taches: taches[]|[], // Liste des tâches associées à la phase 
 }
 
 export interface taches {
-  id?: string;
-  titre: string;
+  nom: string;
   description: string;
-  statut: 'À faire' | 'En cours' | 'Terminée';
-  dateEcheance: Date | any;
-  responsableId?: string;
+  statut: 'En attente' | 'En cours' | 'Terminé' | 'Suspendu';
+  responsableId: string;
+  documents: documents[]|[];
+  poids: number; // Poids de la tâche pour le calcul de l'avancement
+  dateDebut: Date | any;
+  dateFin: Date | any;
+  children: taches[]|[]; // Sous-tâches associées à la tâche
 }
 
 export interface depenses {
@@ -772,8 +776,12 @@ export interface documents {
   titre: string;
   type: string; // ex: "pdf", "image"
   url: string;
-  createdAt?: Date | any;
-  updatedAt?: Date | any;
+  createdAt: Date | any;
+  updatedAt: Date | any;
+  etat_validation: 'En attente' | 'Validé' | 'Rejeté' | 'En révision';
+  validateur_id: string;
+  date_validation: Date | any;
+  commentaire_validation: string;
 }
 export interface tab_programmeStore {
   programmes_data: any[];
@@ -792,311 +800,1805 @@ export interface budgets {
   montant_htva: number,
   description: string
 }
-export const intial_phases: phases[] =[
+
+// ...existing code...
+
+
+export const intial_phases: phases[] = [
   {
-    "id": "",
+    "id": "phase-1",
     "nom": "Préparation / Définition du projet",
     "description": "Phase de cadrage, études préalables, montage foncier et financier",
+    "dateDebut": "2025-07-11",
+    "dateFin": "2025-09-11",
     "statut": "En attente",
+    "responsableId": "",
+    "documents": [],
+    "taches": [],
     "children": [
       {
-        "id": "",
+        "id": "phase-1-1",
         "nom": "Identification du besoin",
         "description": "Analyse des attentes et définition des objectifs",
+        "dateDebut": "2025-07-11",
+        "dateFin": "2025-07-25",
         "statut": "En attente",
-        "documents": [
-          {
-            "titre": "Note de cadrage",
-            "type": "pdf",
-            "url": "",
-            "createdAt": "2025-06-07T13:50:31.155664",
-            "updatedAt": "2025-06-07T13:50:31.155674"
-          }
-        ],
+        "responsableId": "",
+        "documents": [],
         "children": [],
-        "dateDebut": "",
-        "dateFin": "",
-        "responsableId": ""
-      },
-      {
-        "id": "",
-        "nom": "Choix du site",
-        "description": "Analyse foncière, certificat d’urbanisme",
-        "statut": "En attente",
-        "documents": [
+        "taches": [
           {
-            "titre": "Certificat d’urbanisme",
-            "type": "pdf",
-            "url": "",
-            "createdAt": "2025-06-07T13:50:31.155678",
-            "updatedAt": "2025-06-07T13:50:31.155680"
-          }
-        ],
-        "children": [],
-        "dateDebut": "",
-        "dateFin": "",
-        "responsableId": ""
-      },
-      {
-        "id": "",
-        "nom": "Étude de faisabilité",
-        "description": "Évaluation technique et financière",
-        "statut": "En attente",
-        "documents": [
-          {
-            "titre": "Étude de faisabilité",
-            "type": "pdf",
-            "url": "",
-            "createdAt": "2025-06-07T13:50:31.155685",
-            "updatedAt": "2025-06-07T13:50:31.155687"
-          }
-        ],
-        "children": [],
-        "dateDebut": "",
-        "dateFin": "",
-        "responsableId": ""
-      }
-    ],
-    "dateDebut": "",
-    "dateFin": "",
-    "responsableId": "",
-    "documents": []
-  },
-  {
-    "id": "",
-    "nom": "Études",
-    "description": "Phase de conception technique et réglementaire",
-    "statut": "En attente",
-    "children": [
-      {
-        "id": "",
-        "nom": "Études préliminaires",
-        "description": "Topographie, géotechnique, environnement",
-        "statut": "En attente",
-        "documents": [
-          {
-            "titre": "Rapport G1",
-            "type": "pdf",
-            "url": "",
-            "createdAt": "2025-06-07T13:50:31.155691",
-            "updatedAt": "2025-06-07T13:50:31.155693"
+            "nom": "Organiser un atelier de cadrage",
+            "description": "Planifier et animer l'atelier de lancement avec les parties prenantes",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Agenda de l'atelier", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              },
+              { 
+                "titre": "Compte-rendu atelier", 
+                "type": "docx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-07-11",
+            "dateFin": "2025-07-13",
+            "children": []
           },
           {
-            "titre": "Plan topographique",
-            "type": "image",
-            "url": "",
-            "createdAt": "2025-06-07T13:50:31.155695",
-            "updatedAt": "2025-06-07T13:50:31.155698"
+            "nom": "Rédiger et diffuser la Note de cadrage",
+            "description": "Rédiger le document de cadrage et le partager aux acteurs clés",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Note de cadrage", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              },
+              { 
+                "titre": "Liste des participants", 
+                "type": "xlsx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-07-14",
+            "dateFin": "2025-07-18",
+            "children": []
+          },
+          {
+            "nom": "Valider les objectifs et indicateurs",
+            "description": "Obtenir la validation formelle des objectifs projet et des KPI",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "PV de validation des objectifs", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              },
+              { 
+                "titre": "Fiche indicateurs", 
+                "type": "xlsx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-07-19",
+            "dateFin": "2025-07-22",
+            "children": []
+          },
+          {
+            "nom": "Recueillir les retours et ajuster la note",
+            "description": "Compiler les commentaires et mettre à jour la note de cadrage",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Registre des commentaires", 
+                "type": "xlsx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              },
+              { 
+                "titre": "Version mise à jour de la Note de cadrage", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-07-23",
+            "dateFin": "2025-07-25",
+            "children": []
           }
-        ],
-        "children": [],
-        "dateDebut": "",
-        "dateFin": "",
-        "responsableId": ""
+        ]
       },
       {
-        "id": "",
+        "id": "phase-1-2",
+        "nom": "Choix du site",
+        "description": "Analyse foncière, certificat d'urbanisme",
+        "dateDebut": "2025-07-26",
+        "dateFin": "2025-08-15",
+        "statut": "En attente",
+        "responsableId": "",
+        "documents": [],
+        "children": [],
+        "taches": [
+          {
+            "nom": "Solliciter et récupérer le certificat d'urbanisme",
+            "description": "Obtenir et archiver le certificat d'urbanisme auprès de la mairie",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Certificat d'urbanisme", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-07-26",
+            "dateFin": "2025-08-01",
+            "children": []
+          },
+          {
+            "nom": "Analyser les contraintes foncières",
+            "description": "Étudier topographie et servitudes du terrain",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Rapport topographique", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              },
+              { 
+                "titre": "Plan de servitudes", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-08-02",
+            "dateFin": "2025-08-08",
+            "children": []
+          },
+          {
+            "nom": "Réunion avec urbaniste/géomètre",
+            "description": "Convoquer et rédiger le compte-rendu de réunion",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Compte-rendu de réunion", 
+                "type": "docx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              },
+              { 
+                "titre": "Plan de bornage", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-08-09",
+            "dateFin": "2025-08-12",
+            "children": []
+          },
+          {
+            "nom": "Documenter le rapport de faisabilité site",
+            "description": "Compiler et valider le rapport de faisabilité foncière",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Rapport de faisabilité foncière", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-08-13",
+            "dateFin": "2025-08-15",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "phase-1-3",
+        "nom": "Étude de faisabilité",
+        "description": "Évaluation technique et financière",
+        "dateDebut": "2025-08-16",
+        "dateFin": "2025-09-11",
+        "statut": "En attente",
+        "responsableId": "",
+        "documents": [],
+        "children": [],
+        "taches": [
+          {
+            "nom": "Lancer l'appel d'offres pour étude G1",
+            "description": "Préparer le dossier et envoyer aux bureaux d'études",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Dossier d'appel d'offres G1", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              },
+              { 
+                "titre": "Liste des bureaux d'études contactés", 
+                "type": "xlsx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-08-16",
+            "dateFin": "2025-08-22",
+            "children": []
+          },
+          {
+            "nom": "Étude thermique et énergétique préliminaire",
+            "description": "Faire réaliser l'étude thermique initiale",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Rapport étude thermique", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-08-23",
+            "dateFin": "2025-08-29",
+            "children": []
+          },
+          {
+            "nom": "Évaluer le chiffrage financier sommaire",
+            "description": "Élaborer un pré-chiffrage budgétaire sommaire",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Excel de pré-chiffrage", 
+                "type": "xlsx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-08-30",
+            "dateFin": "2025-09-05",
+            "children": []
+          },
+          {
+            "nom": "Synthèse de faisabilité et présentation",
+            "description": "Rédiger la synthèse et présenter au comité",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Synthèse PowerPoint", 
+                "type": "pptx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              },
+              { 
+                "titre": "PV de comité", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-09-06",
+            "dateFin": "2025-09-11",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "phase-2",
+    "nom": "Études",
+    "description": "Phase de conception technique et réglementaire",
+    "dateDebut": "2025-09-12",
+    "dateFin": "2025-12-12",
+    "statut": "En attente",
+    "responsableId": "",
+    "documents": [],
+    "taches": [],
+    "children": [
+      {
+        "id": "phase-2-1",
+        "nom": "Études préliminaires",
+        "description": "Topographie, géotechnique, environnement",
+        "dateDebut": "2025-09-12",
+        "dateFin": "2025-10-12",
+        "statut": "En attente",
+        "responsableId": "",
+        "documents": [],
+        "children": [],
+        "taches": [
+          {
+            "nom": "Commander le relevé topographique",
+            "description": "Passer la commande du relevé topographique",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Bon de commande topographie", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-09-12",
+            "dateFin": "2025-09-18",
+            "children": []
+          },
+          {
+            "nom": "Planifier et suivre l'étude géotechnique G1",
+            "description": "Établir planning et suivre l'avancement G1",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Planning G1", 
+                "type": "xlsx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-09-19",
+            "dateFin": "2025-09-30",
+            "children": []
+          },
+          {
+            "nom": "Établir le diagnostic environnemental",
+            "description": "Faire réaliser et compiler le diagnostic environnemental",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Rapport environnemental", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-10-01",
+            "dateFin": "2025-10-08",
+            "children": []
+          },
+          {
+            "nom": "Compiler les rapports",
+            "description": "Assembler tous les rapports préliminaires dans un dossier",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Dossier Études préliminaires", 
+                "type": "zip", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-10-09",
+            "dateFin": "2025-10-12",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "phase-2-2",
         "nom": "Avant-Projet Sommaire (APS)",
         "description": "Premiers plans de conception",
+        "dateDebut": "2025-10-13",
+        "dateFin": "2025-11-12",
         "statut": "En attente",
-        "documents": [
-          {
-            "titre": "Plans APS",
-            "type": "pdf",
-            "url": "",
-            "createdAt": "2025-06-07T13:50:31.155700",
-            "updatedAt": "2025-06-07T13:50:31.155702"
-          }
-        ],
+        "responsableId": "",
+        "documents": [],
         "children": [],
-        "dateDebut": "",
-        "dateFin": "",
-        "responsableId": ""
+        "taches": [
+          {
+            "nom": "Rédiger le cahier des charges APS",
+            "description": "Définir le périmètre et les exigences APS",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Cahier des charges APS", 
+                "type": "docx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-10-13",
+            "dateFin": "2025-10-20",
+            "children": []
+          },
+          {
+            "nom": "Dessiner plans masse et coupes",
+            "description": "Produire les plans masse et coupes préliminaires",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Plans APS", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-10-21",
+            "dateFin": "2025-10-31",
+            "children": []
+          },
+          {
+            "nom": "Valider l'implantation MOA",
+            "description": "Faire valider l'implantation par le maître d'ouvrage",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "PV validation implantation", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-11-01",
+            "dateFin": "2025-11-05",
+            "children": []
+          },
+          {
+            "nom": "Mettre à jour documents APS",
+            "description": "Intégrer retours et finaliser les documents APS",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Version finale plans APS", 
+                "type": "dwg", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-11-06",
+            "dateFin": "2025-11-12",
+            "children": []
+          }
+        ]
       },
       {
-        "id": "",
+        "id": "phase-2-3",
         "nom": "Avant-Projet Définitif (APD)",
         "description": "Version détaillée du projet",
+        "dateDebut": "2025-11-13",
+        "dateFin": "2025-12-12",
         "statut": "En attente",
-        "children": [],
-        "dateDebut": "",
-        "dateFin": "",
         "responsableId": "",
-        "documents": []
+        "documents": [],
+        "children": [],
+        "taches": [
+          {
+            "nom": "Finaliser les plans architecturaux",
+            "description": "Produire les plans définitifs détaillés",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Plans APD", 
+                "type": "dwg", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-11-13",
+            "dateFin": "2025-11-25",
+            "children": []
+          },
+          {
+            "nom": "Vérifier conformité aux normes",
+            "description": "Contrôler conformité incendie et accessibilité",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Fiche conformité incendie", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              },
+              { 
+                "titre": "Fiche accessibilité", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-11-26",
+            "dateFin": "2025-12-02",
+            "children": []
+          },
+          {
+            "nom": "Élaborer l'estimation budgétaire détaillée",
+            "description": "Préparer le DPGF détaillé",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "DPGF détaillé", 
+                "type": "xlsx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-12-03",
+            "dateFin": "2025-12-08",
+            "children": []
+          },
+          {
+            "nom": "Organiser la revue APD",
+            "description": "Planifier et tenir la revue APD",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Ordre du jour revue APD", 
+                "type": "docx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              },
+              { 
+                "titre": "PV de revue APD", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-12-09",
+            "dateFin": "2025-12-12",
+            "children": []
+          }
+        ]
       }
-    ],
-    "dateDebut": "",
-    "dateFin": "",
-    "responsableId": "",
-    "documents": []
+    ]
   },
   {
-    "id": "",
+    "id": "phase-3",
     "nom": "Consultation & passation des marchés",
     "description": "Sélection des entreprises et signature des marchés",
+    "dateDebut": "2025-12-13",
+    "dateFin": "2026-03-13",
     "statut": "En attente",
+    "responsableId": "",
+    "documents": [],
+    "taches": [],
     "children": [
       {
-        "id": "",
+        "id": "phase-3-1",
         "nom": "Élaboration du DCE",
         "description": "Plans, CCTP, DPGF, RC",
+        "dateDebut": "2025-12-13",
+        "dateFin": "2026-01-13",
         "statut": "En attente",
-        "children": [],
-        "dateDebut": "",
-        "dateFin": "",
         "responsableId": "",
-        "documents": []
+        "documents": [],
+        "children": [],
+        "taches": [
+          {
+            "nom": "Rédiger le CCTP par lot",
+            "description": "Rédiger le cahier des clauses techniques particulières pour chaque lot",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "CCTP Lot gros-œuvre", 
+                "type": "docx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              },
+              { 
+                "titre": "CCTP Lot second-œuvre", 
+                "type": "docx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-12-13",
+            "dateFin": "2025-12-27",
+            "children": []
+          },
+          {
+            "nom": "Préparer le bordereau de prix",
+            "description": "Établir le DPGF complet",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Bordereau DPGF", 
+                "type": "xlsx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2025-12-28",
+            "dateFin": "2026-01-05",
+            "children": []
+          },
+          {
+            "nom": "Vérifier le règlement de consultation",
+            "description": "Contrôler et valider le règlement de la consultation",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Règlement de consultation", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-01-06",
+            "dateFin": "2026-01-10",
+            "children": []
+          },
+          {
+            "nom": "Consolider le dossier DCE",
+            "description": "Assembler tous les éléments du DCE dans un dossier final",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "DCE complet", 
+                "type": "zip", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-01-11",
+            "dateFin": "2026-01-13",
+            "children": []
+          }
+        ]
       },
       {
-        "id": "",
+        "id": "phase-3-2",
         "nom": "Analyse des offres",
         "description": "Ouverture des plis, négociations",
+        "dateDebut": "2026-01-14",
+        "dateFin": "2026-02-13",
         "statut": "En attente",
-        "children": [],
-        "dateDebut": "",
-        "dateFin": "",
         "responsableId": "",
-        "documents": []
+        "documents": [],
+        "children": [],
+        "taches": [
+          {
+            "nom": "Ouvrir les plis",
+            "description": "Organiser l'ouverture officielle des plis",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "PV d'ouverture des plis", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-01-14",
+            "dateFin": "2026-01-20",
+            "children": []
+          },
+          {
+            "nom": "Vérifier la conformité des offres",
+            "description": "Contrôler pièces administratives et techniques",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Tableau comparatif des offres", 
+                "type": "xlsx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-01-21",
+            "dateFin": "2026-01-31",
+            "children": []
+          },
+          {
+            "nom": "Auditions / négociations",
+            "description": "Convoquer et rédiger compte-rendu des négociations",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Invitations à audition", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              },
+              { 
+                "titre": "Compte-rendu négociation", 
+                "type": "docx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-02-01",
+            "dateFin": "2026-02-08",
+            "children": []
+          },
+          {
+            "nom": "Rédiger le rapport d'analyse comparative",
+            "description": "Synthétiser et recommander le meilleur lot",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Rapport final analyse offres", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-02-09",
+            "dateFin": "2026-02-13",
+            "children": []
+          }
+        ]
       },
       {
-        "id": "",
+        "id": "phase-3-3",
         "nom": "Attribution des marchés",
         "description": "Notification et signature des contrats",
+        "dateDebut": "2026-02-14",
+        "dateFin": "2026-03-13",
         "statut": "En attente",
-        "children": [],
-        "dateDebut": "",
-        "dateFin": "",
         "responsableId": "",
-        "documents": []
+        "documents": [],
+        "children": [],
+        "taches": [
+          {
+            "nom": "Préparer les lettres d'attribution",
+            "description": "Rédiger et envoyer les lettres d'attribution aux entreprises",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Lettre type d'attribution", 
+                "type": "docx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-02-14",
+            "dateFin": "2026-02-21",
+            "children": []
+          },
+          {
+            "nom": "Signer et archiver les contrats",
+            "description": "Faire signer et classer les contrats signés",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Contrats signés", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              },
+              { 
+                "titre": "Suivi marchés", 
+                "type": "xlsx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-02-22",
+            "dateFin": "2026-03-06",
+            "children": []
+          },
+          {
+            "nom": "Notifier les entreprises",
+            "description": "Envoyer la notification officielle aux titulaires de lot",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Notifications envoyées", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": "2025-07-11T10:00:00.000Z",
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-03-07",
+            "dateFin": "2026-03-13",
+            "children": []
+          }
+        ]
       }
-    ],
-    "dateDebut": "",
-    "dateFin": "",
-    "responsableId": "",
-    "documents": []
+    ]
   },
-  {
-    "id": "",
+   {
+    "id": "phase-4",
     "nom": "Exécution des travaux",
-    "description": "Réalisation de l’ouvrage selon les plans",
+    "description": "Réalisation de l'ouvrage selon les plans",
+    "dateDebut": "2026-03-14",
+    "dateFin": "2026-09-14",
     "statut": "En attente",
+    "responsableId": "",
+    "documents": [],
+    "taches": [],
     "children": [
       {
-        "id": "",
+        "id": "phase-4-1",
         "nom": "Installation de chantier",
         "description": "Préparation des accès, réseaux, sécurité",
+        "dateDebut": "2026-03-14",
+        "dateFin": "2026-04-14",
         "statut": "En attente",
-        "children": [],
-        "dateDebut": "",
-        "dateFin": "",
         "responsableId": "",
-        "documents": []
+        "documents": [],
+        "children": [],
+        "taches": [
+          {
+            "nom": "Élaborer le plan PTW",
+            "description": "Créer le plan de transfert de responsabilités",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Plan PTW", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-03-14",
+            "dateFin": "2026-03-21",
+            "children": []
+          },
+          {
+            "nom": "Installer bungalows et clôtures",
+            "description": "Mettre en place les installations provisoires sur site",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Bon de livraison", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-03-22",
+            "dateFin": "2026-03-31",
+            "children": []
+          },
+          {
+            "nom": "Mettre en place signalisation & EPI",
+            "description": "Installer la signalisation de sécurité et distribuer les EPI",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Plan sécurité chantier", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-04-01",
+            "dateFin": "2026-04-08",
+            "children": []
+          },
+          {
+            "nom": "Vérifier réseaux provisoires",
+            "description": "Contrôler l'alimentation eau et électricité temporaire",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "PV de réception provisoire", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-04-09",
+            "dateFin": "2026-04-14",
+            "children": []
+          }
+        ]
       },
       {
-        "id": "",
+        "id": "phase-4-2",
         "nom": "Gros œuvre",
         "description": "Structure, fondations, murs, dalles",
+        "dateDebut": "2026-04-15",
+        "dateFin": "2026-06-15",
         "statut": "En attente",
-        "children": [],
-        "dateDebut": "",
-        "dateFin": "",
         "responsableId": "",
-        "documents": []
+        "documents": [],
+        "children": [],
+        "taches": [
+          {
+            "nom": "Commander béton et aciers",
+            "description": "Passer les commandes matériaux béton et acier",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Bons de commande matériaux", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-04-15",
+            "dateFin": "2026-04-22",
+            "children": []
+          },
+          {
+            "nom": "Planifier le coulage du radier",
+            "description": "Établir le planning de coulage du radier",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Planning coulage", 
+                "type": "xlsx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-04-23",
+            "dateFin": "2026-05-15",
+            "children": []
+          },
+          {
+            "nom": "Suivre montage murs et dalles",
+            "description": "Contrôler et reporter l'avancement des murs et dalles",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Rapports hebdos d'avancement", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-05-16",
+            "dateFin": "2026-06-08",
+            "children": []
+          },
+          {
+            "nom": "Tenir à jour le journal de chantier",
+            "description": "Enregistrer toutes les opérations quotidiennes",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Journal de chantier", 
+                "type": "xlsx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-06-09",
+            "dateFin": "2026-06-15",
+            "children": []
+          }
+        ]
       },
       {
-        "id": "",
+        "id": "phase-4-3",
         "nom": "Second œuvre",
         "description": "Plomberie, électricité, finitions",
+        "dateDebut": "2026-06-16",
+        "dateFin": "2026-09-14",
         "statut": "En attente",
-        "children": [],
-        "dateDebut": "",
-        "dateFin": "",
         "responsableId": "",
-        "documents": []
+        "documents": [],
+        "children": [],
+        "taches": [
+          {
+            "nom": "Planifier plomberie & électricité",
+            "description": "Élaborer planning des lots plomberie et électricité",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Planning second-œuvre", 
+                "type": "xlsx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-06-16",
+            "dateFin": "2026-07-15",
+            "children": []
+          },
+          {
+            "nom": "Suivre la pose des menuiseries",
+            "description": "Vérifier la qualité et l'avancement de la menuiserie",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "PV de contrôle menuiseries", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-07-16",
+            "dateFin": "2026-08-15",
+            "children": []
+          },
+          {
+            "nom": "Organiser les contrôles qualité provisoires",
+            "description": "Mettre en place et compiler les fiches de contrôle",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Fiches contrôle", 
+                "type": "xlsx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-08-16",
+            "dateFin": "2026-09-05",
+            "children": []
+          },
+          {
+            "nom": "Gérer les décomptes des entreprises",
+            "description": "Vérifier et valider les états de décompte",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "États de décompte", 
+                "type": "xlsx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-09-06",
+            "dateFin": "2026-09-14",
+            "children": []
+          }
+        ]
       }
-    ],
-    "dateDebut": "",
-    "dateFin": "",
-    "responsableId": "",
-    "documents": []
+    ]
   },
-  {
-    "id": "",
+    {
+    "id": "phase-5",
     "nom": "Réception",
-    "description": "Contrôle qualité, OPR, levée des réserves",
+    "description": "Phase de réception des travaux et mise en service",
+    "dateDebut": "2026-09-15",
+    "dateFin": "2026-12-15",
     "statut": "En attente",
+    "responsableId": "",
+    "documents": [],
+    "taches": [],
     "children": [
       {
-        "id": "",
-        "nom": "Opérations Préalables à la Réception",
-        "description": "Tests, vérifications, constatations",
+        "id": "phase-5-1",
+        "nom": "Préparation de la réception",
+        "description": "Organisation et préparation de la réception provisoire",
+        "dateDebut": "2026-09-15",
+        "dateFin": "2026-10-15",
         "statut": "En attente",
-        "children": [],
-        "dateDebut": "",
-        "dateFin": "",
         "responsableId": "",
-        "documents": []
+        "documents": [],
+        "children": [],
+        "taches": [
+          {
+            "nom": "Vérifier l'achèvement des travaux",
+            "description": "Contrôler la finalisation de tous les lots de travaux",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Rapport d'achèvement des travaux", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-09-15",
+            "dateFin": "2026-09-22",
+            "children": []
+          },
+          {
+            "nom": "Constituer la commission de réception",
+            "description": "Nommer les membres de la commission et planifier la réception",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Arrêté de nomination commission", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              },
+              { 
+                "titre": "Planning des visites de réception", 
+                "type": "xlsx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-09-23",
+            "dateFin": "2026-09-30",
+            "children": []
+          },
+          {
+            "nom": "Préparer les dossiers de réception",
+            "description": "Compiler tous les documents nécessaires à la réception",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Dossier de réception complet", 
+                "type": "zip", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              },
+              { 
+                "titre": "Check-list de réception", 
+                "type": "xlsx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-10-01",
+            "dateFin": "2026-10-08",
+            "children": []
+          },
+          {
+            "nom": "Convoquer la commission de réception",
+            "description": "Envoyer les convocations officielles à tous les membres",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Convocations commission", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-10-09",
+            "dateFin": "2026-10-15",
+            "children": []
+          }
+        ]
       },
       {
-        "id": "",
-        "nom": "Réception des ouvrages",
-        "description": "Signature des PV et transfert de responsabilité",
+        "id": "phase-5-2",
+        "nom": "Réception provisoire",
+        "description": "Réception provisoire des ouvrages",
+        "dateDebut": "2026-10-16",
+        "dateFin": "2026-11-15",
         "statut": "En attente",
-        "children": [],
-        "dateDebut": "",
-        "dateFin": "",
         "responsableId": "",
-        "documents": []
+        "documents": [],
+        "children": [],
+        "taches": [
+          {
+            "nom": "Organiser la visite de réception",
+            "description": "Conduire la visite technique avec la commission",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Feuille d'émargement visite", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              },
+              { 
+                "titre": "Photos de visite", 
+                "type": "zip", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-10-16",
+            "dateFin": "2026-10-23",
+            "children": []
+          },
+          {
+            "nom": "Identifier les réserves",
+            "description": "Lister et documenter toutes les réserves identifiées",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Liste des réserves", 
+                "type": "xlsx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              },
+              { 
+                "titre": "Photos des défauts", 
+                "type": "zip", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-10-24",
+            "dateFin": "2026-10-31",
+            "children": []
+          },
+          {
+            "nom": "Rédiger le procès-verbal de réception",
+            "description": "Établir le PV officiel de réception provisoire",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "PV de réception provisoire", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-11-01",
+            "dateFin": "2026-11-08",
+            "children": []
+          },
+          {
+            "nom": "Notifier la réception aux entreprises",
+            "description": "Transmettre le PV aux entreprises concernées",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Lettres de notification", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-11-09",
+            "dateFin": "2026-11-15",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": "phase-5-3",
+        "nom": "Levée des réserves",
+        "description": "Suivi et validation de la levée des réserves",
+        "dateDebut": "2026-11-16",
+        "dateFin": "2026-12-15",
+        "statut": "En attente",
+        "responsableId": "",
+        "documents": [],
+        "children": [],
+        "taches": [
+          {
+            "nom": "Planifier les travaux de reprise",
+            "description": "Établir le planning de levée des réserves",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Planning de levée des réserves", 
+                "type": "xlsx", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-11-16",
+            "dateFin": "2026-11-23",
+            "children": []
+          },
+          {
+            "nom": "Suivre l'exécution des reprises",
+            "description": "Contrôler l'avancement des travaux de reprise",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "Rapports de suivi reprises", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-11-24",
+            "dateFin": "2026-12-08",
+            "children": []
+          },
+          {
+            "nom": "Contrôler la levée des réserves",
+            "description": "Vérifier que toutes les réserves sont levées",
+            "statut": "En attente",
+            "responsableId": "",
+            "documents": [
+              { 
+                "titre": "PV de levée des réserves", 
+                "type": "pdf", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              },
+              { 
+                "titre": "Photos après reprises", 
+                "type": "zip", 
+                "url": "", 
+                "createdAt": "2025-07-11T10:00:00.000Z", 
+                "updatedAt": "2025-07-11T10:00:00.000Z",
+                "etat_validation": "En attente",
+                "validateur_id": "",
+                "date_validation": null,
+                "commentaire_validation": ""
+              }
+            ],
+            "poids": 1,
+            "dateDebut": "2026-12-09",
+            "dateFin": "2026-12-15",
+            "children": []
+          }
+        ]
       }
-    ],
-    "dateDebut": "",
-    "dateFin": "",
-    "responsableId": "",
-    "documents": []
-  },
-  {
-    "id": "",
-    "nom": "Exploitation & garanties",
-    "description": "Suivi post-livraison et garanties légales",
-    "statut": "En attente",
-    "children": [
-      {
-        "id": "",
-        "nom": "Garantie de parfait achèvement",
-        "description": "1 an après réception",
-        "statut": "En attente",
-        "children": [],
-        "dateDebut": "",
-        "dateFin": "",
-        "responsableId": "",
-        "documents": []
-      },
-      {
-        "id": "",
-        "nom": "Garantie biennale",
-        "description": "Sur les éléments démontables",
-        "statut": "En attente",
-        "children": [],
-        "dateDebut": "",
-        "dateFin": "",
-        "responsableId": "",
-        "documents": []
-      },
-      {
-        "id": "",
-        "nom": "Garantie décennale",
-        "description": "Sur la structure de l’ouvrage",
-        "statut": "En attente",
-        "children": [],
-        "dateDebut": "",
-        "dateFin": "",
-        "responsableId": "",
-        "documents": []
-      }
-    ],
-    "dateDebut": "",
-    "dateFin": "",
-    "responsableId": "",
-    "documents": []
+    ]
   }
+
 ]
+// ...existing code...
+
+

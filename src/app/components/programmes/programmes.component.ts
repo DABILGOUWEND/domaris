@@ -72,6 +72,7 @@ export class ProgrammesComponent {
       responsableId: ['', Validators.required]
     });
     effect(() => {
+    
     })
   }
   ngOnInit() {

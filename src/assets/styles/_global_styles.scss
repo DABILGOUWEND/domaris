@@ -6554,6 +6554,60 @@ button[mat-raised-button] {
     }
   }
 
+  mat-drawer .taches {
+    width: 90% !important;
+
+    .table-update {
+      .table-update__header {
+        width: 100%;
+        background-color: gray;
+        border-bottom: 1px solid black;
+        padding-top: 5px;
+
+        h2 {
+          text-align: center;
+          font-size: 28px;
+          margin-top: 0px;
+          color: white;
+          font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+        }
+
+        h3 {
+          text-align: center;
+          font-size: 24px;
+          margin-top: 5px;
+        }
+      }
+
+      .table-body {
+        width: 100%;
+        border-bottom: 1px solid black;
+        padding-top: 20px;
+
+        .col.s12 {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          button {
+            width: 20%;
+          }
+        }
+      }
+
+      .table-update__footer {
+
+        display: flex;
+        justify-content: center;
+
+        button {
+          width: 20%;
+          background-color: red;
+        }
+      }
+    }
+  }
+
   mat-drawer-content {
     width: 100% !important;
     display: block;
@@ -6707,14 +6761,15 @@ button[mat-raised-button] {
 }
 
 .node {
-  display:flex  ;
-  justify-content: flex-start ;
+  display: flex;
+  justify-content: flex-start;
   align-items: center;
 
   width: 100%;
   border: 1px solid #e2d8d8;
 }
-.ligne_arrow{
+
+.ligne_arrow {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8246,16 +8301,17 @@ button[mat-raised-button] {
 .user_formContainer.activate {
   display: flex;
 }
+
 @media screen and (max-width: 900px) {
   .user_formContainer {
     width: 100%;
-    
+
   }
 
   .user_formContainer .col.s12 button {
     width: 80%;
   }
-  
+
 }
 
 .entreprise_formContainer {
@@ -8285,16 +8341,17 @@ button[mat-raised-button] {
 .entreprise_formContainer.activate {
   display: flex;
 }
+
 @media screen and (max-width: 900px) {
   .entreprise_formContainer {
     width: 100%;
-    
+
   }
 
   .entreprise_formContainer .col.s12 button {
     width: 80%;
   }
-  
+
 }
 
 // ...existing code...
@@ -8363,7 +8420,8 @@ button[mat-raised-button] {
     }
   }
 }
-.add_button{
+
+.add_button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8372,6 +8430,7 @@ button[mat-raised-button] {
   margin-bottom: 10px;
   border: 1px solid rgb(30, 42, 97);
 }
+
 @media only screen and (max-width: 600px) {
   .add_button {
     width: 80%;

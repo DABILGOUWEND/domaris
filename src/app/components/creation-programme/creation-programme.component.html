@@ -96,6 +96,149 @@
     </div>
 
   </mat-drawer>
+   <mat-drawer class="taches" mode="over" position="start" [opened]="open_taches_doc()" disableClose="true">
+    <div class="table-update">
+      <div class="table-update__header">
+        <h3>Ajouter taches</h3>
+      </div>
+      <div class="table-body">
+        <form  [formGroup]="taches_form"  (ngSubmit)="onSubmitDoc()" #docForm="ngForm">
+          <div class="row">
+            <div class="col s6 l12 m12">
+              <mat-form-field appearance="outline" class="form-group">
+                <mat-label>Nom de la tâche</mat-label>
+                <input matInput name="nom" formControlName="nom" placeholder="Nom de la tâche" required />
+              </mat-form-field>
+            </div>
+            <div class="col s6 l12 m12">
+              <mat-form-field appearance="outline" class="form-group">
+                <mat-label>Description de la tâche</mat-label>
+                <textarea matInput name="description" formControlName="description" placeholder="Description de la tâche"></textarea>
+              </mat-form-field>
+            </div>
+            <div class="col s6 l12 m12">
+              <mat-form-field appearance="outline" class="form-group">
+                <mat-label>Date de début</mat-label>
+                <input matInput [matDatepicker]="startDatePicker" name="dateDebut" formControlName="dateDebut" placeholder="Date de début" required />
+                <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #startDatePicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <div class="col s6 l12 m12">
+              <mat-form-field appearance="outline" class="form-group">
+                <mat-label>Date de fin</mat-label>
+                <input matInput [matDatepicker]="endDatePicker" name="dateFin" formControlName="dateFin" placeholder="Date de fin" required />
+                <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #endDatePicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div class="col s6 l12 m12">
+              <mat-form-field appearance="outline" class="form-group">
+                <mat-label>Responsable</mat-label>
+                <mat-select name="responsableId" formControlName="responsableId" placeholder="Responsable de la tâche">
+                  <mat-option value="">Aucun</mat-option>
+                  @for (r of responsables(); track r.id) {
+                  <mat-option [value]="r.id">{{ r.name }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col s6 l12 m12">
+              <mat-form-field appearance="outline" class="form-group">
+                <mat-label>Statut</mat-label>
+                <mat-select name="statut" formControlName="statut" placeholder="Statut de la tâche">
+                  @for (s of statuts; track s) {
+                  <mat-option [value]="s">{{ s }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row" >
+            <div class="col s12 l12 m12">
+              <button mat-flat-button color="primary" type="submit" [disabled]="!docForm.valid || !doc().file">
+                Enregistrer
+              </button>
+            </div>
+          </div>
+        </form>
+        @if(editNode() ) {
+        <div class="row">
+          <div class="col s12">
+            <h3> Listes des taches</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s12">
+            <table mat-table [dataSource]="taches_dataSource" class="mat-elevation-z8">
+              <ng-container matColumnDef="nom">
+                <th mat-header-cell *matHeaderCellDef> Nom de la tâche</th>
+                <td mat-cell *matCellDef="let doc"> {{ doc.nom }} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef> Description </th>
+                <td mat-cell *matCellDef="let doc"> {{ doc.description }} </td>
+              </ng-container>
+               
+              <ng-container matColumnDef="statut">
+                <th mat-header-cell *matHeaderCellDef> Statut </th>
+                <td mat-cell *matCellDef="let doc"> {{ doc.statut }} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="dateDebut">
+                <th mat-header-cell *matHeaderCellDef> Date de début </th>
+                <td mat-cell *matCellDef="let doc"> {{ doc.dateDebut | date:'dd/MM/yyyy' }} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="dateFin">
+                <th mat-header-cell *matHeaderCellDef> Date de fin </th>
+                <td mat-cell *matCellDef="let doc"> {{ doc.dateFin | date:'dd/MM/yyyy' }} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="responsable">
+                <th mat-header-cell *matHeaderCellDef> Responsable </th>
+                <td mat-cell *matCellDef="let doc"> {{ doc.responsable|| 'Aucun' }} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="createdAt">
+                <th mat-header-cell *matHeaderCellDef> Date de création </th>
+                <td mat-cell *matCellDef="let doc"> {{ doc.createdAt | date:'dd/MM/yyyy hh:mm:ss' }} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="updatedAt">
+                <th mat-header-cell *matHeaderCellDef> Date de modification </th>
+                <td mat-cell *matCellDef="let doc"> {{ doc.updatedAt | date:'dd/MM/yyyy hh:mm:ss' }} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <td mat-cell *matCellDef="let doc">
+                  <button mat-icon-button color="primary">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="taches_displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: taches_displayedColumns;"></tr>
+            </table>
+          </div>
+        </div>
+        }
+
+      </div>
+      <div class="table-update__footer">
+        <button mat-flat-button color="warn" (click)="open_taches_doc.set(false)">
+          Fermer
+        </button>
+      </div>
+    </div>
+
+  </mat-drawer>
   <mat-drawer-content>
     <mat-stepper linear #stepper>
       <!-- Étape 1 : Formulaire principal -->
@@ -133,7 +276,7 @@
                   <mat-datepicker #pickerFin></mat-datepicker>
                 </mat-form-field>
               </div>
-              <div class="col s6 l12 m12">
+              <div class="col s4 l12 m12">
                 <mat-form-field appearance="outline" class="form-group">
                   <mat-label>Type</mat-label>
                   <mat-select formControlName="type">
@@ -144,7 +287,7 @@
                 </mat-form-field>
               </div>
 
-              <div class="col s6 l12 m12">
+              <div class="col s4 l12 m12">
                 <mat-form-field appearance="outline" class="form-group">
                   <mat-label>Statut</mat-label>
                   <mat-select formControlName="statut">
@@ -154,6 +297,14 @@
                   </mat-select>
                 </mat-form-field>
               </div>
+
+               <div class="col s4 l12 m12">
+                <mat-form-field appearance="outline" class="form-group">
+                  <mat-label>Code</mat-label>
+                  <input matInput formControlName="code" placeholder="Code"/>
+                </mat-form-field>
+              </div>
+
             </div>
             <div class="row">
               <div class="col s4 l12 m12">
@@ -185,7 +336,7 @@
                   <mat-label>Responsable</mat-label>
                   <mat-select formControlName="responsableId">
                     <mat-option value="">Aucun</mat-option>
-                    @for (r of responsables(); track r) {
+                    @for (r of responsables(); track r.id) {
                     <mat-option [value]="r.id">{{ r.name }}</mat-option>
                     }
                   </mat-select>
@@ -400,6 +551,11 @@
       <div class="col l12 s12 ">
         <a (click)="open_doc.set(true)" class="btn">
           liste des documents
+        </a>
+      </div>
+       <div class="col l12 s12 ">
+        <a (click)="open_taches_doc.set(true)" class="btn">
+          taches associées
         </a>
       </div>
     </div>

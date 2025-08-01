@@ -36,6 +36,7 @@ export class CreationProgrammeComponent {
   fileUrl = signal<string | null>(null);
   lastFilePath = signal<string | null>(null);
   open_doc = signal<boolean>(false);
+  open_taches_doc = signal<boolean>(false);
   doc = signal<any>({
     titre: '',
     file: null,
@@ -57,6 +58,7 @@ export class CreationProgrammeComponent {
     return this.donneesProgramme() != undefined ? this.donneesProgramme()?.phases.map(
       (phase: phases) => {
         let documents = phase.documents;
+        const taches: any = phase.taches ?? [];
         let modif_doc = documents.map((doc: any) => {
           return {
             ...doc,
@@ -66,7 +68,8 @@ export class CreationProgrammeComponent {
         })
         return {
           ...phase,
-          documents: modif_doc
+          documents: modif_doc,
+          taches: taches,
         }
 
       }
@@ -82,6 +85,15 @@ export class CreationProgrammeComponent {
     'download',
     'createdAt',
     'updatedAt',
+    'actions'
+  ];
+  taches_displayedColumns = [
+    'nom',
+    'description',
+    'dateDebut',
+    'dateFin',
+    'statut',
+    'responsable',
     'actions'
   ];
 
@@ -108,6 +120,10 @@ export class CreationProgrammeComponent {
     return new MatTableDataSource<any>()
   }
   );
+  donnees_taches = computed(() => {
+  })
+  taches_dataSource = new MatTableDataSource<any>([]);
+
   pays = my_countries;
   phasesForm: FormGroup;
   phaseForm: FormGroup;
@@ -115,6 +131,7 @@ export class CreationProgrammeComponent {
   depensesForm: FormGroup;
   noeud_racine: FormGroup;
   creation_docForm: FormGroup;
+  taches_form: FormGroup;
   isLoading = false;
   errorMessage = 'Veuillez remplir tous les champs obligatoires';
   successMessage = '';
@@ -162,11 +179,44 @@ export class CreationProgrammeComponent {
       titre: ['', Validators.required],
       file_name: ['', Validators.required],
     });
+    this.taches_form = this.fb.group({
+      nom: ['', Validators.required],
+      description: [''],
+      dateDebut: ['', Validators.required],
+      dateFin: ['', Validators.required],
+      statut: ['', Validators.required],
+      responsableId: ['', Validators.required],
+    });
 
     effect(() => {
       const phases = this.Phases() || [];
+
       this.dataSource.data = phases;
       this.treeControl.dataNodes = phases;
+
+      if (this.current_tab()) {
+        if (this.current_tab().taches && this.current_tab().taches.length > 0) {
+          this.taches_dataSource.data = this.current_tab().taches.map((tache: any) => {
+            let responsable = this.users().find(user => user.id === tache.responsableId);
+            if (responsable) {
+              return {
+                ...tache,
+                responsable: responsable.name
+              };
+            }
+            return {
+              ...tache,
+              responsable: 'Inconnu'
+            };
+          });
+        } else {
+          this.taches_dataSource.data = [];
+        }
+
+      } else {
+        this.taches_dataSource.data = [];
+      }
+
     });
   }
 
@@ -400,7 +450,6 @@ export class CreationProgrammeComponent {
 
   async onDelete() {
     await this.storageService.deleteFile('uploads/nom-du-fichier');
-    console.log('Fichier supprimé');
   }
   isLastStep(): boolean {
     return this.stepper && this.stepper.selectedIndex === this.stepper.steps.length - 1;
@@ -459,5 +508,6 @@ export class CreationProgrammeComponent {
       this.fileInput.nativeElement.value = '';
     }
   }
+  submit_taches() { }
 }
 
