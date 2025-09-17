@@ -52,6 +52,7 @@ export class CreationProgrammeComponent {
   //signals outputs
   save_event = output<any>();
   close_event = output();
+  edit_phase_event = output<any>();
 
   // computed signals
   Phases = computed(() => {
@@ -509,5 +510,30 @@ export class CreationProgrammeComponent {
     }
   }
   submit_taches() { }
+  edit_tache(doc: any) {
+    console.log("Edit tache", doc);
+    this.taches_form.patchValue({
+      nom: doc.nom,
+      description: doc.description,
+      dateDebut: this._utilitaires.convertDate(doc.dateDebut),
+      dateFin: this._utilitaires.convertDate(doc.dateFin),
+      responsableId: doc.responsableId,
+      statut: doc.statut
+    }); 
+  }
+  delete_tache(tache: any) {
+    if (confirm("Voulez-vous vraiment supprimer cette tâche ?")) {
+      const taches = this.current_tab().taches || [];
+      const index = taches.findIndex((t: any) => t.id === tache.id);
+      if (index > -1) {
+        taches.splice(index, 1);
+        this.current_tab.update(tab => ({
+          ...tab,
+          taches: [...taches]
+        }));
+        this.taches_dataSource.data = [...taches];
+      }
+    }
+  }
 }
 

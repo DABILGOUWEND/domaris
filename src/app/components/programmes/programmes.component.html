@@ -2,7 +2,10 @@
   <mat-drawer mode="over" position="end" [opened]="is_opened()" disableClose="true">
     <app-creation-programme [donneesProgramme]="selectedProgrammme()" [isUpdated]="is_updated()"
       [is_opened]="is_opened()" [programmeForm]="programme_formgroup" [phasesFormGroup]="phasesformgroup"
-      [users]="_users_store.users()" (close_event)="close_drawer()" (save_event)="save_data($event)" />
+      [users]="_users_store.users()" (close_event)="close_drawer()" (save_event)="save_data($event)"
+      (edit_phase_event)="edit_phase($event)" 
+
+       />
   </mat-drawer>
   <mat-drawer-content>
     <div class="titre" style="color: rgb(132, 157, 226);">

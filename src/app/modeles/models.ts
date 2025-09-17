@@ -727,8 +727,8 @@ export interface Programme {
   createdAt?: Date | any;
   updatedAt?: Date | any;
   phases: phases[];
-  budgets:budgets[];
-   // Liste des phases associées au programme
+  budgets: budgets[];
+  // Liste des phases associées au programme
 }
 
 export interface phases {
@@ -739,9 +739,9 @@ export interface phases {
   dateFin: string;
   statut: 'En attente' | 'En cours' | 'Terminé' | 'Suspendu';
   responsableId: string;
-  documents: documents[]|[]; // URLs des documents associés à la phase
-  children: phases[]|[],
-  taches: taches[]|[], // Liste des tâches associées à la phase 
+  documents: documents[] | []; // URLs des documents associés à la phase
+  children: phases[] | [],
+  taches: taches[] | [], // Liste des tâches associées à la phase 
 }
 
 export interface taches {
@@ -749,11 +749,11 @@ export interface taches {
   description: string;
   statut: 'En attente' | 'En cours' | 'Terminé' | 'Suspendu';
   responsableId: string;
-  documents: documents[]|[];
+  documents: documents[] | [];
   poids: number; // Poids de la tâche pour le calcul de l'avancement
   dateDebut: Date | any;
   dateFin: Date | any;
-  children: taches[]|[]; // Sous-tâches associées à la tâche
+  children: taches[] | []; // Sous-tâches associées à la tâche
 }
 
 export interface depenses {
@@ -809,8 +809,8 @@ export const intial_phases: phases[] = [
     "id": "phase-1",
     "nom": "Préparation / Définition du projet",
     "description": "Phase de cadrage, études préalables, montage foncier et financier",
-    "dateDebut": "2025-07-11",
-    "dateFin": "2025-09-11",
+    "dateDebut": "11-07-2025",
+    "dateFin": "11-09-2025",
     "statut": "En attente",
     "responsableId": "",
     "documents": [],
@@ -820,8 +820,8 @@ export const intial_phases: phases[] = [
         "id": "phase-1-1",
         "nom": "Identification du besoin",
         "description": "Analyse des attentes et définition des objectifs",
-        "dateDebut": "2025-07-11",
-        "dateFin": "2025-07-25",
+        "dateDebut": "11-07-2025",
+        "dateFin": "25-07-2025",
         "statut": "En attente",
         "responsableId": "",
         "documents": [],
@@ -833,22 +833,22 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Agenda de l'atelier", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Agenda de l'atelier",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
                 "date_validation": "2025-07-11T10:00:00.000Z",
                 "commentaire_validation": ""
               },
-              { 
-                "titre": "Compte-rendu atelier", 
-                "type": "docx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Compte-rendu atelier",
+                "type": "docx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -857,8 +857,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-07-11",
-            "dateFin": "2025-07-13",
+            "dateDebut": "11/07/2025",
+            "dateFin": "13/07/2025",
             "children": []
           },
           {
@@ -867,22 +867,22 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Note de cadrage", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Note de cadrage",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
                 "date_validation": "2025-07-11T10:00:00.000Z",
                 "commentaire_validation": ""
               },
-              { 
-                "titre": "Liste des participants", 
-                "type": "xlsx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Liste des participants",
+                "type": "xlsx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -891,8 +891,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-07-14",
-            "dateFin": "2025-07-18",
+            "dateDebut": "14/07/2025",
+            "dateFin": "18/07/2025",
             "children": []
           },
           {
@@ -901,22 +901,22 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "PV de validation des objectifs", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "PV de validation des objectifs",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
                 "date_validation": "2025-07-11T10:00:00.000Z",
                 "commentaire_validation": ""
               },
-              { 
-                "titre": "Fiche indicateurs", 
-                "type": "xlsx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Fiche indicateurs",
+                "type": "xlsx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -925,8 +925,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-07-19",
-            "dateFin": "2025-07-22",
+            "dateDebut": "19/07/2025",
+            "dateFin": "22/07/2025",
             "children": []
           },
           {
@@ -935,22 +935,22 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Registre des commentaires", 
-                "type": "xlsx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Registre des commentaires",
+                "type": "xlsx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
                 "date_validation": "2025-07-11T10:00:00.000Z",
                 "commentaire_validation": ""
               },
-              { 
-                "titre": "Version mise à jour de la Note de cadrage", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Version mise à jour de la Note de cadrage",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -959,8 +959,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-07-23",
-            "dateFin": "2025-07-25",
+            "dateDebut": "23/07/2025",
+            "dateFin": "25/07/2025",
             "children": []
           }
         ]
@@ -982,11 +982,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Certificat d'urbanisme", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Certificat d'urbanisme",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -995,8 +995,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-07-26",
-            "dateFin": "2025-08-01",
+            "dateDebut": "26/07/2025",
+            "dateFin": "01/08/2025",
             "children": []
           },
           {
@@ -1005,22 +1005,22 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Rapport topographique", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Rapport topographique",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
                 "date_validation": "2025-07-11T10:00:00.000Z",
                 "commentaire_validation": ""
               },
-              { 
-                "titre": "Plan de servitudes", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Plan de servitudes",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1029,8 +1029,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-08-02",
-            "dateFin": "2025-08-08",
+            "dateDebut": "02/08/2025",
+            "dateFin": "08/08/2025",
             "children": []
           },
           {
@@ -1039,22 +1039,22 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Compte-rendu de réunion", 
-                "type": "docx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Compte-rendu de réunion",
+                "type": "docx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
                 "date_validation": "2025-07-11T10:00:00.000Z",
                 "commentaire_validation": ""
               },
-              { 
-                "titre": "Plan de bornage", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Plan de bornage",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1063,8 +1063,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-08-09",
-            "dateFin": "2025-08-12",
+            "dateDebut": "09/08/2025",
+            "dateFin": "12/08/2025",
             "children": []
           },
           {
@@ -1073,11 +1073,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Rapport de faisabilité foncière", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Rapport de faisabilité foncière",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1086,8 +1086,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-08-13",
-            "dateFin": "2025-08-15",
+            "dateDebut": "13/08/2025",
+            "dateFin": "15/08/2025",
             "children": []
           }
         ]
@@ -1109,22 +1109,22 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Dossier d'appel d'offres G1", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Dossier d'appel d'offres G1",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
                 "date_validation": "2025-07-11T10:00:00.000Z",
                 "commentaire_validation": ""
               },
-              { 
-                "titre": "Liste des bureaux d'études contactés", 
-                "type": "xlsx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Liste des bureaux d'études contactés",
+                "type": "xlsx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1133,8 +1133,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-08-16",
-            "dateFin": "2025-08-22",
+            "dateDebut": "16/08/2025",
+            "dateFin": "22/08/2025",
             "children": []
           },
           {
@@ -1143,11 +1143,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Rapport étude thermique", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Rapport étude thermique",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1156,8 +1156,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-08-23",
-            "dateFin": "2025-08-29",
+            "dateDebut": "23/08/2025",
+            "dateFin": "29/08/2025",
             "children": []
           },
           {
@@ -1166,11 +1166,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Excel de pré-chiffrage", 
-                "type": "xlsx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Excel de pré-chiffrage",
+                "type": "xlsx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1179,8 +1179,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-08-30",
-            "dateFin": "2025-09-05",
+            "dateDebut": "30/08/2025",
+            "dateFin": "05/09/2025",
             "children": []
           },
           {
@@ -1189,22 +1189,22 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Synthèse PowerPoint", 
-                "type": "pptx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Synthèse PowerPoint",
+                "type": "pptx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
                 "date_validation": "2025-07-11T10:00:00.000Z",
                 "commentaire_validation": ""
               },
-              { 
-                "titre": "PV de comité", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "PV de comité",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1213,8 +1213,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-09-06",
-            "dateFin": "2025-09-11",
+            "dateDebut": "06/09/2025",
+            "dateFin": "11/09/2025",
             "children": []
           }
         ]
@@ -1249,11 +1249,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Bon de commande topographie", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Bon de commande topographie",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1262,8 +1262,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-09-12",
-            "dateFin": "2025-09-18",
+            "dateDebut": "12/09/2025",
+            "dateFin": "18/09/2025",
             "children": []
           },
           {
@@ -1272,11 +1272,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Planning G1", 
-                "type": "xlsx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Planning G1",
+                "type": "xlsx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1285,8 +1285,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-09-19",
-            "dateFin": "2025-09-30",
+            "dateDebut": "19/09/2025",
+            "dateFin": "30/09/2025",
             "children": []
           },
           {
@@ -1295,11 +1295,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Rapport environnemental", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Rapport environnemental",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1308,8 +1308,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-10-01",
-            "dateFin": "2025-10-08",
+            "dateDebut": "01/10/2025",
+            "dateFin": "08/10/2025",
             "children": []
           },
           {
@@ -1318,11 +1318,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Dossier Études préliminaires", 
-                "type": "zip", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Dossier Études préliminaires",
+                "type": "zip",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1331,8 +1331,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-10-09",
-            "dateFin": "2025-10-12",
+            "dateDebut": "09/10/2025",
+            "dateFin": "12/10/2025",
             "children": []
           }
         ]
@@ -1354,11 +1354,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Cahier des charges APS", 
-                "type": "docx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Cahier des charges APS",
+                "type": "docx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1367,8 +1367,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-10-13",
-            "dateFin": "2025-10-20",
+            "dateDebut": "13/10/2025",
+            "dateFin": "20/10/2025",
             "children": []
           },
           {
@@ -1377,11 +1377,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Plans APS", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Plans APS",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1400,11 +1400,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "PV validation implantation", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "PV validation implantation",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1423,11 +1423,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Version finale plans APS", 
-                "type": "dwg", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Version finale plans APS",
+                "type": "dwg",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1459,11 +1459,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Plans APD", 
-                "type": "dwg", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Plans APD",
+                "type": "dwg",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1472,8 +1472,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-11-13",
-            "dateFin": "2025-11-25",
+            "dateDebut": "13/11/2025",
+            "dateFin": "25/11/2025",
             "children": []
           },
           {
@@ -1482,22 +1482,22 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Fiche conformité incendie", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Fiche conformité incendie",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
                 "date_validation": "2025-07-11T10:00:00.000Z",
                 "commentaire_validation": ""
               },
-              { 
-                "titre": "Fiche accessibilité", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Fiche accessibilité",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1506,8 +1506,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-11-26",
-            "dateFin": "2025-12-02",
+            "dateDebut": "26/11/2025",
+            "dateFin": "02/12/2025",
             "children": []
           },
           {
@@ -1516,11 +1516,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "DPGF détaillé", 
-                "type": "xlsx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "DPGF détaillé",
+                "type": "xlsx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1529,8 +1529,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-12-03",
-            "dateFin": "2025-12-08",
+            "dateDebut": "03/12/2025",
+            "dateFin": "08/12/2025",
             "children": []
           },
           {
@@ -1539,22 +1539,22 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Ordre du jour revue APD", 
-                "type": "docx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Ordre du jour revue APD",
+                "type": "docx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
                 "date_validation": "2025-07-11T10:00:00.000Z",
                 "commentaire_validation": ""
               },
-              { 
-                "titre": "PV de revue APD", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "PV de revue APD",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1563,8 +1563,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-12-09",
-            "dateFin": "2025-12-12",
+            "dateDebut": "09/12/2025",
+            "dateFin": "12/12/2025",
             "children": []
           }
         ]
@@ -1599,22 +1599,22 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "CCTP Lot gros-œuvre", 
-                "type": "docx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "CCTP Lot gros-œuvre",
+                "type": "docx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
                 "date_validation": "2025-07-11T10:00:00.000Z",
                 "commentaire_validation": ""
               },
-              { 
-                "titre": "CCTP Lot second-œuvre", 
-                "type": "docx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "CCTP Lot second-œuvre",
+                "type": "docx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1623,8 +1623,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-12-13",
-            "dateFin": "2025-12-27",
+            "dateDebut": "13/12/2025",
+            "dateFin": "27/12/2025",
             "children": []
           },
           {
@@ -1633,11 +1633,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Bordereau DPGF", 
-                "type": "xlsx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Bordereau DPGF",
+                "type": "xlsx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1646,8 +1646,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2025-12-28",
-            "dateFin": "2026-01-05",
+            "dateDebut": "28/12/2025",
+            "dateFin": "05/01/2026",
             "children": []
           },
           {
@@ -1656,11 +1656,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Règlement de consultation", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Règlement de consultation",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1669,8 +1669,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-01-06",
-            "dateFin": "2026-01-10",
+            "dateDebut": "06/01/2026",
+            "dateFin": "10/01/2026",
             "children": []
           },
           {
@@ -1679,11 +1679,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "DCE complet", 
-                "type": "zip", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "DCE complet",
+                "type": "zip",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1692,8 +1692,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-01-11",
-            "dateFin": "2026-01-13",
+            "dateDebut": "11/01/2026",
+            "dateFin": "13/01/2026",
             "children": []
           }
         ]
@@ -1715,11 +1715,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "PV d'ouverture des plis", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "PV d'ouverture des plis",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1728,8 +1728,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-01-14",
-            "dateFin": "2026-01-20",
+            "dateDebut": "14/01/2026",
+            "dateFin": "20/01/2026",
             "children": []
           },
           {
@@ -1738,11 +1738,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Tableau comparatif des offres", 
-                "type": "xlsx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Tableau comparatif des offres",
+                "type": "xlsx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1751,8 +1751,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-01-21",
-            "dateFin": "2026-01-31",
+            "dateDebut": "21/01/2026",
+            "dateFin": "31/01/2026",
             "children": []
           },
           {
@@ -1761,22 +1761,22 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Invitations à audition", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Invitations à audition",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
                 "date_validation": "2025-07-11T10:00:00.000Z",
                 "commentaire_validation": ""
               },
-              { 
-                "titre": "Compte-rendu négociation", 
-                "type": "docx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Compte-rendu négociation",
+                "type": "docx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1785,8 +1785,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-02-01",
-            "dateFin": "2026-02-08",
+            "dateDebut": "01/02/2026",
+            "dateFin": "08/02/2026",
             "children": []
           },
           {
@@ -1795,11 +1795,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Rapport final analyse offres", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Rapport final analyse offres",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1808,8 +1808,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-02-09",
-            "dateFin": "2026-02-13",
+            "dateDebut": "09/02/2026",
+            "dateFin": "13/02/2026",
             "children": []
           }
         ]
@@ -1831,11 +1831,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Lettre type d'attribution", 
-                "type": "docx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Lettre type d'attribution",
+                "type": "docx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1844,8 +1844,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-02-14",
-            "dateFin": "2026-02-21",
+            "dateDebut": "14/02/2026",
+            "dateFin": "21/02/2026",
             "children": []
           },
           {
@@ -1854,22 +1854,22 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Contrats signés", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Contrats signés",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
                 "date_validation": "2025-07-11T10:00:00.000Z",
                 "commentaire_validation": ""
               },
-              { 
-                "titre": "Suivi marchés", 
-                "type": "xlsx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Suivi marchés",
+                "type": "xlsx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1878,8 +1878,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-02-22",
-            "dateFin": "2026-03-06",
+            "dateDebut": "22/02/2026",
+            "dateFin": "06/03/2026",
             "children": []
           },
           {
@@ -1888,11 +1888,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Notifications envoyées", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Notifications envoyées",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1901,15 +1901,15 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-03-07",
-            "dateFin": "2026-03-13",
+            "dateDebut": "07/03/2026",
+            "dateFin": "13/03/2026",
             "children": []
           }
         ]
       }
     ]
   },
-   {
+  {
     "id": "phase-4",
     "nom": "Exécution des travaux",
     "description": "Réalisation de l'ouvrage selon les plans",
@@ -1937,11 +1937,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Plan PTW", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Plan PTW",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1950,8 +1950,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-03-14",
-            "dateFin": "2026-03-21",
+            "dateDebut": "14/03/2026",
+            "dateFin": "21/03/2026",
             "children": []
           },
           {
@@ -1960,11 +1960,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Bon de livraison", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Bon de livraison",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1973,8 +1973,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-03-22",
-            "dateFin": "2026-03-31",
+            "dateDebut": "22/03/2026",
+            "dateFin": "31/03/2026",
             "children": []
           },
           {
@@ -1983,11 +1983,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Plan sécurité chantier", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Plan sécurité chantier",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -1996,8 +1996,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-04-01",
-            "dateFin": "2026-04-08",
+            "dateDebut": "01/04/2026",
+            "dateFin": "08/04/2026",
             "children": []
           },
           {
@@ -2006,11 +2006,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "PV de réception provisoire", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "PV de réception provisoire",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -2019,8 +2019,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-04-09",
-            "dateFin": "2026-04-14",
+            "dateDebut": "09/04/2026",
+            "dateFin": "14/04/2026",
             "children": []
           }
         ]
@@ -2042,11 +2042,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Bons de commande matériaux", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Bons de commande matériaux",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -2055,8 +2055,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-04-15",
-            "dateFin": "2026-04-22",
+            "dateDebut": "15/04/2026",
+            "dateFin": "22/04/2026",
             "children": []
           },
           {
@@ -2065,11 +2065,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Planning coulage", 
-                "type": "xlsx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Planning coulage",
+                "type": "xlsx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -2078,8 +2078,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-04-23",
-            "dateFin": "2026-05-15",
+            "dateDebut": "23/04/2026",
+            "dateFin": "15/05/2026",
             "children": []
           },
           {
@@ -2088,11 +2088,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Rapports hebdos d'avancement", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Rapports hebdos d'avancement",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -2101,8 +2101,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-05-16",
-            "dateFin": "2026-06-08",
+            "dateDebut": "16/05/2026",
+            "dateFin": "08/06/2026",
             "children": []
           },
           {
@@ -2111,11 +2111,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Journal de chantier", 
-                "type": "xlsx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Journal de chantier",
+                "type": "xlsx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -2124,8 +2124,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-06-09",
-            "dateFin": "2026-06-15",
+            "dateDebut": "09/06/2026",
+            "dateFin": "15/06/2026",
             "children": []
           }
         ]
@@ -2147,11 +2147,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Planning second-œuvre", 
-                "type": "xlsx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Planning second-œuvre",
+                "type": "xlsx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -2160,8 +2160,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-06-16",
-            "dateFin": "2026-07-15",
+            "dateDebut": "16/06/2026",
+            "dateFin": "15/07/2026",
             "children": []
           },
           {
@@ -2170,11 +2170,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "PV de contrôle menuiseries", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "PV de contrôle menuiseries",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -2183,8 +2183,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-07-16",
-            "dateFin": "2026-08-15",
+            "dateDebut": "16/07/2026",
+            "dateFin": "15/08/2026",
             "children": []
           },
           {
@@ -2193,11 +2193,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Fiches contrôle", 
-                "type": "xlsx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Fiches contrôle",
+                "type": "xlsx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -2206,8 +2206,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-08-16",
-            "dateFin": "2026-09-05",
+            "dateDebut": "16/08/2026",
+            "dateFin": "05/09/2026",
             "children": []
           },
           {
@@ -2216,11 +2216,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "États de décompte", 
-                "type": "xlsx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "États de décompte",
+                "type": "xlsx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -2229,15 +2229,15 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-09-06",
-            "dateFin": "2026-09-14",
+            "dateDebut": "06/09/2026",
+            "dateFin": "14/09/2026",
             "children": []
           }
         ]
       }
     ]
   },
-    {
+  {
     "id": "phase-5",
     "nom": "Réception",
     "description": "Phase de réception des travaux et mise en service",
@@ -2265,11 +2265,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Rapport d'achèvement des travaux", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Rapport d'achèvement des travaux",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -2278,8 +2278,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-09-15",
-            "dateFin": "2026-09-22",
+            "dateDebut": "15/09/2026",
+            "dateFin": "22/09/2026",
             "children": []
           },
           {
@@ -2288,22 +2288,22 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Arrêté de nomination commission", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Arrêté de nomination commission",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
                 "date_validation": null,
                 "commentaire_validation": ""
               },
-              { 
-                "titre": "Planning des visites de réception", 
-                "type": "xlsx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Planning des visites de réception",
+                "type": "xlsx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -2312,8 +2312,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-09-23",
-            "dateFin": "2026-09-30",
+            "dateDebut": "23/09/2026",
+            "dateFin": "30/09/2026",
             "children": []
           },
           {
@@ -2322,22 +2322,22 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Dossier de réception complet", 
-                "type": "zip", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Dossier de réception complet",
+                "type": "zip",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
                 "date_validation": null,
                 "commentaire_validation": ""
               },
-              { 
-                "titre": "Check-list de réception", 
-                "type": "xlsx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Check-list de réception",
+                "type": "xlsx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -2346,8 +2346,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-10-01",
-            "dateFin": "2026-10-08",
+            "dateDebut": "01/10/2026",
+            "dateFin": "08/10/2026",
             "children": []
           },
           {
@@ -2356,11 +2356,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Convocations commission", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Convocations commission",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -2369,8 +2369,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-10-09",
-            "dateFin": "2026-10-15",
+            "dateDebut": "09/10/2026",
+            "dateFin": "15/10/2026",
             "children": []
           }
         ]
@@ -2392,22 +2392,22 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Feuille d'émargement visite", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Feuille d'émargement visite",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
                 "date_validation": null,
                 "commentaire_validation": ""
               },
-              { 
-                "titre": "Photos de visite", 
-                "type": "zip", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Photos de visite",
+                "type": "zip",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -2416,8 +2416,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-10-16",
-            "dateFin": "2026-10-23",
+            "dateDebut": "16/10/2026",
+            "dateFin": "23/10/2026",
             "children": []
           },
           {
@@ -2426,22 +2426,22 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Liste des réserves", 
-                "type": "xlsx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Liste des réserves",
+                "type": "xlsx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
                 "date_validation": null,
                 "commentaire_validation": ""
               },
-              { 
-                "titre": "Photos des défauts", 
-                "type": "zip", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Photos des défauts",
+                "type": "zip",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -2450,8 +2450,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-10-24",
-            "dateFin": "2026-10-31",
+            "dateDebut": "24/10/2026",
+            "dateFin": "31/10/2026",
             "children": []
           },
           {
@@ -2460,11 +2460,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "PV de réception provisoire", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "PV de réception provisoire",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -2473,8 +2473,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-11-01",
-            "dateFin": "2026-11-08",
+            "dateDebut": "01/11/2026",
+            "dateFin": "08/11/2026",
             "children": []
           },
           {
@@ -2483,11 +2483,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Lettres de notification", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Lettres de notification",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -2496,8 +2496,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-11-09",
-            "dateFin": "2026-11-15",
+            "dateDebut": "09/11/2026",
+            "dateFin": "15/11/2026",
             "children": []
           }
         ]
@@ -2519,11 +2519,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Planning de levée des réserves", 
-                "type": "xlsx", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Planning de levée des réserves",
+                "type": "xlsx",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -2532,8 +2532,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-11-16",
-            "dateFin": "2026-11-23",
+            "dateDebut": "16/11/2026",
+            "dateFin": "23/11/2026",
             "children": []
           },
           {
@@ -2542,11 +2542,11 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "Rapports de suivi reprises", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Rapports de suivi reprises",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -2555,8 +2555,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-11-24",
-            "dateFin": "2026-12-08",
+            "dateDebut": "24/11/2026",
+            "dateFin": "08/12/2026",
             "children": []
           },
           {
@@ -2565,22 +2565,22 @@ export const intial_phases: phases[] = [
             "statut": "En attente",
             "responsableId": "",
             "documents": [
-              { 
-                "titre": "PV de levée des réserves", 
-                "type": "pdf", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "PV de levée des réserves",
+                "type": "pdf",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
                 "date_validation": null,
                 "commentaire_validation": ""
               },
-              { 
-                "titre": "Photos après reprises", 
-                "type": "zip", 
-                "url": "", 
-                "createdAt": "2025-07-11T10:00:00.000Z", 
+              {
+                "titre": "Photos après reprises",
+                "type": "zip",
+                "url": "",
+                "createdAt": "2025-07-11T10:00:00.000Z",
                 "updatedAt": "2025-07-11T10:00:00.000Z",
                 "etat_validation": "En attente",
                 "validateur_id": "",
@@ -2589,8 +2589,8 @@ export const intial_phases: phases[] = [
               }
             ],
             "poids": 1,
-            "dateDebut": "2026-12-09",
-            "dateFin": "2026-12-15",
+            "dateDebut": "09/12/2026",
+            "dateFin": "15/12/2026",
             "children": []
           }
         ]

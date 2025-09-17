@@ -110,4 +110,7 @@ export class ProgrammesComponent {
     let mydata = { ...this.selectedProgrammme(), phases: data }
     this._programme_store.updateProgramme(mydata)
   }
+  edit_phase( data: any) {
+    console.log(data);
+  }
 }
