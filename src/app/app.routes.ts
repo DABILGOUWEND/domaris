@@ -21,12 +21,13 @@ import { ProgrammesComponent } from './components/programmes/programmes.componen
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FinancesComponent } from './components/finances/finances.component';
 import { OperationsComponent } from './components/operations/operations.component';
+import { TestWebhookComponent } from './components/test-webhook/test-webhook.component';
 
 
 export const routes: Routes = [
 
   {
-    path: "", redirectTo: "/accueil", pathMatch: "full"
+    path: "", redirectTo: "/webhook", pathMatch: "full"
   },
   {
     path: "layout", component: LayoutComponent,
@@ -101,6 +102,10 @@ export const routes: Routes = [
 ,{
   path:'test',
   component:TestComponent
+}
+,{
+  path:'webhook',
+  component:TestWebhookComponent
 }
 ]
 

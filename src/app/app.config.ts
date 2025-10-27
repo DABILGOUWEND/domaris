@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideZoneChangeDetection  ,DEFAULT_CURRENCY_CODE, LOCALE_ID} from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection, DEFAULT_CURRENCY_CODE, LOCALE_ID } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import localeFr from '@angular/common/locales/fr';
 registerLocaleData(localeFr);
@@ -23,20 +23,25 @@ export const appConfig: ApplicationConfig = {
       useValue: ''
     },
     provideZoneChangeDetection({ eventCoalescing: true }),
-  provideRouter(routes), provideFirebaseApp(() =>
-    initializeApp({
-      projectId: "mon-projet-35c49",
-      appId: "1:126234609649:web:b81a517b7cc9223ebe2650",
-      databaseURL: "https://mon-projet-35c49-default-rtdb.firebaseio.com",
-      storageBucket: "mon-projet-35c49.firebasestorage.app",
-      apiKey: "AIzaSyARqtsXKUOhLbUmClNevu77-pSuWnixhy8",
-      authDomain: "mon-projet-35c49.firebaseapp.com",
-      messagingSenderId: "126234609649"
-    })),
-  provideAuth(() => getAuth()),
-  provideFirestore(() => getFirestore()),
-  provideFunctions(() => getFunctions()),
-  provideStorage(() => getStorage()),
-   provideHttpClient(), provideFirebaseApp(() => initializeApp({ projectId: "mon-projet-35c49", appId: "1:126234609649:web:b81a517b7cc9223ebe2650", databaseURL: "https://mon-projet-35c49-default-rtdb.firebaseio.com", storageBucket: "mon-projet-35c49.firebasestorage.app", apiKey: "AIzaSyARqtsXKUOhLbUmClNevu77-pSuWnixhy8", authDomain: "mon-projet-35c49.firebaseapp.com", messagingSenderId: "126234609649" })), provideAuth(() => getAuth()), provideFirestore(() => getFirestore()), provideDatabase(() => getDatabase()), provideStorage(() => getStorage()) // <-- AJOUTE CETTE LIGNE
-]
+    provideRouter(routes),
+    provideFirebaseApp(() =>
+      initializeApp({
+        projectId: "mon-projet-35c49",
+        appId: "1:126234609649:web:b81a517b7cc9223ebe2650",
+        databaseURL: "https://mon-projet-35c49-default-rtdb.firebaseio.com",
+        storageBucket: "mon-projet-35c49.firebasestorage.app",
+        apiKey: "AIzaSyARqtsXKUOhLbUmClNevu77-pSuWnixhy8",
+        authDomain: "mon-projet-35c49.firebaseapp.com",
+        messagingSenderId: "126234609649"
+      })),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+    provideFunctions(() => getFunctions()),
+    provideStorage(() => getStorage()),
+    provideHttpClient(),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+    provideDatabase(() => getDatabase()),
+    provideStorage(() => getStorage()) // <-- AJOUTE CETTE LIGNE
+  ]
 };
