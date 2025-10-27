@@ -218,7 +218,7 @@ export class CreationProgrammeComponent {
         this.taches_dataSource.data = [];
       }
 
-    });
+    }); 
   }
 
   hasChild = (_: number, node: any) => !!node.children && node.children.length > 0;
