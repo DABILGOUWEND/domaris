@@ -553,5 +553,8 @@ export class TaskService {
     const promise = deleteDoc(docRef);
     return from(promise);
   }
+  test_webbook():Observable<any>{
+    return this._http.get('https://n8n.srv1059014.hstgr.cloud/webhook-test/e2437d7e-e782-4e40-a18c-271c640e8cd3/:Nom/:Prenom')
+  }
 
 }
