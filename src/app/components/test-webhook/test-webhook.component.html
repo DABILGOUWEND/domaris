@@ -1,0 +1,105 @@
+<div class="register-container">
+    <h2>TEST</h2>
+    <form [formGroup]="my_form" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="col s6 l12 m12">
+                <mat-form-field appearance="outline" class="form-group" floatLabel="always">
+                    <mat-label>Surface terrain (m2)</mat-label>
+                    <input matInput formControlName="surface_terrain" placeholder="surface du terrain" />
+                </mat-form-field>
+            </div>
+            <div class="col s6 l12 m12">
+                <mat-form-field appearance="outline" class="form-group" floatLabel="always">
+                    <mat-label>Surface bâtie (m2)</mat-label>
+                    <input matInput formControlName="surface_batis" placeholder="surface du bâti" />
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s4 l12 m12">
+                <mat-form-field appearance="outline" class="form-group" floatLabel="always">
+                    <mat-label>Nombre F2</mat-label>
+                    <input matInput formControlName="nombre_F2" placeholder="nombre de F2" />
+                </mat-form-field>
+            </div>
+            <div class="col s4 l12 m12">
+                <mat-form-field appearance="outline" class="form-group" floatLabel="always">
+                    <mat-label>Nombre F3</mat-label>
+                    <input matInput formControlName="nombre_F3" placeholder="nombre de F3" />
+                </mat-form-field>
+            </div>
+            <div class="col s4 l12 m12">
+                <mat-form-field appearance="outline" class="form-group" floatLabel="always">
+                    <mat-label>Nombre F3+</mat-label>
+                    <input matInput formControlName="nombre_F3plus" placeholder="nombre de F3+" />
+                </mat-form-field>
+            </div>
+
+            <div class="col s4 l12 m12">
+                <mat-form-field appearance="outline" class="form-group" floatLabel="always">
+                    <mat-label>Nombre F4</mat-label>
+                    <input matInput formControlName="nombre_F4" placeholder="nombre de F4" />
+                </mat-form-field>
+            </div>
+            <div class="col s4 l12 m12">
+                <mat-form-field appearance="outline" class="form-group" floatLabel="always">
+                    <mat-label>Nombre F4+</mat-label>
+                    <input matInput formControlName="nombre_F4plus" placeholder="nombre de F4+" />
+                </mat-form-field>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s6 l12 m12">
+                <mat-form-field appearance="outline" class="form-group" floatLabel="always">
+                    <mat-label>Superfide F2 (m2)</mat-label>
+                    <input matInput formControlName="superficie_F2" placeholder="Superfide d'une F2" />
+                </mat-form-field>
+            </div>
+            <div class="col s6 l12 m12">
+                <mat-form-field appearance="outline" class="form-group" floatLabel="always">
+                    <mat-label>Superfide F3 (m2)</mat-label>
+                    <input matInput formControlName="superficie_F3" placeholder="Superfide d'une F3" />
+                </mat-form-field>
+            </div>
+            <div class="col s6 l12 m12">
+                <mat-form-field appearance="outline" class="form-group" floatLabel="always">
+                    <mat-label>Superfide F3+ (m2)</mat-label>
+                    <input matInput formControlName="superficie_F3plus" placeholder="Superfide d'une F3+" />
+                </mat-form-field>
+            </div>
+            <div class="col s6 l12 m12">
+                <mat-form-field appearance="outline" class="form-group" floatLabel="always">
+                    <mat-label>Superfide F4 (m2)</mat-label>
+                    <input matInput formControlName="superficie_F4" placeholder="Superfide d'une F4" />
+                </mat-form-field>
+            </div>
+            <div class="col s6 l12 m12">
+                <mat-form-field appearance="outline" class="form-group" floatLabel="always">
+                    <mat-label>Superfide F4+ (m2)</mat-label>
+                    <input matInput formControlName="superficie_F4plus" placeholder="Superfide d'une F4+" />
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 l12 m12">
+                <button mat-raised-button color="primary" type="submit" [disabled]="my_form.invalid">
+                    {{http_ressources.isLoading()?"Reload":"Envoyer"}}
+                </button>
+            </div>
+        </div>
+
+    </form>
+    @if(http_ressources.isLoading())
+    {
+        <mat-progress-bar mode="query"/>
+    }
+
+    <div>
+
+        @for(item of http_ressources.value(); track item.output  )
+        {
+        {{ item.output }}
+        }
+    </div>
+</div>
