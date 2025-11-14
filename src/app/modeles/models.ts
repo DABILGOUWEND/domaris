@@ -434,6 +434,21 @@ export interface tab_chat_userStore {
   message: string
 
 }
+export interface chat_text{
+  messages:string,
+  userId:string,
+  date:Date
+}
+export  interface chat_messages{ 
+  id:string,
+  senderId:string,
+  receiverId:string,
+  message_text:chat_text[]
+}
+export  interface chat_messagesStore{ 
+  chats_data:chat_messages[],
+  message: string
+}
 export interface Statuts {
   id: string,
   designation: string
