@@ -56,6 +56,27 @@ export class AuthService {
         })
     }))
   }
+  loginChat(email: string, password: string): Observable<any> {
+    return from(this._auth.setPersistence(browserLocalPersistence).then(() => {
+      signInWithEmailAndPassword(this._auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          this.handleCreateChatUser(user).subscribe({
+            next: () => {
+              this.userLoggedIn.set(true);
+
+              this.affichage.set(user.email);
+              this.router.navigate(['/chats']);
+            }
+
+          });
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+        })
+    }))
+  }
   getUserLoggedIn(): Observable<boolean> {
     return of(this.userLoggedIn());
   }
@@ -179,8 +200,6 @@ deleteChatUserFromAuth(uid: string): Observable<any> {
       tap(
         (resp: any) => {
           let data = resp.data();
-
-          console.log('user data', data);
           this.userSignal.update(
             (user: any) =>
             (
@@ -203,8 +222,41 @@ deleteChatUserFromAuth(uid: string): Observable<any> {
     )
 
   }
+  handleCreateChatUser(users: any): Observable<any> {
+    let new_user: any = {
+      uid: users.uid,
+      email: users.email,
+      token: this.token(),
+      username: ''
+    }
+    return this.getallChatUsersByUid(users.uid).pipe(
+      tap(
+        (resp: any) => {
+          let data = resp.data();
+          this.userSignal.update(
+            (user: any) =>
+            (
+              {
+                'uid': new_user.uid,
+                'email': new_user.email,
+                'token': this.token(),
+                'username': data.nom + ' ' + data.prenom
+              }
+            )
+          )
+          localStorage.setItem('user', JSON.stringify(this.userSignal()));
+        }
+      )
+    )
+
+  }
   getallUsersByUid(uid: string): Observable<any> {
     const docRef = doc(this.db, "domaris_users", uid);
+    const docSnap = getDoc(docRef);
+    return from(docSnap)
+  }
+  getallChatUsersByUid(uid: string): Observable<any> {
+    const docRef = doc(this.db, "chat_users", uid);
     const docSnap = getDoc(docRef);
     return from(docSnap)
   }

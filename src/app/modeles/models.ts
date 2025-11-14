@@ -423,7 +423,7 @@ export interface tab_userStore {
 }
 
 export interface chat_users {
-  id: string,
+  uid: string,
   nom: string,
   prenom: string,
   email: string,
@@ -431,6 +431,8 @@ export interface chat_users {
 }
 export interface tab_chat_userStore {
   users_data: chat_users[],
+  chats_messages:chat_messages[],
+  selectedUid:string,
   message: string
 
 }
@@ -443,7 +445,7 @@ export  interface chat_messages{
   id:string,
   senderId:string,
   receiverId:string,
-  message_text:chat_text[]
+  messages:chat_text[]
 }
 export  interface chat_messagesStore{ 
   chats_data:chat_messages[],

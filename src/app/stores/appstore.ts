@@ -32,7 +32,8 @@ import {
   Constats, ModelAttachement, ModelDecompte, pointage_travaux, datesPointages,
   sous_traitant, tab_categories, tab_familles, fournisseurs, tab_ressources, tab_programmeStore,
   Entreprise,
-  tab_chat_userStore
+  tab_chat_userStore,
+  chat_messagesStore
 } from "../modeles/models";
 import { TaskService } from "../services/task.service";
 import { ProgrammesService } from "../services/programmes.service";
@@ -204,6 +205,13 @@ const initialUserState: tab_userStore =
 const initialChatUserState: tab_chat_userStore =
 {
   users_data: [],
+  chats_messages:[],
+  selectedUid: '',
+  message: ''
+}
+const initialChatMessagesState:chat_messagesStore  =
+{
+  chats_data: [],
   message: ''
 }
 const initialStatutState: tab_satatutStore =
@@ -454,6 +462,13 @@ export const ChatUserStore = signalStore(
       taille: computed(() => store.users_data().length),
       users: computed(() => {
         return store.users_data()
+      }),
+      my_chats:computed(()=>{
+        let userId=store.selectedUid();
+        console.log(userId)
+        return    store.chats_messages().filter(x=>{
+          return x.receiverId==userId || x.senderId==userId
+        })
       })
     }
   )
@@ -461,6 +476,96 @@ export const ChatUserStore = signalStore(
   withMethods((store, _auth_service = inject(AuthService), _task_service = inject(TaskService), snackbar = inject(MatSnackBar), _auth = inject(Auth)) =>
   (
     {
+            loadUsers: rxMethod<void>(pipe(switchMap(() => {
+        return _task_service.getallModels("chat_users").pipe(
+          tap((data) => {
+            patchState(store, { users_data: data })
+          })
+        )
+      }
+      ))),
+      loadChats: rxMethod<void>(pipe(switchMap(() => {
+        return _task_service.getallModels("chat_messages").pipe(
+          tap((data) => {
+            patchState(store, {chats_messages: data,selectedUid:_auth_service.userSignal().uid })
+          })
+        )
+      }
+      ))),
+      addUser: rxMethod<any>(pipe(
+        switchMap((user) => {
+          return _auth_service.register_chat_Users(
+            user.email,
+            user.mot_de_passe,
+            user.role,
+            user.nom,
+            user.prenom
+          ).pipe(
+            tap({
+              next: () => {
+                Showsnackerbaralert('ajouté avec succes', 'pass', snackbar)
+              },
+              error: () => {
+                patchState(store, { message: 'echoué' });
+                Showsnackerbaralert('échoué', 'fail', snackbar)
+              }
+            })
+          );
+        })
+      )),
+      removeUser: rxMethod<string>(pipe(
+        switchMap((id) => {
+          return _auth_service.deleteUser(id)
+        }),
+        tap({
+          next: () => {
+            Showsnackerbaralert('élément supprimé', 'pass', snackbar)
+          },
+          error: () => {
+            patchState(store, { message: 'echoué' });
+            Showsnackerbaralert('échoué', 'fail', snackbar)
+          }
+        })
+      )),
+      updateUser: rxMethod<any>(pipe(
+        switchMap((user) => {
+          return _task_service.updateModel("chat_users", user).pipe(
+            tap({
+              next: () => {
+                Showsnackerbaralert('modifié avec succes', 'pass', snackbar)
+              },
+              error: () => {
+                patchState(store, { message: 'echoué' });
+                Showsnackerbaralert('échoué', 'fail', snackbar)
+              }
+            }
+            )
+          )
+        }),
+        
+      )),
+
+    }
+  ))
+)
+export const ChatMessagesStore = signalStore(
+  { providedIn: 'root' },
+  withState(initialChatUserState),
+  withComputed((store) => (
+    {
+      taille: computed(() => store.users_data().length),
+      users: computed(() => {
+        return store.users_data()
+      })
+    }
+  )
+  ),
+  withMethods((store, _auth_service = inject(AuthService), _task_service = inject(TaskService), snackbar = inject(MatSnackBar), _auth = inject(Auth)) =>
+  (
+    {
+      setSelectedId(id: string) {
+        patchState(store, { selectedUid: id });
+      },
             loadUsers: rxMethod<void>(pipe(switchMap(() => {
         return _task_service.getallModels("chat_users").pipe(
           tap((data) => {

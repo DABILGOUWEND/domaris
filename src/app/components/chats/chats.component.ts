@@ -2,6 +2,7 @@ import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { ImportedModule } from '../../shared/modules/imported/imported.module';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ChatUserStore } from '../../stores/appstore';
+import { AuthService } from '../../auth/services/auth.service';
 
 @Component({
   selector: 'app-chats',
@@ -13,6 +14,7 @@ export class ChatsComponent implements OnInit{
   myForm:FormGroup;
   searchControl=new  FormControl('');
   chatUsersStore =inject(ChatUserStore);
+  auth=inject(AuthService)
   users$ = computed(() => {
     return this.chatUsersStore.users_data()
   })
@@ -23,13 +25,12 @@ export class ChatsComponent implements OnInit{
     this.myForm = this._fb.group({
       message: ['', Validators.required]
     });
-    effect(() => {
-      const users = this.chatUsersStore.users_data();
-      console.log('Chat users updated:', users);
-    });
+    effect(()=>
+      console.log(this.chatUsersStore.my_chats()))
   }
   ngOnInit(): void {
     this.chatUsersStore.loadUsers();
+    this.chatUsersStore.loadChats();
   }
   submitMessage() {
     if (this.myForm.valid) {
