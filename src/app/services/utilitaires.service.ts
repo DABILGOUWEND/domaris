@@ -51,12 +51,4 @@ export class UtilitairesService {
     return this._http.post<any>('https://n8n.srv1059014.hstgr.cloud/webhook/essais',
       body ,{ headers})
   }
-<<<<<<< HEAD
-  
-  // Shuffle the password
-  return password.split('').sort(() => Math.random() - 0.5).join('');
-}
-
-=======
->>>>>>> caa2ac8e62122c535f1d901b2de916debd99f428
 }

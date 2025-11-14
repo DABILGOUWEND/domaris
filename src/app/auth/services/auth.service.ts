@@ -45,7 +45,7 @@ export class AuthService {
               this.userLoggedIn.set(true);
 
               this.affichage.set(user.email);
-              this.router.navigate(['/accueil']);
+              this.router.navigate(['/chats']);
             }
 
           });
@@ -105,6 +105,31 @@ export class AuthService {
       return this.addUser(data);
     }))
   };
+  register_chat_Users(email: string,
+    password: string,
+    role: string,
+    nom: string,
+    prenom: string): Observable<any> {
+    return this._http.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + apiKey,
+      {
+        email: email,
+        password: password
+      }
+    ).pipe(map((resp: any) => {
+      let userId = resp.localId;
+      let data = {
+        id: userId,
+        email: resp.email,
+        nom: nom,
+        prenom: prenom,
+        mot_de_passe: password,
+        role: role
+      }
+      return data;
+    }), switchMap((data: any) => {
+      return this.addChatUser(data);
+    }))
+  };
 
   deleteUser(uid: string): Observable<any> {
     // First delete from Firestore
@@ -122,7 +147,23 @@ export class AuthService {
     const docRef = setDoc(doc(this.db, 'domaris_users/' + data.id), data)
     return from(docRef)
   }
+   addChatUser(data: any): Observable<any> {
+    const docRef = setDoc(doc(this.db, 'chat_users/' + data.id), data)
+    return from(docRef)
+  }
+ deleteChatUser(uid: string): Observable<any> {
+    // First delete from Firestore
+    const userDocRef = doc(this.db, 'chat_users', uid);
+    const deleteFromFirestore = from(deleteDoc(userDocRef));
+    return deleteFromFirestore
+  }
+deleteChatUserFromAuth(uid: string): Observable<any> {
+    // Cette méthode nécessite un token d'admin ou un appel vers votre backend
+    return this._http.post(`https://identitytoolkit.googleapis.com/v1/accounts:delete?key=${apiKey}`, { 
 
+      localId: uid
+    });
+  }
   handleCreateUser(users: any): Observable<any> {
     let new_user: any = {
       uid: users.uid,

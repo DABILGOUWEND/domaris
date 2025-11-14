@@ -1,0 +1,23 @@
+<div class="containers">
+  <div class="chat_list mat-elevation-z5">
+    <div class="search_input">
+      <mat-form-field>
+        <input matInput placeholder="Search by name or keyword" [formControl]="searchControl"
+          [matAutocomplete]="users" />
+      </mat-form-field>
+      <mat-autocomplete #users="matAutocomplete">
+        @for(user of  users$();track user ){
+        <mat-option (onSelectionChange)="selectUser(user)"  [value]="user.nom + ' ' + user.prenom">
+          {{user.nom + " " + user.prenom}}
+        </mat-option>
+        }
+      </mat-autocomplete>
+    </div>
+
+
+  </div>
+
+  <div class="chat_messages mat-elevation-z5">
+
+  </div>
+</div>

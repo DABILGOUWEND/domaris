@@ -31,7 +31,8 @@ import {
   Pannes, Contrats, pointage, nature_travaux, travaux, Devis, Ligne_devis,
   Constats, ModelAttachement, ModelDecompte, pointage_travaux, datesPointages,
   sous_traitant, tab_categories, tab_familles, fournisseurs, tab_ressources, tab_programmeStore,
-  Entreprise
+  Entreprise,
+  tab_chat_userStore
 } from "../modeles/models";
 import { TaskService } from "../services/task.service";
 import { ProgrammesService } from "../services/programmes.service";
@@ -200,7 +201,11 @@ const initialUserState: tab_userStore =
   message: '',
   user: 'ff'
 }
-
+const initialChatUserState: tab_chat_userStore =
+{
+  users_data: [],
+  message: ''
+}
 const initialStatutState: tab_satatutStore =
 {
   statut_data: [],
@@ -423,6 +428,85 @@ export const UserStore = signalStore(
       updateUser: rxMethod<tab_personnel>(pipe(
         switchMap((user) => {
           return _task_service.updateModel("domaris_users", user).pipe(
+            tap({
+              next: () => {
+                Showsnackerbaralert('modifié avec succes', 'pass', snackbar)
+              },
+              error: () => {
+                patchState(store, { message: 'echoué' });
+                Showsnackerbaralert('échoué', 'fail', snackbar)
+              }
+            }
+            )
+          )
+        }),
+        
+      )),
+
+    }
+  ))
+)
+export const ChatUserStore = signalStore(
+  { providedIn: 'root' },
+  withState(initialChatUserState),
+  withComputed((store) => (
+    {
+      taille: computed(() => store.users_data().length),
+      users: computed(() => {
+        return store.users_data()
+      })
+    }
+  )
+  ),
+  withMethods((store, _auth_service = inject(AuthService), _task_service = inject(TaskService), snackbar = inject(MatSnackBar), _auth = inject(Auth)) =>
+  (
+    {
+            loadUsers: rxMethod<void>(pipe(switchMap(() => {
+        return _task_service.getallModels("chat_users").pipe(
+          tap((data) => {
+            patchState(store, { users_data: data })
+          })
+        )
+      }
+      ))),
+      addUser: rxMethod<any>(pipe(
+        switchMap((user) => {
+          return _auth_service.register_chat_Users(
+            user.email,
+            user.mot_de_passe,
+            user.role,
+            user.nom,
+            user.prenom
+          ).pipe(
+            tap({
+              next: () => {
+                Showsnackerbaralert('ajouté avec succes', 'pass', snackbar)
+              },
+              error: () => {
+                patchState(store, { message: 'echoué' });
+                Showsnackerbaralert('échoué', 'fail', snackbar)
+              }
+            })
+          );
+        })
+      )),
+      removeUser: rxMethod<string>(pipe(
+        switchMap((id) => {
+          return _auth_service.deleteUser(id)
+        }),
+        tap({
+          next: () => {
+            Showsnackerbaralert('élément supprimé', 'pass', snackbar)
+          },
+          error: () => {
+            patchState(store, { message: 'echoué' });
+            Showsnackerbaralert('échoué', 'fail', snackbar)
+          }
+        })
+      )),
+      updateUser: rxMethod<any>(pipe(
+        switchMap((user) => {
+          return _task_service.updateModel("chat_users", user).pipe(
             tap({
               next: () => {
                 Showsnackerbaralert('modifié avec succes', 'pass', snackbar)

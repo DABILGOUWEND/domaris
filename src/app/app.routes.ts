@@ -22,12 +22,13 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FinancesComponent } from './components/finances/finances.component';
 import { OperationsComponent } from './components/operations/operations.component';
 import { TestWebhookComponent } from './components/test-webhook/test-webhook.component';
+import { ChatsComponent } from './components/chats/chats.component';
 
 
 export const routes: Routes = [
 
   {
-    path: "", redirectTo: "/webhook", pathMatch: "full"
+    path: "", redirectTo: "/layout", pathMatch: "full"
   },
   {
     path: "layout", component: LayoutComponent,
@@ -37,6 +38,11 @@ export const routes: Routes = [
       },
       {
         path: "accueil", component: AccueilComponent
+      }
+      ,
+      {
+        path: 'chats',
+        component: ChatsComponent
       }
     ]
   },
@@ -67,12 +73,17 @@ export const routes: Routes = [
     path: "accueil", component: AccueilComponent
 
   },
+  
+      {
+        path: 'chats',
+        component: ChatsComponent
+      },
   {
     path: "connect", component: ConnectedPageComponent
     ,
     canActivate: [authGuard]
     ,
-    data: { role: ['admin', 'respo_programmes','respo_finances','respo_travaux'] },
+    data: { role: ['admin', 'respo_programmes', 'respo_finances', 'respo_travaux'] },
     children: [
       {
         path: "admin", component: AdminComponent,
@@ -99,14 +110,16 @@ export const routes: Routes = [
       }
     ]
   }
-,{
-  path:'test',
-  component:TestComponent
-}
-,{
-  path:'webhook',
-  component:TestWebhookComponent
-}
+  , {
+    path: 'test',
+    component: TestComponent
+  }
+  , {
+    path: 'webhook',
+    component: TestWebhookComponent
+  }
+
+
 ]
 
 

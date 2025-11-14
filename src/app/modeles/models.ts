@@ -422,6 +422,18 @@ export interface tab_userStore {
   user: any
 }
 
+export interface chat_users {
+  id: string,
+  nom: string,
+  prenom: string,
+  email: string,
+  url_photo_profil: string
+}
+export interface tab_chat_userStore {
+  users_data: chat_users[],
+  message: string
+
+}
 export interface Statuts {
   id: string,
   designation: string
