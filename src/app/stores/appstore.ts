@@ -461,11 +461,10 @@ export const ChatUserStore = signalStore(
     {
       taille: computed(() => store.users_data().length),
       users: computed(() => {
-        return store.users_data()
+        return store.users_data().filter(x=>x.uid!=store.selectedUid())
       }),
       my_chats:computed(()=>{
         let userId=store.selectedUid();
-        console.log(userId)
         return    store.chats_messages().filter(x=>{
           return x.receiverId==userId || x.senderId==userId
         })
@@ -574,7 +573,7 @@ export const ChatMessagesStore = signalStore(
         )
       }
       ))),
-      addUser: rxMethod<any>(pipe(
+      addChat: rxMethod<any>(pipe(
         switchMap((user) => {
           return _auth_service.register_chat_Users(
             user.email,

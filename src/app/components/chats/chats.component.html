@@ -2,19 +2,37 @@
   <div class="chat_list mat-elevation-z5">
     <div class="search_input">
       <mat-form-field>
-        <input matInput placeholder="Search by name or keyword" [formControl]="searchControl"
+        <input matInput placeholder="Search by name or keyword" [formControl]="searchControl" (keyup)="searchUsers()"
           [matAutocomplete]="users" />
       </mat-form-field>
       <mat-autocomplete #users="matAutocomplete">
-        @for(user of  users$();track user ){
-        <mat-option (onSelectionChange)="selectUser(user)"  [value]="user.nom + ' ' + user.prenom">
+        @for(user of users$();track user ){
+        <mat-option (onSelectionChange)="selectUser(user)" [value]="user.nom + ' ' + user.prenom"
+          (click)="createChat(user)" >
           {{user.nom + " " + user.prenom}}
         </mat-option>
         }
       </mat-autocomplete>
     </div>
-
-
+    <mat-selection-list [multiple]="false">
+      <mat-divider> </mat-divider>
+      @for(user of users$();track user ){
+        <mat-list-option (click)="selectUser(user)" [value]="user.uid"
+          >
+          <img matListItemAvatar [src]="user.url_photo_profil?user.url_photo_profil:'/placeholder.png'"/>
+         <p mat-line class="chat-title">  
+          <span class="chat-name"> 
+            {{ user.nom + " " + user.prenom }}
+          </span>
+          <span class="chat-date"> 
+            {{ "15/10/2025"}}
+          </span>
+         </p>
+         
+        </mat-list-option> 
+        <mat-divider> </mat-divider> 
+      }
+    </mat-selection-list>
   </div>
 
   <div class="chat_messages mat-elevation-z5">
