@@ -10,10 +10,11 @@ import { getFunctions, provideFunctions } from '@angular/fire/functions';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { provideHttpClient } from '@angular/common/http';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
-import { registerLocaleData } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    DatePipe,
     {
       provide: LOCALE_ID,
       useValue: 'fr-FR' // 'de' for Germany, 'fr' for France ...

@@ -1,3 +1,6 @@
+<div class="user"> 
+     <h2>{{ auth.userSignal() ? auth.userSignal().username : '' }} </h2>
+</div>
 <div class="containers">
   <div class="chat_list mat-elevation-z5">
     <div class="search_input">
@@ -6,9 +9,8 @@
           [matAutocomplete]="users" />
       </mat-form-field>
       <mat-autocomplete #users="matAutocomplete">
-        @for(user of users$();track user ){
-        <mat-option (onSelectionChange)="selectUser(user)" [value]="user.nom + ' ' + user.prenom"
-          (click)="createChat(user)" >
+        @for(user of users$();track user.uid ){
+        <mat-option (click)="selectUser(user)" [value]="user.nom + ' ' + user.prenom">
           {{user.nom + " " + user.prenom}}
         </mat-option>
         }
@@ -16,26 +18,54 @@
     </div>
     <mat-selection-list [multiple]="false">
       <mat-divider> </mat-divider>
-      @for(user of users$();track user ){
-        <mat-list-option (click)="selectUser(user)" [value]="user.uid"
-          >
-          <img matListItemAvatar [src]="user.url_photo_profil?user.url_photo_profil:'/placeholder.png'"/>
-         <p mat-line class="chat-title">  
-          <span class="chat-name"> 
+      @for(user of chats$();track user.uid ){
+      <mat-list-option (click)="selectUser(user)" [value]="user.uid">
+        <img matListItemAvatar [src]="user.url_photo_profil?user.url_photo_profil:'/placeholder.png'" />
+        <p mat-line class="chat-title">
+          <span class="chat-name">
             {{ user.nom + " " + user.prenom }}
           </span>
-          <span class="chat-date"> 
+          <span class="chat-date">
             {{ "15/10/2025"}}
           </span>
-         </p>
-         
-        </mat-list-option> 
-        <mat-divider> </mat-divider> 
+        </p>
+      </mat-list-option>
+      <mat-divider> </mat-divider>
       }
     </mat-selection-list>
   </div>
 
   <div class="chat_messages mat-elevation-z5">
-
+    <div class="chat-header">
+      @if(otherUserId()){
+      <img [src]="otherUserId()?.url_photo_profil?otherUserId()?.url_photo_profil:'/placeholder.png'" alt="" />
+      <h2>
+        {{otherUserId() ? otherUserId()?.nom + ' ' + otherUserId()?.prenom : ''}}
+      </h2>
+      }
+      <mat-divider> </mat-divider>
+    </div>
+    <div class="chat-area">
+      @for(mess of selected_chats()?.messages; track mess.date)
+      {
+      <div class="chat-bubble-container" [ngClass]="{'sender': mess.senderId === auth.userSignal().uid}">
+        <div class="chat-bubble">
+          {{mess.text}}
+          <span class="chat-date"> {{mess.date | dateDisplay}}</span>
+        </div>
+      </div>
+      }
+      <div    #endofChat>
+      </div>
+    </div>
+    <div class="input-area">
+      <mat-form-field appearance="outline">
+        <input matInput placeholder="Type a message" [formControl]="messageFormControl"
+          (keydown.enter)="sendMessage()" />
+        <button mat-icon-button color="primary" (click)="sendMessage()" matSuffix>
+          <mat-icon>send</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
   </div>
 </div>

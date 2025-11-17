@@ -31,7 +31,7 @@ export class LoginComponent {
       this.isLoading.set(true);
       this.message.set('connexion en cours ...');
       const { email, password } = this.loginForm.value;
-      this.authService.login(email, password).subscribe({
+      this.authService.loginChat(email, password).subscribe({
         next: (res) => {
           setInterval(() => {
             this.isLoading.set(false);

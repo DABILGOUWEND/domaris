@@ -38,6 +38,7 @@ import {
 import { TaskService } from "../services/task.service";
 import { ProgrammesService } from "../services/programmes.service";
 import { AuthService } from "../auth/services/auth.service";
+import { Timestamp } from "@angular/fire/firestore";
 const initialGasoilState: gasoilStore = {
   conso_data: [],
   err: null,
@@ -205,11 +206,11 @@ const initialUserState: tab_userStore =
 const initialChatUserState: tab_chat_userStore =
 {
   users_data: [],
-  chats_messages:[],
-  selectedUid: '',
+  chats_messages: [],
+  userId: '',
   message: ''
 }
-const initialChatMessagesState:chat_messagesStore  =
+const initialChatMessagesState: chat_messagesStore =
 {
   chats_data: [],
   message: ''
@@ -448,7 +449,7 @@ export const UserStore = signalStore(
             )
           )
         }),
-        
+
       )),
 
     }
@@ -461,12 +462,12 @@ export const ChatUserStore = signalStore(
     {
       taille: computed(() => store.users_data().length),
       users: computed(() => {
-        return store.users_data().filter(x=>x.uid!=store.selectedUid())
+        return store.users_data().filter(x => x.uid != store.userId())
       }),
-      my_chats:computed(()=>{
-        let userId=store.selectedUid();
-        return    store.chats_messages().filter(x=>{
-          return x.receiverId==userId || x.senderId==userId
+      my_chats: computed(() => {
+        let userId = store.userId();
+        return store.chats_messages().filter(x => {
+          return x.userIds.includes(userId);
         })
       })
     }
@@ -475,22 +476,30 @@ export const ChatUserStore = signalStore(
   withMethods((store, _auth_service = inject(AuthService), _task_service = inject(TaskService), snackbar = inject(MatSnackBar), _auth = inject(Auth)) =>
   (
     {
-            loadUsers: rxMethod<void>(pipe(switchMap(() => {
+      getChatId(userId: string, otherUserId: string) {
+        let chat = store.chats_messages().find(x => {
+          return x.userIds.includes(userId) && x.userIds.includes(otherUserId);
+        });
+        return chat;
+      },
+      loadUsers: rxMethod<void>(pipe(switchMap(() => {
         return _task_service.getallModels("chat_users").pipe(
           tap((data) => {
-            patchState(store, { users_data: data })
+            patchState(store, { users_data: data, userId: _auth_service.userSignal().uid })
           })
         )
       }
       ))),
-      loadChats: rxMethod<void>(pipe(switchMap(() => {
-        return _task_service.getallModels("chat_messages").pipe(
+      loadChats: rxMethod<void>(pipe(switchMap(() =>
+        _task_service.getallModels("chat_messages").pipe(
           tap((data) => {
-            patchState(store, {chats_messages: data,selectedUid:_auth_service.userSignal().uid })
+            scroolTobottom(_auth_service.ref());
+            patchState(store, { chats_messages: data })
           })
         )
-      }
-      ))),
+      )
+
+      )),
       addUser: rxMethod<any>(pipe(
         switchMap((user) => {
           return _auth_service.register_chat_Users(
@@ -506,6 +515,54 @@ export const ChatUserStore = signalStore(
               },
               error: () => {
                 patchState(store, { message: 'echoué' });
+                Showsnackerbaralert('échoué', 'fail', snackbar)
+              }
+            })
+          );
+        })
+      )),
+
+      new_chat: rxMethod<any>(pipe(
+        switchMap((user) => {
+          return _task_service.add_chat(user.userId, user.otherUserId).pipe(
+            tap({
+              next: () => {
+                Showsnackerbaralert('ajouté avec succes', 'pass', snackbar)
+              },
+              error: () => {
+                patchState(store, { message: 'echoué' });
+                Showsnackerbaralert('échoué', 'fail', snackbar)
+              }
+            })
+          );
+        })
+      )),
+      add_message: rxMethod<any>(pipe(
+        switchMap((data) => {
+          let time = Timestamp.fromDate(new Date());
+          let old_chat = store.chats_messages().find(x => x.id == data.chatId);
+          let old_messages = old_chat?.messages ?? [];
+          let id = data.chatId;
+          let new_message = {
+            senderId: data.senderId,
+            text: data.message,
+            date: time
+          }
+          let donnees = {
+            userIds: old_chat?.userIds,
+            messages: old_messages.length > 0 ?
+              [...old_messages,
+                new_message] : [new_message]
+          };
+          return _task_service.update_chat_message(id, "chat_messages",
+            donnees
+          ).pipe(
+            tap({
+              next: () => {
+                
+              },
+              error: () => {
+                patchState(store, { message: 'échoué' });
                 Showsnackerbaralert('échoué', 'fail', snackbar)
               }
             })
@@ -541,7 +598,7 @@ export const ChatUserStore = signalStore(
             )
           )
         }),
-        
+
       )),
 
     }
@@ -562,10 +619,7 @@ export const ChatMessagesStore = signalStore(
   withMethods((store, _auth_service = inject(AuthService), _task_service = inject(TaskService), snackbar = inject(MatSnackBar), _auth = inject(Auth)) =>
   (
     {
-      setSelectedId(id: string) {
-        patchState(store, { selectedUid: id });
-      },
-            loadUsers: rxMethod<void>(pipe(switchMap(() => {
+      loadUsers: rxMethod<void>(pipe(switchMap(() => {
         return _task_service.getallModels("chat_users").pipe(
           tap((data) => {
             patchState(store, { users_data: data })
@@ -623,7 +677,7 @@ export const ChatMessagesStore = signalStore(
             )
           )
         }),
-        
+
       )),
 
     }
@@ -870,3 +924,10 @@ function Showsnackerbaralert(message: string, resptype: string = 'fail', _snackb
     })
   return a
 }
+function   scroolTobottom(ref:any) {
+    if (ref) {
+      setTimeout(() => {
+       ref.nativeElement.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  }

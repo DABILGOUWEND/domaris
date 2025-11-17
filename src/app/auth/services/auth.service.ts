@@ -1,4 +1,4 @@
-import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
+import { ElementRef, inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { Auth, authState, createUserWithEmailAndPassword, deleteUser } from '@angular/fire/auth';
 import { getAuth, setPersistence, signInWithEmailAndPassword, browserSessionPersistence, browserLocalPersistence } from "firebase/auth";
 import { deleteDoc, doc, Firestore, getDoc, setDoc } from '@angular/fire/firestore';
@@ -15,7 +15,9 @@ export class AuthService {
   //injections
   _http = inject(HttpClient);
 
-  db = inject(Firestore);
+
+  private db = inject(Firestore);
+  ref=signal<ElementRef|undefined>( undefined);
   _auth = inject(Auth);
   platformId = inject(PLATFORM_ID)
   isBrowser: boolean;
@@ -64,7 +66,6 @@ export class AuthService {
           this.handleCreateChatUser(user).subscribe({
             next: () => {
               this.userLoggedIn.set(true);
-
               this.affichage.set(user.email);
               this.router.navigate(['/chats']);
             }
@@ -151,7 +152,6 @@ export class AuthService {
       return this.addChatUser(data);
     }))
   };
-
   deleteUser(uid: string): Observable<any> {
     // First delete from Firestore
     const userDocRef = doc(this.db, 'domaris_users', uid);
@@ -232,6 +232,7 @@ deleteChatUserFromAuth(uid: string): Observable<any> {
     return this.getallChatUsersByUid(users.uid).pipe(
       tap(
         (resp: any) => {
+        
           let data = resp.data();
           this.userSignal.update(
             (user: any) =>
@@ -240,7 +241,7 @@ deleteChatUserFromAuth(uid: string): Observable<any> {
                 'uid': new_user.uid,
                 'email': new_user.email,
                 'token': this.token(),
-                'username': data.nom + ' ' + data.prenom
+                'username': data.nom + ' ' + data.prenom,
               }
             )
           )

@@ -1,3 +1,7 @@
+import { Timestamp } from "@angular/fire/firestore"
+
+
+
 export interface Engins {
   id: string,
   designation: string,
@@ -432,19 +436,18 @@ export interface chat_users {
 export interface tab_chat_userStore {
   users_data: chat_users[],
   chats_messages:chat_messages[],
-  selectedUid:string,
+  userId:string,
   message: string
 
 }
 export interface chat_text{
-  messages:string,
-  userId:string,
-  date:Date
+  senderId:string,
+  text:string,
+  date:Timestamp
 }
 export  interface chat_messages{ 
   id:string,
-  senderId:string,
-  receiverId:string,
+  userIds:string[],
   messages:chat_text[]
 }
 export  interface chat_messagesStore{ 

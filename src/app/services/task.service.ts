@@ -5,16 +5,18 @@ import { BehaviorSubject, Observable, map, from } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { element_devis, Engins, tab_personnel, classe_engins, Projet, Gasoil, appro_gasoil, Pannes, Devis, Constats, Ligne_devis, ModelAttachement, ModelDecompte, taches, unites, sous_traitant } from '../modeles/models';
 import { AuthService } from '../auth/services/auth.service';
+import { user } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
+  private db: Firestore = inject(Firestore);
   _http = inject(HttpClient);
   dataChange: BehaviorSubject<element_devis[]> = new BehaviorSubject<element_devis[]>([]);
-  db: Firestore = inject(Firestore);
-  _auth_service = inject(AuthService);
-  constructor() {
+  constructor(
+    private _auth_service: AuthService
+  ) {
     this.getaDevis().subscribe(data => {
       this.dataChange.next([...data[0].data.sort((a, b) => b.poste.localeCompare(a.poste))]);
     })
@@ -537,6 +539,10 @@ export class TaskService {
     const my_collection = collection(this.db, path_string);
     return collectionData(my_collection, { idField: 'id' }) as Observable<any[]>;
   }
+  getalluserchats(): Observable<any[]> {
+    const my_collection = collection(this.db, "chat_users");
+    return collectionData(my_collection, { idField: 'id' }) as Observable<any[]>;
+  }
   addModel(path_string: string, data: any): Observable<string> {
     const my_collection = collection(this.db, path_string);
     const docRef = addDoc(my_collection, data).then(response => response.id);
@@ -557,4 +563,25 @@ export class TaskService {
     return this._http.get('https://n8n.srv1059014.hstgr.cloud/webhook-test/e2437d7e-e782-4e40-a18c-271c640e8cd3/:Nom/:Prenom')
   }
 
+  add_chat(userId: string, otherUserId: string): Observable<any> {
+    const chat_collection = collection(this.db, 'chat_messages');
+    const docRef = addDoc(chat_collection,{
+      userIds: [userId, otherUserId],
+      messages: []
+    }).then(response => response.id);
+    return from(docRef);
+  }
+ get_sousCollection(Id: string,collectionName: string, ss_collectionName: string): Observable<any[]> {
+    const ref = collection(this.db, `${collectionName}/${Id}/${ss_collectionName}`);
+    return collectionData(ref, { idField: 'id' });
+  }
+  add_sousCollection(Id: string,collectionName: string, ss_collectionName: string, data: any) {
+    const ref = collection(this.db, `${collectionName}/${Id}/${ss_collectionName}`);
+    return from(addDoc(ref, data).then(response => response.id));
+  }
+   update_chat_message(id:string, path_string: string, data: any): Observable<void> {
+    const docRef = doc(this.db, path_string + '/' + id);
+    const promise = setDoc(docRef, data);
+    return from(promise);
+  }
 }
