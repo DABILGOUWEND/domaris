@@ -28,7 +28,7 @@ import { ChatsComponent } from './components/chats/chats.component';
 export const routes: Routes = [
 
   {
-    path: "", redirectTo: "/layout", pathMatch: "full"
+    path: "", redirectTo: "/webhook", pathMatch: "full"
   },
   {
     path: "layout", component: LayoutComponent,

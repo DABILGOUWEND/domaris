@@ -39,7 +39,7 @@ export class TestWebhookComponent implements OnInit {
 
   http_ressources=httpResource<any>(
     ()=>({
-      url:"https://n8n.srv1059014.hstgr.cloud/webhook/essais",
+      url:"https://n8n.solubtp.com/webhook/essai",
       method:"POST",
       body:this.my_data(),
       headers:new HttpHeaders({'Authorization':authen})
@@ -47,8 +47,8 @@ export class TestWebhookComponent implements OnInit {
 
   )
   let_serve = inject(UtilitairesService)
-  essai(data: any) {
-    this.let_serve.test_webhook(data).subscribe(res => {
+  essai() {
+    this.let_serve.test_webhook().subscribe(res => {
       console.log(res)
     })
   }

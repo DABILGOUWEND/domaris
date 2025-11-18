@@ -37,9 +37,9 @@ export class UtilitairesService {
     // Shuffle the password
     return password.split('').sort(() => Math.random() - 0.5).join('');
   }
-  test_webhook(data:any): Observable<any> {
+  test_webhook(): Observable<any> {
     const headers = new HttpHeaders({
-      'wend': `wendson1982`
+      'Authorization': `wendson1982`
     });
     const params = new HttpParams()
       .set('key', "1d8b905142ee47deafe183222252610")
@@ -48,7 +48,7 @@ export class UtilitairesService {
       "prenom": "wend-lassida",
       "nom": "DABILGOU"
     }
-    return this._http.post<any>('https://n8n.srv1059014.hstgr.cloud/webhook/essais',
+    return this._http.post<any>('https://n8n.solubtp.com/webhook/essai',
       body ,{ headers})
   }
 }
