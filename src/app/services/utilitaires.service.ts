@@ -38,17 +38,18 @@ export class UtilitairesService {
     return password.split('').sort(() => Math.random() - 0.5).join('');
   }
   test_webhook(): Observable<any> {
+   
+
     const headers = new HttpHeaders({
       'Authorization': `wendson1982`
     });
     const params = new HttpParams()
-      .set('key', "1d8b905142ee47deafe183222252610")
-      .set('q', 'Paris');
+      .set('id', "1d8b905142ee47deafe183222252610")
+      .set('message', 'je me nomme DABILGOU?');
     const body = {
       "text": "qui est le pdg de cge immobilier?",
-     
     }
     return this._http.post<any>('https://n8n.solubtp.com/webhook/rag-cge',
-      body ,{ headers})
+      body ,{ headers: headers, params: params });
   }
 }
