@@ -45,10 +45,10 @@ export class UtilitairesService {
       .set('key', "1d8b905142ee47deafe183222252610")
       .set('q', 'Paris');
     const body = {
-      "prenom": "wend-lassida",
-      "nom": "DABILGOU"
+      "text": "qui est le pdg de cge immobilier?",
+     
     }
-    return this._http.post<any>('https://n8n.solubtp.com/webhook/essai',
+    return this._http.post<any>('https://n8n.solubtp.com/webhook/rag-cge',
       body ,{ headers})
   }
 }

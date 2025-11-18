@@ -17,20 +17,6 @@ export class TestWebhookComponent implements OnInit {
   constructor(
     private _fb: FormBuilder
   ) {
-    this.my_form = this._fb.group({
-      surface_terrain: [0, Validators.required],
-      surface_batis: [0, Validators.required],
-      nombre_F2: [0, Validators.required],
-      nombre_F3: [0, Validators.required],
-      nombre_F3plus: [0, Validators.required],
-      nombre_F4: [0, Validators.required],
-      nombre_F4plus: [0, Validators.required],
-      superficie_F2: [0, Validators.required],
-      superficie_F3: [0, Validators.required],
-      superficie_F3plus: [0, Validators.required],
-      superficie_F4: [0, Validators.required],
-      superficie_F4plus: [0, Validators.required],
-    })
 
   }
   ngOnInit() {
@@ -55,7 +41,6 @@ export class TestWebhookComponent implements OnInit {
 
   onSubmit() {
     if (this.my_form.valid) {
-      console.log(this.my_form.value)
       this.my_data.set(this.my_form.value)
     }
   }
