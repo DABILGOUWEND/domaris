@@ -1,0 +1,23 @@
+<div class="page-layout" style="display: flex; gap: 20px;">
+
+    <div class="plan-column" style="flex: 2;">
+        <h2>Plan de Masse</h2>
+
+        <app-plansvg src="/dessin.svg" (villaClicked)="onVillaSelected($event)">
+        </app-plansvg>
+    </div>
+
+    <div class="info-column" style="flex: 1; padding: 20px; background: #f5f5f5;">
+        <h3>Détails</h3>
+
+        <div *ngIf="currentVillaId; else noSelection">
+            <p><strong>Villa sélectionnée :</strong> {{ currentVillaId }}</p>
+            <button (click)="reserverVilla()">Réserver cette villa</button>
+        </div>
+
+        <ng-template #noSelection>
+            <p>Cliquez sur une villa du plan pour voir les détails.</p>
+        </ng-template>
+    </div>
+
+</div>
