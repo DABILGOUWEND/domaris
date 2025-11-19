@@ -23,12 +23,14 @@ import { FinancesComponent } from './components/finances/finances.component';
 import { OperationsComponent } from './components/operations/operations.component';
 import { TestWebhookComponent } from './components/test-webhook/test-webhook.component';
 import { ChatsComponent } from './components/chats/chats.component';
+import { PlansvgComponent } from './components/plansvg/plansvg.component';
+import { MysrvhomeComponent } from './components/mysrvhome/mysrvhome.component';
 
 
 export const routes: Routes = [
 
   {
-    path: "", redirectTo: "/webhook", pathMatch: "full"
+    path: "", redirectTo: "/svg", pathMatch: "full"
   },
   {
     path: "layout", component: LayoutComponent,
@@ -117,7 +119,12 @@ export const routes: Routes = [
   , {
     path: 'webhook',
     component: TestWebhookComponent
+  },
+  {
+    path: 'svg',
+    component: MysrvhomeComponent
   }
+
 
 
 ]

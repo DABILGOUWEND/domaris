@@ -37,7 +37,7 @@ export class UtilitairesService {
     // Shuffle the password
     return password.split('').sort(() => Math.random() - 0.5).join('');
   }
-  test_webhook(): Observable<any> {
+  test_webhook(body:any): Observable<any> {
    
 
     const headers = new HttpHeaders({
@@ -45,11 +45,9 @@ export class UtilitairesService {
     });
     const params = new HttpParams()
       .set('id', "1d8b905142ee47deafe183222252610")
-      .set('message', 'je me nomme DABILGOU?');
-    const body = {
-      "text": "qui est le pdg de cge immobilier?",
-    }
+      .set('message', 'Liste des contrats ?');
+
     return this._http.post<any>('https://n8n.solubtp.com/webhook/rag-cge',
-      body ,{ headers: headers, params: params });
+      body ,{ headers: headers });
   }
 }

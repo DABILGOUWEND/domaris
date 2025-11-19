@@ -8531,3 +8531,33 @@ button[mat-raised-button] {
     width: 80%;
   }
 }
+
+
+/* --- ZONES INTERACTIVES (VILLAS) --- */
+/* Cible tous les groupes ou chemins dont l'ID commence par "villa-" */
+.svg-container [id^="villa"] {
+  cursor: pointer;
+  pointer-events: all; /* Rend la zone cliquable même si elle est transparente */
+  
+  /* Style par défaut : Invisible (Zone fantôme) */
+  fill: transparent; 
+  stroke: none;
+  
+  /* Transition douce */
+  transition: all 0.3s ease;
+}
+
+/* --- SURVOL (HOVER) --- */
+.svg-container [id^="villa"]:hover {
+  fill: rgba(33, 150, 243, 0.4); /* Bleu semi-transparent */
+  stroke: #2196F3;
+  stroke-width: 2px;
+}
+
+/* --- SÉLECTIONNÉ (ACTIVE) --- */
+/* Cette classe est ajoutée via le code TypeScript ci-dessous */
+.svg-container .selected-villa {
+  fill: rgba(76, 175, 80, 0.6) !important; /* Vert */
+  stroke: #4CAF50 !important;
+  stroke-width: 3px;
+}

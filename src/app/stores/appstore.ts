@@ -39,6 +39,7 @@ import { TaskService } from "../services/task.service";
 import { ProgrammesService } from "../services/programmes.service";
 import { AuthService } from "../auth/services/auth.service";
 import { Timestamp } from "@angular/fire/firestore";
+import { UtilitairesService } from "../services/utilitaires.service";
 const initialGasoilState: gasoilStore = {
   conso_data: [],
   err: null,
@@ -473,7 +474,11 @@ export const ChatUserStore = signalStore(
     }
   )
   ),
-  withMethods((store, _auth_service = inject(AuthService), _task_service = inject(TaskService), snackbar = inject(MatSnackBar), _auth = inject(Auth)) =>
+  withMethods((store, _auth_service = inject(AuthService),
+    _task_service = inject(TaskService),
+    _util = inject(UtilitairesService)
+    ,
+    snackbar = inject(MatSnackBar), _auth = inject(Auth)) =>
   (
     {
       getChatId(userId: string, otherUserId: string) {
@@ -538,7 +543,7 @@ export const ChatUserStore = signalStore(
         })
       )),
       add_message: rxMethod<any>(pipe(
-        switchMap((data) => {
+        concatMap((data) => {
           let time = Timestamp.fromDate(new Date());
           let old_chat = store.chats_messages().find(x => x.id == data.chatId);
           let old_messages = old_chat?.messages ?? [];
@@ -559,7 +564,7 @@ export const ChatUserStore = signalStore(
           ).pipe(
             tap({
               next: () => {
-                
+
               },
               error: () => {
                 patchState(store, { message: 'échoué' });
@@ -569,6 +574,78 @@ export const ChatUserStore = signalStore(
           );
         })
       )),
+      add_gpt_message : rxMethod<any>(pipe(
+        switchMap((data) => {
+          const time = Timestamp.fromDate(new Date());
+          const old_chat = store.chats_messages().find(x => x.id === data.chatId);
+          const old_messages = old_chat?.messages ?? [];
+          const id = data.chatId;
+      
+          const user_message = {
+            senderId: data.senderId,
+            text: data.message,
+            date: time
+          };
+      
+          // 1) On construit les messages avec le message utilisateur
+          const messagesAfterUser = [
+            ...old_messages,
+            user_message
+          ];
+      
+          const payloadUser = {
+            userIds: old_chat?.userIds,
+            messages: messagesAfterUser
+          };
+      
+          // 2) On met à jour le chat avec le message utilisateur
+          return _task_service.update_chat_message(id, 'chat_messages', payloadUser).pipe(
+            // 3) Ensuite on appelle le webhook
+            switchMap(() =>
+              _util.test_webhook({
+                session_id: data.chatId,
+                message: data.message,
+              })
+            ),
+      
+            // 4) Quand on a la réponse GPT, on ajoute son message
+            switchMap((resp: any) => {
+              console.log(resp);
+      
+              const time_gpt = Timestamp.fromDate(new Date());
+              const gpt_message = {
+                senderId: data.otherId,
+                text: resp[0].output,
+                date: time_gpt
+              };
+      
+              const payloadGpt = {
+                userIds: old_chat?.userIds,
+                messages: [
+                  ...messagesAfterUser,
+                  gpt_message
+                ]
+              };
+      
+              return _task_service.update_chat_message(id, 'chat_messages', payloadGpt);
+            }),
+      
+            // 5) Gestion globale des succès / erreurs
+            tap({
+              next: () => {
+                // Tu peux mettre un log ou un patchState ici si tu veux
+                // patchState(store, { message: 'ok' });
+              },
+              error: () => {
+                patchState(store, { message: 'échoué' });
+                Showsnackerbaralert('échoué', 'fail', snackbar);
+              }
+            })
+          );
+        })
+      ))
+      
+,
       removeUser: rxMethod<string>(pipe(
         switchMap((id) => {
           return _auth_service.deleteUser(id)
@@ -924,10 +1001,10 @@ function Showsnackerbaralert(message: string, resptype: string = 'fail', _snackb
     })
   return a
 }
-function   scroolTobottom(ref:any) {
-    if (ref) {
-      setTimeout(() => {
-       ref.nativeElement.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    }
+function scroolTobottom(ref: any) {
+  if (ref) {
+    setTimeout(() => {
+      ref.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
   }
+}

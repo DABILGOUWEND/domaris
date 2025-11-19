@@ -34,7 +34,10 @@ export class TestWebhookComponent implements OnInit {
   //)
   let_serve = inject(UtilitairesService)
   essai() {
-    this.let_serve.test_webhook().subscribe(res => {
+    this.let_serve.test_webhook({
+      'id': '1d8b905142ee47deafe183222252610',
+      'message': 'Liste des contrats ?'
+    }).subscribe(res => {
       console.log(res)
     })
   }

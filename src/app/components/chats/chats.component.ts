@@ -83,10 +83,11 @@ export class ChatsComponent implements OnInit {
   sendMessage() {
     const message = this.messageFormControl.value;
     if (message != null && this.selected_chats() != undefined) {
-      this.chatUsersStore.add_message({
+      this.chatUsersStore.add_gpt_message({
         ref:this.endofChat(),
         chatId: this.selected_chats()!.id,
         senderId: this.auth.userSignal().uid,
+        otherId:this.otherUserId(),
         message: message
       });
       this.messageFormControl.reset();
