@@ -25,6 +25,7 @@ import { TestWebhookComponent } from './components/test-webhook/test-webhook.com
 import { ChatsComponent } from './components/chats/chats.component';
 import { PlansvgComponent } from './components/plansvg/plansvg.component';
 import { MysrvhomeComponent } from './components/mysrvhome/mysrvhome.component';
+import { MapComponent } from './components/map/map.component';
 
 
 export const routes: Routes = [
@@ -122,7 +123,7 @@ export const routes: Routes = [
   },
   {
     path: 'svg',
-    component: MysrvhomeComponent
+    component: MapComponent
   }
 
 
