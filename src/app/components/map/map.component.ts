@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as L from 'leaflet';
+import { map } from 'leaflet';
 
 @Component({
   selector: 'app-map',
@@ -15,45 +16,102 @@ export class MapComponent implements OnInit {
     this.initMap();
   }
   initMap() {
-      // coordonnées des coins 
-//-1,480441667	0,005236111
-//-1,480347222	0,00524
-//-1,480347222	0,005186111
-//-1,480441667	0,005186111
-
-
-    const villaACoords: L.LatLngTuple[] = [
-      [0.005236111, -1.480441667],
-      [0.005236111, -1.480347222],
-      [0.005186111, -1.480347222],
-      [0.005186111, -1.480441667]
-    ];
-
-    // 1. Définissez les coordonnées des coins de votre image
-    // (Exemple : Coordonnées du coin Sud-Ouest et du coin Nord-Est)
-    const southWest = L.latLng(0.00546388888888889, -1.48031944444444);
-    const northEast = L.latLng(0.00511944444444444,-1.48063611111111);
-
-    // Créez l'objet L.latLngBounds
-    const bounds = L.latLngBounds(southWest, northEast);
-
-    // 2. Initialisez la carte en la centrant sur votre plan
     this.map = L.map('map', {
-      center: bounds.getCenter(), // Centrer la carte sur les limites de l'image
-      //zoom: 17 // Choisissez un niveau de zoom approprié
+      crs: L.CRS.Simple,
+      minZoom: -2
     });
+    var w = 1800;
+    var h = 2200;
+    var bounds: L.LatLngBoundsExpression = [[0, 0], [h, w]];
+    L.imageOverlay('/planmasse.png', bounds,
+      {
+        opacity: 0.7,
+        interactive: false,
+        alt: 'Plan de masse'
+      }
+    ).addTo(this.map);
 
-    // 3. Ajoutez le plan de masse comme superposition d'image
-    L.imageOverlay('/planmasse.png', bounds).addTo(this.map);
-    const villaA = L.polygon(villaACoords, {
-      color: '#000980ff', // Vert (couleur du contour)
-      fillColor: '#00f7ffff', // Vert clair (couleur de remplissage)
-      //fillOpacity: 0.2, // Faible opacité pour voir le plan de masse en dessous
-      weight: 2 // Épaisseur du contour
-    }).addTo(this.map);
+    var villaA: L.LatLngTuple[] =
+      [
+  [799.53, 1089.02],
+  [799.53, 1613.81],
+  [507.94, 1613.78],
+  [507.94, 1089.02]
+]
+
+    var villaB: L.LatLngTuple[] = 
+     [
+  [1126.96, 13.90],
+  [1129.72, 536.41],
+  [1037.40, 536.62],
+  [1037.40, 603.89],
+  [879.53, 603.89],
+  [879.53, 659.66],
+  [784.69, 659.66],
+  [784.69, 603.89],
+  [326.15, 603.89],
+  [326.15, 783.89],
+  [252.18, 783.89],
+  [252.18, 13.90]
+]
+    var villaC: L.LatLngTuple[] =
+ [
+  [2062.89, 13.90],
+  [2052.25, 603.89],
+  [1314.53, 603.89],
+  [1314.53, 659.66],
+  [1224.53, 659.66],
+  [1224.53, 536.41],
+  [1129.72, 536.41],
+  [1126.96, 13.90]
+]
+    let villas = [villaA, villaB, villaC];
+    let colors = ['green', 'orange', 'purple'];
+    let fillColors = ['rgba(238, 202, 188, 0.93)', 'rgba(205, 191, 243, 1)', 'rgba(228, 223, 182, 1)'];
+    let labelVilla = ['A1-F2', 'A2-F3', 'A3-F3'];
+    let areas = [64, 180, 190];
+
+    for (let i = 0; i < villas.length; i++) {
+      var polygon = L.polygon(villas[i], {
+        color: colors[i],       // Couleur du contour
+        fillColor: fillColors[i],  // Couleur de remplissage
+        fillOpacity: 0.5,   // Transparence
+        weight: 2           // Épaisseur du trait
+      }).addTo(this.map);
+      var center = polygon.getBounds().getCenter();
+      polygon.on('click', this.onZoneClick.bind(this));
+      polygon.on('mouseover', ((e: any) => {
+        e.target.setStyle({
+          fillColor: 'rgba(184, 53, 13, 1)',
+          fillOpacity: 0.7
+        });
+
+      }).bind(this))
+      polygon.on('mouseout', ((e: any) => {
+        e.target.setStyle({
+          fillColor: fillColors[i],
+          fillOpacity: 0.5
+        });
+      }
+      ).bind(this));
+
+      var label = L.marker(center, {
+        icon: L.divIcon({
+          className: 'label-text-style',
+          html: '<b>' + labelVilla[i] + '</b> <br><span>' + areas[i] + ' m²</span>',
+          iconSize: [100, 40],
+          iconAnchor: [50, 20]
+        })
+      }).addTo(this.map);
+    }
     this.map.fitBounds(bounds);
-    // Optionnel : Ajoutez les tuiles de base (OpenStreetMap) en dessous pour référence
-    // const osmTiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { ... });
-    // osmTiles.addTo(this.map);
+  }
+
+  onZoneClick(e: any) {
+    var layer = e.target; // L'élément cliqué
+    var parent = e.sourceTarget; // La couche parente
+    parent.setStyle({
+      fillColor: '#f00'
+    });
   }
 }

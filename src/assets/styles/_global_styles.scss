@@ -5715,9 +5715,11 @@ th {
   flex-direction: column;
   overflow: auto;
 }
-.chat-area  > :first-child{
+
+.chat-area> :first-child {
   margin-top: auto;
 }
+
 .input-area {
   display: flex;
   margin-top: 5px;
@@ -5733,12 +5735,15 @@ th {
   justify-content: flex-start;
   width: 100%;
 }
-.chat-bubble-container.sender{
+
+.chat-bubble-container.sender {
   justify-content: flex-end;
 }
-.chat-bubble-container.sender >.chat-bubble{
- background-color: rgb(196, 210, 219);
+
+.chat-bubble-container.sender>.chat-bubble {
+  background-color: rgb(196, 210, 219);
 }
+
 .chat-bubble {
   padding-top: 8px;
   padding-bottom: 16px;
@@ -5750,7 +5755,8 @@ th {
   font-size: 1.8rem;
   position: relative;
 }
-.chat-bubble > .chat-date{
+
+.chat-bubble>.chat-date {
   position: absolute;
   bottom: 2px;
   right: 8px;
@@ -8537,19 +8543,21 @@ button[mat-raised-button] {
 /* Cible tous les groupes ou chemins dont l'ID commence par "villa-" */
 .svg-container [id^="villa"] {
   cursor: pointer;
-  pointer-events: all; /* Rend la zone cliquable même si elle est transparente */
-  
+  pointer-events: all;
+  /* Rend la zone cliquable même si elle est transparente */
+
   /* Style par défaut : Invisible (Zone fantôme) */
-  fill: transparent; 
+  fill: transparent;
   stroke: none;
-  
+
   /* Transition douce */
   transition: all 0.3s ease;
 }
 
 /* --- SURVOL (HOVER) --- */
 .svg-container [id^="villa"]:hover {
-  fill: rgba(33, 150, 243, 0.4); /* Bleu semi-transparent */
+  fill: rgba(33, 150, 243, 0.4);
+  /* Bleu semi-transparent */
   stroke: #2196F3;
   stroke-width: 2px;
 }
@@ -8557,8 +8565,21 @@ button[mat-raised-button] {
 /* --- SÉLECTIONNÉ (ACTIVE) --- */
 /* Cette classe est ajoutée via le code TypeScript ci-dessous */
 .svg-container .selected-villa {
-  fill: rgba(76, 175, 80, 0.6) !important; /* Vert */
+  fill: rgba(76, 175, 80, 0.6) !important;
+  /* Vert */
   stroke: #4CAF50 !important;
   stroke-width: 3px;
 }
-#map { height: 500px; width: 100%; }
+
+#map {
+  height: 500px;
+  width: 100%;
+  background-color: white !important;
+  border:  2px solid rgb(30, 42, 97);
+}
+
+.label-text-style {
+  font-size: 14px;
+  font-weight: bold;
+  color: black
+}
