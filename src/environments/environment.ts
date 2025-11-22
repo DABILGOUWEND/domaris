@@ -9,6 +9,6 @@ export const environment = {
       messagingSenderId: "126234609649"
     },
     production: true,
-    apiUrl: "http://localhost:3000"
+    apiUrl: "http://localhost:3000/api"
 };
 
