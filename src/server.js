@@ -33,7 +33,7 @@ const pool = new Pool({
 
 // --- 2. Route API PostgreSQL ---
 // C'est l'endpoint que votre service Angular appelle (ex: http.post('/api/ajouter-utilisateur'))
-app.post('/api/ajouter-utilisateur', async (req, res) => {
+app.post('/api/users', async (req, res) => {
     const { nom, email } = req.body;
     
     if (!nom || !email) {
@@ -41,7 +41,7 @@ app.post('/api/ajouter-utilisateur', async (req, res) => {
     }
 
     try {
-        const query = 'INSERT INTO utilisateurs (nom, email) VALUES ($1, $2) RETURNING *';
+        const query = 'INSERT INTO users (name, email) VALUES ($1, $2) RETURNING *';
         const result = await pool.query(query, [nom, email]);
         
         // Réponse envoyée à Angular
