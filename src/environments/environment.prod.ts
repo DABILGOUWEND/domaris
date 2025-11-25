@@ -9,5 +9,5 @@ export const environment = {
       messagingSenderId: "126234609649"
     },
     production: true,
-    apiUrl: "http://solubtp.com:3000/api"
+    apiUrl: "/api"
 };

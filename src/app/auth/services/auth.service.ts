@@ -6,8 +6,10 @@ import { Router } from '@angular/router';
 import { from, map, Observable, of, switchMap, tap } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+
+import { environment } from '../../../environments/environment.prod';
 const apiKey = environment.firebaseConfig.apiKey;
+const apiUrl = environment.apiUrl
 @Injectable({
   providedIn: 'root'
 })
@@ -295,5 +297,9 @@ deleteChatUserFromAuth(uid: string): Observable<any> {
         );
       })
     );
+  }
+
+  getTaches(): Observable<any[]> {
+    return this._http.get<any[]>(apiUrl + '/users');
   }
 }
