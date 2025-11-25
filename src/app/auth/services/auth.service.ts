@@ -315,6 +315,7 @@ deleteChatUserFromAuth(uid: string): Observable<any> {
       headers: myheaders
     }
     )
+    
   }
   getallUsersByUid(uid: string): Observable<any> {
     const docRef = doc(this.db, "domaris_users", uid);
