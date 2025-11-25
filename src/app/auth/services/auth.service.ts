@@ -296,4 +296,12 @@ deleteChatUserFromAuth(uid: string): Observable<any> {
       })
     );
   }
+  getClient(): Observable<any[]> {
+    return this._http.get<any[]>('http://72.61.160.87:3000/api/clients', {
+      headers: {
+        'x-api-key': 'jdjssmmqqsjdfhskdsd48884441111#####'
+      }
+    });
+  }
+
 }
