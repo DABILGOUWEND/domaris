@@ -1,0 +1,65 @@
+<div class="container">
+  <form [formGroup]="userForm" (ngSubmit)="submit()">
+    <div class="row">
+      <div class="col s12 m6 l4">
+        <mat-form-field>
+          <mat-label>Nom d'utilisateur</mat-label>
+          <input matInput formControlName="username" placeholder="Entrez le nom d'utilisateur">
+          @if(userForm.get('username')?.invalid && (userForm.get('username')?.touched ||
+          userForm.get('username')?.dirty))
+          {
+          Le nom d'utilisateur est requis
+          }
+        </mat-form-field>
+      </div>
+      <div class="col s12 m6 l4">
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" placeholder="Entrez l'email">
+          @if(userForm.get('email')?.invalid && (userForm.get('email')?.touched || userForm.get('email')?.dirty))
+          {
+          L'email est requis
+          }
+          @if(userForm.get('email')?.errors?.['email'])
+          {
+          Format d'email invalide
+          }
+        </mat-form-field>
+      </div>
+      <div class="col s12 m6 l4">
+        <mat-form-field>
+          <mat-label>Mot de passe</mat-label>
+          <input matInput type="password" formControlName="password" placeholder="Entrez le mot de passe">
+          @if(userForm.get('password')?.invalid && (userForm.get('password')?.touched || userForm.get('password')?.dirty))
+          {
+          Le mot de passe est requis
+          }
+          @if(userForm.get('password')?.errors?.['minlength'])
+          {
+          Le mot de passe doit contenir au moins 6 caractères
+          }
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col s12 m6 l4">
+        <mat-form-field>
+          <mat-label>Rôle</mat-label>
+          
+          <mat-select formControlName="role" placeholder="Sélectionnez le rôle">
+            <mat-option value="admin">Admin</mat-option>
+            <mat-option value="user">Utilisateur</mat-option>
+          </mat-select>
+          @if(userForm.get('role')?.invalid && (userForm.get('role')?.touched || userForm.get('role')?.dirty))
+          {
+          Le rôle est requis
+          }
+        </mat-form-field>
+         
+      </div>
+    </div>
+    <div class="row">
+      <button type="submit">Créer</button>
+    </div>
+  </form>
+</div>

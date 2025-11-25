@@ -26,6 +26,7 @@ import { ChatsComponent } from './components/chats/chats.component';
 import { PlansvgComponent } from './components/plansvg/plansvg.component';
 import { MysrvhomeComponent } from './components/mysrvhome/mysrvhome.component';
 import { MapComponent } from './components/map/map.component';
+import { NewUserComponent } from './components/new-user/new-user.component';
 
 
 export const routes: Routes = [
@@ -126,6 +127,11 @@ export const routes: Routes = [
     component: MapComponent
   }
 
+  ,
+  {
+    path: 'new_user',
+    component: NewUserComponent
+  }
 
 
 ]

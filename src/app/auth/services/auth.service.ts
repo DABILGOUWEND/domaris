@@ -8,6 +8,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment.prod';
+import e from 'cors';
 const apiKey = environment.firebaseConfig.apiKey;
 const apiUrl = environment.apiUrl
 @Injectable({
@@ -47,7 +48,7 @@ export class AuthService {
             next: () => {
               this.userLoggedIn.set(true);
               this.affichage.set(user.email);
-              this.router.navigate(['/chats']);
+              this.router.navigate(['/new_user']);
             }
 
           });
@@ -215,10 +216,11 @@ deleteChatUserFromAuth(uid: string): Observable<any> {
       role: '',
       username: ''
     }
-    return this.getallUsersByUidOk(users.uid).pipe(
+    return this.getUserbyUid(users.uid).pipe(
       tap(
         (resp: any) => {
-          let data = resp.data();
+          console.log('Utilisateur récupéré:', resp);
+          let data = resp;
           this.userSignal.update(
             (user: any) =>
             (
@@ -227,12 +229,11 @@ deleteChatUserFromAuth(uid: string): Observable<any> {
                 'email': new_user.email,
                 'token': this.token(),
                 'role': data.role,
-                'username': data.nom + ' ' + data.prenom
+                'username': data.username,
               }
             )
           )
           localStorage.setItem('user', JSON.stringify(this.userSignal()));
-          this.current_projet_id.set(data.projet_ids[0]);
         }
       )
     )
@@ -304,9 +305,28 @@ deleteChatUserFromAuth(uid: string): Observable<any> {
     )
 
   }
-  getallUsersByUidOk(uid: string): Observable<any> {
-  return this.getUsers();
+  getUserbyUid(uid: string): Observable<any> {
+  return this.getUsers().pipe((map(users => {
+    return users.find((user: any) => user.uid === uid);
+  }))
+  )
   }
+  Add_User(data: any): Observable<any> {
+        const myheaders = new HttpHeaders({
+      "authorization": "jdjssmmqqsjdfhskdsd48884441111#####"
+    });
+    return this._http.post('/api/users',{
+      headers: myheaders,
+      body: {
+        role:data.role,
+        email:data.email,
+        username:data.username
+      }
+    }
+    )
+
+  }
+  
   getUsers(): Observable<any> {
       const myheaders = new HttpHeaders({
       "authorization": "jdjssmmqqsjdfhskdsd48884441111#####"
@@ -315,7 +335,7 @@ deleteChatUserFromAuth(uid: string): Observable<any> {
       headers: myheaders
     }
     )
-    
+
   }
   getallUsersByUid(uid: string): Observable<any> {
     const docRef = doc(this.db, "domaris_users", uid);
@@ -357,6 +377,18 @@ deleteChatUserFromAuth(uid: string): Observable<any> {
           map((snap: any) => {
             const data = snap.data();
             return data?.role || 'guest';
+          })
+        );
+      })
+    );
+  }
+  getUserRole(): Observable<string> {
+    return authState(this._auth).pipe(
+      switchMap(user => {
+        if (!user) return of('guest');
+        return this.getUserbyUid(user.uid).pipe(
+          map((user: any) => {
+            return user?.role || 'guest';
           })
         );
       })

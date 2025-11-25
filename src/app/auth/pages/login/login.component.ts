@@ -36,7 +36,7 @@ export class LoginComponent  implements OnInit{
       this.isLoading.set(true);
       this.message.set('connexion en cours ...');
       const { email, password } = this.loginForm.value;
-      this.authService.loginChat(email, password).subscribe({
+      this.authService.loginok(email, password).subscribe({
         next: (res) => {
           setInterval(() => {
             this.isLoading.set(false);
