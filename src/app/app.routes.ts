@@ -31,7 +31,7 @@ import { MapComponent } from './components/map/map.component';
 export const routes: Routes = [
 
   {
-    path: "", redirectTo: "/svg", pathMatch: "full"
+    path: "", redirectTo: "/layout", pathMatch: "full"
   },
   {
     path: "layout", component: LayoutComponent,
@@ -76,11 +76,11 @@ export const routes: Routes = [
     path: "accueil", component: AccueilComponent
 
   },
-  
-      {
-        path: 'chats',
-        component: ChatsComponent
-      },
+
+  {
+    path: 'chats',
+    component: ChatsComponent
+  },
   {
     path: "connect", component: ConnectedPageComponent
     ,
