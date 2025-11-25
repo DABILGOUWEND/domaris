@@ -1,0 +1,8 @@
+{
+  "/api": {
+    "target": "http://solubtp.com:3000",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}
