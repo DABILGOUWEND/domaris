@@ -31,7 +31,7 @@ import { MapComponent } from './components/map/map.component';
 export const routes: Routes = [
 
   {
-    path: "", redirectTo: "/layout", pathMatch: "full"
+    path: "", redirectTo: "/login", pathMatch: "full"
   },
   {
     path: "layout", component: LayoutComponent,

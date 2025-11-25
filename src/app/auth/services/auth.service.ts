@@ -5,7 +5,7 @@ import { deleteDoc, doc, Firestore, getDoc, setDoc } from '@angular/fire/firesto
 import { Router } from '@angular/router';
 import { from, map, Observable, of, switchMap, tap } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { environment } from '../../../environments/environment.prod';
 const apiKey = environment.firebaseConfig.apiKey;
@@ -305,7 +305,16 @@ deleteChatUserFromAuth(uid: string): Observable<any> {
 
   }
   getallUsersByUidOk(uid: string): Observable<any> {
-    return this._http.get<any[]>('api/users')
+  return this.getUsers();
+  }
+  getUsers(): Observable<any> {
+      const myheaders = new HttpHeaders({
+      "authorization": "jdjssmmqqsjdfhskdsd48884441111#####"
+    });
+    return this._http.get<any[]>('/api/users',{
+      headers: myheaders
+    }
+    )
   }
   getallUsersByUid(uid: string): Observable<any> {
     const docRef = doc(this.db, "domaris_users", uid);

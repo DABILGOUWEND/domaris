@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ImportedModule } from '../../../shared/modules/imported/imported.module';
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent  implements OnInit{
   loginForm: FormGroup;
   errorMessage: string = '';
   message = signal('vous êtes déconnecté');
@@ -24,6 +24,11 @@ export class LoginComponent {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
+    });
+  }
+  ngOnInit(): void {
+    this.authService.getUsers().subscribe(users => {
+      console.log('Liste des utilisateurs:', users);
     });
   }
   onSubmit() {
