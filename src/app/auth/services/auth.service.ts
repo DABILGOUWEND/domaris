@@ -38,7 +38,26 @@ export class AuthService {
   constructor() {
     this.isBrowser = isPlatformBrowser(this.platformId)
   }
+  loginok(email: string, password: string): Observable<any> {
+    return from(this._auth.setPersistence(browserLocalPersistence).then(() => {
+      signInWithEmailAndPassword(this._auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          this.handleCreateUserok(user).subscribe({
+            next: () => {
+              this.userLoggedIn.set(true);
+              this.affichage.set(user.email);
+              this.router.navigate(['/chats']);
+            }
 
+          });
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+        })
+    }))
+  }
   login(email: string, password: string): Observable<any> {
     return from(this._auth.setPersistence(browserLocalPersistence).then(() => {
       signInWithEmailAndPassword(this._auth, email, password)
@@ -129,7 +148,8 @@ export class AuthService {
       return this.addUser(data);
     }))
   };
-  register_chat_Users(email: string,
+  register_chat_Users(
+    email: string,
     password: string,
     role: string,
     nom: string,
@@ -186,6 +206,37 @@ deleteChatUserFromAuth(uid: string): Observable<any> {
 
       localId: uid
     });
+  }
+  handleCreateUserok(users: any): Observable<any> {
+    let new_user: any = {
+      uid: users.uid,
+      email: users.email,
+      token: this.token(),
+      role: '',
+      username: ''
+    }
+    return this.getallUsersByUidOk(users.uid).pipe(
+      tap(
+        (resp: any) => {
+          let data = resp.data();
+          this.userSignal.update(
+            (user: any) =>
+            (
+              {
+                'uid': new_user.uid,
+                'email': new_user.email,
+                'token': this.token(),
+                'role': data.role,
+                'username': data.nom + ' ' + data.prenom
+              }
+            )
+          )
+          localStorage.setItem('user', JSON.stringify(this.userSignal()));
+          this.current_projet_id.set(data.projet_ids[0]);
+        }
+      )
+    )
+
   }
   handleCreateUser(users: any): Observable<any> {
     let new_user: any = {
@@ -253,6 +304,9 @@ deleteChatUserFromAuth(uid: string): Observable<any> {
     )
 
   }
+  getallUsersByUidOk(uid: string): Observable<any> {
+    return this._http.get<any[]>('api/users')
+  }
   getallUsersByUid(uid: string): Observable<any> {
     const docRef = doc(this.db, "domaris_users", uid);
     const docSnap = getDoc(docRef);
@@ -297,9 +351,5 @@ deleteChatUserFromAuth(uid: string): Observable<any> {
         );
       })
     );
-  }
-
-  getTaches(): Observable<any[]> {
-    return this._http.get<any[]>(apiUrl + '/users');
   }
 }
